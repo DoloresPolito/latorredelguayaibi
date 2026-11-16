@@ -1,17 +1,17 @@
 @use "abstracts" as *;
 
+$content-left-desktop: $navbar-inset + $space-10; // alinea con el logo de la navbar
+
 .hero {
   position: relative;
   display: flex;
   flex-direction: column;
-  // Siempre exactamente una pantalla: la navbar (que se superpone abajo)
-  // tiene que verse entera sin scrollear. Los tamaños internos escalan con
-  // el alto de la pantalla para que todo entre.
+  // Siempre exactamente una pantalla. Los tamaños internos escalan con el
+  // alto para que todo entre también en notebooks de pantalla baja.
   height: 100svh;
   min-height: 560px;
   isolation: isolate;
   overflow: hidden;
-  color: $warm-ivory;
 }
 
 // ─────────────────────────────────────────────
@@ -32,176 +32,190 @@
 
 .image {
   object-fit: cover;
-  object-position: center 30%;
+  object-position: center 10%;
 }
 
 // Fondo provisorio hasta tener la foto
 .placeholder {
   position: absolute;
   inset: 0;
-  background: linear-gradient(172deg, #9aa3a6 0%, #c9b79a 50%, #6f6a4c 100%);
+  background: linear-gradient(172deg, #c9d0cc 0%, #eedcbf 48%, $stone 76%, #555038 100%);
 }
 
-// Sombra suave (sin velo claro) para que se lea el texto blanco
+// Sin velo claro: sombra oscura suave detrás del texto (en crema).
+// Si en el futuro la foto tiene cielo despejado a la izquierda (como la
+// referencia), se puede volver a texto marrón: ver colores en .kicker/.title.
 .overlay {
   position: absolute;
   inset: 0;
-  background:
-    linear-gradient(180deg, rgba(#000, 0.28) 0%, rgba(#000, 0) 26%),
-    linear-gradient(0deg, rgba(#000, 0.55) 0%, rgba(#000, 0.25) 38%, rgba(#000, 0) 60%);
+  background: linear-gradient(0deg, rgba(#000, 0.6) 0%, rgba(#000, 0.35) 38%, rgba(#000, 0) 62%);
 
   @include mq(lg) {
     background:
-      linear-gradient(90deg, rgba(#000, 0.32) 0%, rgba(#000, 0.12) 35%, rgba(#000, 0) 55%),
-      linear-gradient(0deg, rgba(#000, 0.25) 0%, rgba(#000, 0) 22%);
+      linear-gradient(90deg, rgba(#000, 0.42) 0%, rgba(#000, 0.18) 35%, rgba(#000, 0) 55%),
+      linear-gradient(0deg, rgba(#000, 0.28) 0%, rgba(#000, 0) 22%);
   }
 }
 
 // ─────────────────────────────────────────────
 // Contenido
-// Mobile: marca arriba, título y CTA abajo (sobre la navbar).
-// Desktop: todo agrupado a la izquierda, como en la referencia.
 // ─────────────────────────────────────────────
 .content {
   display: flex;
   flex: 1;
   flex-direction: column;
   align-items: flex-start;
+  justify-content: flex-end;
+  max-width: 560px;
   padding:
-    clamp(#{$space-6}, 6svh, #{$space-12})
+    calc(#{$navbar-height-mobile + $navbar-sticky-top-mobile} + #{$space-8})
     $space-6
-    calc(#{$navbar-height-mobile + $navbar-offset-mobile} + clamp(#{$space-6}, 5svh, #{$space-10}));
+    clamp(#{$space-16}, 12svh, #{$space-24});
 
   @include mq(md) {
     padding-inline: $space-12;
+    padding-bottom: $space-32; // deja lugar al indicador "Scroll"
   }
 
   @include mq(lg) {
+    justify-content: center;
+    max-width: 680px;
     padding:
-      clamp(#{$space-6}, 8svh, #{$space-24})
+      calc(#{$navbar-height + $navbar-sticky-top} + #{$space-6})
       0
-      calc(#{$navbar-height + $navbar-offset} + clamp(#{$space-6}, 5svh, #{$space-12}))
-      clamp(#{$space-16}, 8vw, 116px);
+      clamp(#{$space-16}, 12svh, #{$space-32})
+      $content-left-desktop;
   }
 }
 
-.brand {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-}
-
-.mark {
-  display: block;
-  height: clamp(36px, 6svh, 48px);
-  aspect-ratio: 670 / 421;
-  background-color: currentColor;
-  mask: url("/logos/logo-negro.svg") center / contain no-repeat;
-
-  @include mq(lg) {
-    height: clamp(40px, 6svh, 56px);
-  }
-}
-
-.name {
-  margin-top: $space-2;
+.kicker {
   font-family: $font-heading;
-  font-size: 24px;
-  line-height: 0.95;
+  font-size: 22px;
+  line-height: 1.1;
   letter-spacing: -0.01em;
+  color: $warm-ivory;
 
   @include mq(lg) {
-    font-size: 28px;
+    font-size: clamp(22px, 3.4svh, 28px);
   }
 }
 
-.motto {
-  margin-top: $space-3;
-  font-family: $font-ui;
-  font-size: 9px;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-
-  @include mq(lg) {
-    font-size: 10px;
-  }
-}
-
-.brandRule {
-  display: block;
-  width: 100%;
-  min-width: 120px;
-  height: 1px;
-  margin-top: $space-4;
-  background-color: rgba($warm-ivory, 0.55);
-}
-
-.main {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  margin-top: auto;
-
-  @include mq(lg) {
-    margin-top: clamp(#{$space-6}, 5svh, #{$space-16});
-  }
-}
-
+// Display: más grande que el H1 estándar, como en la referencia
 .title {
+  margin-top: $space-3;
   font-family: $font-heading;
   font-weight: $weight-light;
-  // Escala con el ancho y también con el alto (pantallas bajas tipo notebook)
-  font-size: clamp(48px, min(7vw, 12svh), 112px);
-  line-height: 0.95;
+  font-size: clamp(52px, min(7vw, 12svh), 112px);
+  line-height: 0.92;
   letter-spacing: -0.03em;
-  color: inherit;
-  text-shadow: 0 1px 24px rgba(#000, 0.15);
+  color: $warm-ivory;
+  text-shadow: 0 1px 24px rgba(#000, 0.18);
 }
 
 .tagline {
-  max-width: 26em;
-  margin-top: clamp(#{$space-4}, 3svh, #{$space-6});
+  max-width: 28em;
+  margin-top: clamp(#{$space-4}, 3svh, #{$space-8});
   font-family: $font-ui;
   font-size: 11px;
-  line-height: 1.7;
-  letter-spacing: 0.12em;
+  line-height: 1.9;
+  letter-spacing: 0.24em;
   text-transform: uppercase;
   color: rgba($warm-ivory, 0.92);
 
   @include mq(lg) {
-    margin-top: clamp(#{$space-4}, 3svh, #{$space-8});
     font-size: 13px;
   }
 }
 
+.rule {
+  display: block;
+  width: 72px;
+  height: 1px;
+  margin-block: clamp(#{$space-4}, 3svh, #{$space-6});
+  background-color: rgba($warm-ivory, 0.6);
+}
+
 .cta {
   @include btn-base;
-  height: 46px;
-  margin-top: clamp(#{$space-5}, 4svh, #{$space-8});
+  height: 48px;
   padding-inline: $space-6;
-  gap: $space-3;
-  border: $border-width solid rgba($warm-ivory, 0.75);
-  border-radius: $radius-full;
-  background-color: rgba(#000, 0.06);
+  gap: $space-6;
+  border: $border-width solid rgba($warm-ivory, 0.7);
+  border-radius: $radius-navbar;
+  background-color: rgba(#000, 0.1);
   color: $warm-ivory;
   font-size: 11px;
-  font-weight: $weight-regular;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.16em;
 
   svg {
     transition: transform $transition-default;
   }
 
   @include hover {
-    background-color: rgba($warm-ivory, 0.16);
+    background-color: rgba($warm-ivory, 0.15);
     border-color: $warm-ivory;
 
-    svg { transform: translate(2px, -2px); }
+    svg { transform: translateX(3px); }
+  }
+}
+
+// ─────────────────────────────────────────────
+// Indicadores inferiores
+// ─────────────────────────────────────────────
+.scroll {
+  position: absolute;
+  left: $space-6;
+  bottom: $space-8;
+  display: none;
+  align-items: center;
+  gap: $space-8;
+  font-family: $font-ui;
+  font-size: 10px;
+  font-weight: $weight-semibold;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgba($white, 0.85);
+
+  @include mq(md) {
+    display: flex;
+    left: $space-12;
+  }
+
+  @include mq(lg) {
+    left: $navbar-inset + $space-4;
+  }
+}
+
+.scrollLine {
+  display: block;
+  width: 1px;
+  height: 48px;
+  background-color: rgba($white, 0.7);
+}
+
+.down {
+  @include flex-center;
+  position: absolute;
+  right: $space-5;
+  bottom: $space-6;
+  width: 44px;
+  height: 44px;
+  border: $border-width solid rgba($white, 0.75);
+  border-radius: $radius-full;
+  color: $white;
+  transition: background-color $transition-default;
+
+  @include hover {
+    background-color: rgba($white, 0.15);
   }
 
   &:focus-visible {
-    outline: $border-width solid $warm-ivory;
+    outline: $border-width solid $white;
     outline-offset: 3px;
+  }
+
+  @include mq(lg) {
+    right: $navbar-inset + $space-4;
+    bottom: $space-8;
   }
 }

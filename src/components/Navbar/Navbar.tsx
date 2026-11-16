@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 import { useEffect, useRef, useState, type CSSProperties, type MouseEvent } from "react";
 import Logo from "@/components/Logo/Logo";
 import styles from "./Navbar.module.scss";
@@ -19,14 +20,14 @@ type Lang = "es" | "en";
 
 type NavbarProps = {
   /**
-   * "home": va en el DOM justo después del hero. Arranca abajo, sobre el borde
-   *         inferior del hero; al scrollear sube con él y queda fija arriba.
-   * "page": páginas internas; fija arriba desde el principio.
+   * "top": fija arriba desde el principio, flotando sobre el contenido (default).
+   * "bottom": va en el DOM justo después del hero. Arranca abajo, sobre el borde
+   *           inferior del hero; al scrollear sube con él y queda fija arriba.
    */
-  variant?: "home" | "page";
+  variant?: "top" | "bottom";
 };
 
-export default function Navbar({ variant = "home" }: NavbarProps) {
+export default function Navbar({ variant = "top" }: NavbarProps) {
   const ref = useRef<HTMLElement>(null);
   const [isStuck, setIsStuck] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -123,6 +124,8 @@ export default function Navbar({ variant = "home" }: NavbarProps) {
           <Logo />
         </Link>
 
+        <span className={styles.separator} aria-hidden="true" />
+
         <ul className={styles.links}>
           {NAV_LINKS.map((link) => (
             <li key={link.href}>
@@ -137,6 +140,7 @@ export default function Navbar({ variant = "home" }: NavbarProps) {
 
         <Link href={CTA.href} className={styles.cta}>
           {CTA.label}
+          <ArrowRight size={16} strokeWidth={1.5} aria-hidden="true" />
         </Link>
 
         <button
@@ -171,6 +175,7 @@ export default function Navbar({ variant = "home" }: NavbarProps) {
           {langSwitch()}
           <Link href={CTA.href} className={styles.menuCta} onClick={close}>
             {CTA.label}
+            <ArrowRight size={16} strokeWidth={1.5} aria-hidden="true" />
           </Link>
         </div>
       </div>

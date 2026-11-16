@@ -1,6 +1,6 @@
 import Image, { getImageProps } from "next/image";
 import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowRight, ChevronDown } from "lucide-react";
 import styles from "./Hero.module.scss";
 
 type HeroImage = { src: string; width: number; height: number };
@@ -10,10 +10,12 @@ type HeroProps = {
   image?: HeroImage & { alt: string };
   /** Foto opcional para celulares (vertical). Si no está, se usa la principal recortada. */
   mobileImage?: HeroImage;
+  /** id de la sección siguiente, para el botón de scroll */
+  nextSectionId?: string;
 };
 
 /** Foto distinta para desktop y mobile ("art direction") con <picture> */
-function ArtDirectedImage({ image, mobileImage }: Required<HeroProps>) {
+function ArtDirectedImage({ image, mobileImage }: Required<Pick<HeroProps, "image" | "mobileImage">>) {
   const common = { alt: image.alt, sizes: "100vw", priority: true };
   const {
     props: { srcSet: desktop },
@@ -32,7 +34,7 @@ function ArtDirectedImage({ image, mobileImage }: Required<HeroProps>) {
   );
 }
 
-export default function Hero({ image, mobileImage }: HeroProps) {
+export default function Hero({ image, mobileImage, nextSectionId = "experiencia" }: HeroProps) {
   return (
     <section className={styles.hero}>
       <div className={styles.media}>
@@ -54,32 +56,29 @@ export default function Hero({ image, mobileImage }: HeroProps) {
       </div>
 
       <div className={styles.content}>
-        {/* Marca apilada (decorativa: el título real es el h1) */}
-        <div className={styles.brand} aria-hidden="true">
-          <span className={styles.mark} />
-          <span className={styles.name}>
-            La Torre
-            <br />
-            del Guayaibí
-          </span>
-          <span className={styles.motto}>Un mundo aparte</span>
-          <span className={styles.brandRule} />
-        </div>
-
-        <div className={styles.main}>
-          <h1 className={styles.title}>
-            Un mundo <br />
-            aparte.
-          </h1>
-          <p className={styles.tagline}>
-            Un refugio singular en el corazón del campo correntino.
-          </p>
-          <Link href="/la-torre" className={styles.cta}>
-            Descubrir la torre
-            <ArrowUpRight size={14} strokeWidth={1.5} aria-hidden="true" />
-          </Link>
-        </div>
+        <p className={styles.kicker}>La Torre del Guayaibí</p>
+        <h1 className={styles.title}>
+          Un mundo <br />
+          aparte.
+        </h1>
+        <p className={styles.tagline}>
+          Un refugio singular en el corazón del campo correntino.
+        </p>
+        <span className={styles.rule} aria-hidden="true" />
+        <Link href="/la-torre" className={styles.cta}>
+          Descubrir la torre
+          <ArrowRight size={16} strokeWidth={1.5} aria-hidden="true" />
+        </Link>
       </div>
+
+      <div className={styles.scroll} aria-hidden="true">
+        <span className={styles.scrollLine} />
+        Scroll
+      </div>
+
+      <a href={`#${nextSectionId}`} className={styles.down} aria-label="Ir a la siguiente sección">
+        <ChevronDown size={18} strokeWidth={1.5} aria-hidden="true" />
+      </a>
     </section>
   );
 }
