@@ -1,26 +1,30 @@
 import type { Metadata } from "next";
-import { Inter, Cormorant_Garamond } from "next/font/google";
+import { EB_Garamond, Instrument_Serif } from "next/font/google";
 import "@/styles/globals.scss";
 
-const sans = Inter({
-  variable: "--font-sans",
+// Alternativa gratuita a Canela Light. Si se consigue la licencia de Canela,
+// reemplazar por next/font/local apuntando a los archivos .woff2.
+const heading = Instrument_Serif({
+  variable: "--font-heading",
   subsets: ["latin"],
+  weight: "400",
 });
 
-const serif = Cormorant_Garamond({
-  variable: "--font-serif",
+const editorial = EB_Garamond({
+  variable: "--font-editorial",
   subsets: ["latin"],
-  weight: ["400", "500", "600"],
+  weight: ["400", "500"],
+  style: ["normal", "italic"],
 });
 
 export const metadata: Metadata = {
-  title: "Hotel La Torre",
-  description: "Sitio oficial del Hotel La Torre",
+  title: "La Torre del Guayaibí",
+  description: "Hotel boutique rodeado de naturaleza.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="es" className={`${sans.variable} ${serif.variable}`}>
+    <html lang="es" className={`${heading.variable} ${editorial.variable}`}>
       <body>{children}</body>
     </html>
   );

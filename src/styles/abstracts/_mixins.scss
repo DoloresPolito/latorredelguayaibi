@@ -1,21 +1,43 @@
 @use "sass:map";
-@use "variables" as *;
+@use "colors" as *;
+@use "tokens" as *;
 
-// Uso: @include mq(md) { ... }  → min-width
+// ─────────────────────────────────────────────
+// Media queries
+// @include mq(md) { ... }      → min-width
+// @include mq-down(md) { ... } → max-width
+// ─────────────────────────────────────────────
 @mixin mq($bp) {
   @media (min-width: map.get($breakpoints, $bp)) {
     @content;
   }
 }
 
+@mixin mq-down($bp) {
+  @media (max-width: map.get($breakpoints, $bp) - 0.02px) {
+    @content;
+  }
+}
+
+@mixin hover {
+  @media (hover: hover) {
+    &:hover {
+      @content;
+    }
+  }
+}
+
+// ─────────────────────────────────────────────
+// Layout
+// ─────────────────────────────────────────────
 @mixin container {
   width: 100%;
   max-width: $container-max;
   margin-inline: auto;
-  padding-inline: $space-sm;
+  padding-inline: $space-5;
 
-  @include mq(md) {
-    padding-inline: $space-md;
+  @include mq(lg) {
+    padding-inline: $space-16;
   }
 }
 
@@ -23,4 +45,193 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+@mixin cover-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+@mixin visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+@mixin focus-ring {
+  outline: $border-width solid $color-primary;
+  outline-offset: 2px;
+}
+
+// ─────────────────────────────────────────────
+// Tipografía
+// ─────────────────────────────────────────────
+@mixin h1 {
+  font-family: $font-heading;
+  font-weight: $weight-light;
+  font-size: 40px;
+  line-height: 1;
+  letter-spacing: -0.035em;
+  color: $color-heading;
+
+  @include mq(md) { font-size: 48px; }
+  @include mq(lg) { font-size: 60px; }
+}
+
+@mixin h2 {
+  font-family: $font-heading;
+  font-weight: $weight-light;
+  font-size: 34px;
+  line-height: 1.1;
+  letter-spacing: -0.025em;
+  color: $color-heading;
+
+  @include mq(lg) { font-size: 44px; }
+}
+
+@mixin text-editorial {
+  font-family: $font-editorial;
+  font-weight: $weight-regular;
+  font-size: 19px;
+  line-height: 1.3;
+  color: $color-body;
+}
+
+@mixin text-small {
+  font-family: $font-editorial;
+  font-weight: $weight-regular;
+  font-size: 14px;
+  line-height: 1.3;
+  color: $color-body;
+}
+
+// Títulos de sección ("eyebrow")
+@mixin eyebrow {
+  font-family: $font-ui;
+  font-weight: $weight-semibold;
+  font-size: 11px;
+  line-height: 1.4;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: $color-primary;
+}
+
+@mixin nav-link {
+  font-family: $font-ui;
+  font-weight: $weight-semibold;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: $color-primary;
+}
+
+@mixin label {
+  font-family: $font-editorial;
+  font-weight: $weight-regular;
+  font-size: 14px;
+  color: $color-body;
+}
+
+// ─────────────────────────────────────────────
+// Botones
+// ─────────────────────────────────────────────
+@mixin btn-base {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: $space-2;
+  border-radius: $radius-medium;
+  font-family: $font-ui;
+  font-weight: $weight-semibold;
+  text-transform: uppercase;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    background-color $transition-default,
+    border-color $transition-default,
+    color $transition-default;
+
+  &:focus-visible {
+    @include focus-ring;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+@mixin btn-primary {
+  @include btn-base;
+  height: $btn-height;
+  padding-inline: $btn-padding-x;
+  background-color: $color-primary;
+  border: $border-width solid $color-primary;
+  color: $color-on-primary;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+
+  @include hover {
+    background-color: $color-primary-hover;
+    border-color: $color-primary-hover;
+  }
+}
+
+@mixin btn-secondary {
+  @include btn-base;
+  height: $btn-secondary-height;
+  padding-inline: $btn-secondary-padding-x;
+  background-color: transparent;
+  border: $border-width solid $color-border-strong;
+  color: $color-primary;
+  font-size: 10px;
+  letter-spacing: 0.06em;
+
+  @include hover {
+    border-color: $color-primary;
+  }
+}
+
+// ─────────────────────────────────────────────
+// Formularios
+// ─────────────────────────────────────────────
+@mixin input {
+  width: 100%;
+  height: $input-height;
+  padding-inline: $input-padding-x;
+  background-color: $color-surface;
+  border: $border-width solid $color-border;
+  border-radius: $radius-small;
+  font-family: $font-ui;
+  font-weight: $weight-regular;
+  font-size: 13px;
+  color: $color-heading;
+  transition: border-color $transition-default;
+
+  &::placeholder {
+    color: $color-muted;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: $color-primary;
+  }
+}
+
+@mixin textarea {
+  @include input;
+  height: auto;
+  min-height: $textarea-min-height;
+  padding: $input-padding-x;
+  resize: vertical;
+}
+
+@mixin divider {
+  height: 1px;
+  border: 0;
+  background-color: $color-border;
 }

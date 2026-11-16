@@ -1,0 +1,81 @@
+// ─────────────────────────────────────────────
+// Familias tipográficas
+// (las variables --font-* las define next/font en layout.tsx)
+// ─────────────────────────────────────────────
+$font-heading: var(--font-heading), "Canela", Georgia, serif;
+$font-editorial: var(--font-editorial), Garamond, Georgia, serif;
+$font-ui: "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+$weight-light: 300;
+$weight-regular: 400;
+$weight-semibold: 600;
+
+// ─────────────────────────────────────────────
+// Radios, bordes, transiciones
+// ─────────────────────────────────────────────
+$radius-small: 4px; // inputs, textarea
+$radius-medium: 5px; // botones, calendarios
+$radius-navbar: 10px;
+$radius-large: 12px; // contenedor principal
+$radius-full: 999px;
+
+$border-width: 1px;
+$transition-default: 200ms ease;
+
+// ─────────────────────────────────────────────
+// Espaciados (escala base 4px)
+// ─────────────────────────────────────────────
+$space-1: 4px;
+$space-2: 8px;
+$space-3: 12px;
+$space-4: 16px;
+$space-5: 20px;
+$space-6: 24px;
+$space-8: 32px;
+$space-10: 40px;
+$space-12: 48px;
+$space-16: 64px;
+$space-20: 80px;
+$space-24: 96px;
+$space-32: 128px;
+
+// ─────────────────────────────────────────────
+// Layout
+// ─────────────────────────────────────────────
+$frame-margin: 20px; // margen exterior del contenedor en desktop
+$navbar-height: 80px;
+$navbar-padding-x: 24px;
+$navbar-link-gap: 30px;
+$logo-width: 190px;
+$container-max: 1320px;
+
+$z-navbar: 50;
+$z-overlay: 100;
+
+// ─────────────────────────────────────────────
+// Componentes
+// ─────────────────────────────────────────────
+$btn-height: 46px;
+$btn-padding-x: 24px;
+$btn-nav-padding-x: 32px;
+$btn-secondary-height: 44px;
+$btn-secondary-padding-x: 16px;
+
+$input-height: 38px;
+$input-padding-x: 12px;
+$textarea-min-height: 56px;
+
+$icon-stroke: 1.5;
+$icon-size-sm: 24px;
+$icon-size-lg: 36px;
+
+// ─────────────────────────────────────────────
+// Breakpoints (mobile-first: min-width)
+// ─────────────────────────────────────────────
+$breakpoints: (
+  "sm": 576px,
+  "md": 768px, // tablet
+  "lg": 1024px, // desktop
+  "xl": 1280px,
+  "xxl": 1536px,
+);
