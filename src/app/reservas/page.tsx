@@ -39,7 +39,7 @@ const BENEFITS: { icon: IconName; title: string; text: string }[] = [
 export default function ReservasPage() {
   return (
     <>
-      <Navbar />
+      <Navbar variant="page" />
       <main className={styles.page}>
         <div className={styles.media}>
           <Image

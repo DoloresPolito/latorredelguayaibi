@@ -2,6 +2,7 @@
 
 // Contenedor principal (a sangre, sin margen exterior)
 .frame {
+  display: flow-root; // evita que el margen de la navbar "colapse" hacia afuera
   position: relative;
   min-height: 100svh;
   overflow: clip;

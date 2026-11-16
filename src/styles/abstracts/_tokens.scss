@@ -21,6 +21,7 @@ $radius-full: 999px;
 
 $border-width: 1px;
 $transition-default: 200ms ease;
+$ease-out: cubic-bezier(0.22, 1, 0.36, 1);
 
 // ─────────────────────────────────────────────
 // Espaciados (escala base 4px)
@@ -42,12 +43,14 @@ $space-32: 128px;
 // ─────────────────────────────────────────────
 // Layout
 // ─────────────────────────────────────────────
-$navbar-height: 80px;
+$navbar-height: 68px;
 $navbar-height-mobile: 64px;
-$navbar-inset: 40px; // separación de la navbar respecto al borde del hero (desktop)
+$navbar-offset: 24px; // separación de la barra con el borde inferior del hero
+$navbar-offset-mobile: 12px;
+$navbar-sticky-top: 16px; // separación con el borde superior al quedar fija
+$navbar-sticky-top-mobile: 12px;
+$navbar-inset: 40px; // separación lateral (desktop)
 $navbar-inset-mobile: 12px;
-$navbar-padding-x: 40px;
-$navbar-padding-x-mobile: 16px;
 $navbar-link-gap: 30px;
 $logo-width: 190px;
 $container-max: 1320px;
