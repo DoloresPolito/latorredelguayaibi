@@ -28,7 +28,7 @@ $content-left-desktop: $navbar-inset + $navbar-padding-x; // alinea con el logo
 
 .image {
   object-fit: cover;
-  object-position: center 40%;
+  object-position: center 30%;
 }
 
 // Fondo provisorio hasta tener la foto: cielo de atardecer cálido
@@ -49,28 +49,27 @@ $content-left-desktop: $navbar-inset + $navbar-padding-x; // alinea con el logo
     );
 }
 
-// Velo sutil: aclara la zona del texto y oscurece el borde inferior
-// para que se lean el texto oscuro (arriba) y los indicadores blancos (abajo)
+// Velo para legibilidad.
+// Desktop: aclara la zona del texto (izquierda) y oscurece el borde inferior.
 .overlay {
   position: absolute;
   inset: 0;
-  background:
-    linear-gradient(
-      180deg,
-      rgba($color-background, 0.82) 0%,
-      rgba($color-background, 0.7) 45%,
-      rgba($color-background, 0) 75%
-    ),
-    linear-gradient(0deg, rgba(#000, 0.3) 0%, rgba(#000, 0) 25%);
+  // Mobile/tablet: el texto va abajo en crema, sobre un degradé oscuro
+  background: linear-gradient(
+    0deg,
+    rgba(#000, 0.62) 0%,
+    rgba(#000, 0.4) 38%,
+    rgba(#000, 0) 62%
+  );
 
   @include mq(lg) {
     background:
       linear-gradient(
         90deg,
-        rgba($color-background, 0.85) 0%,
-        rgba($color-background, 0.65) 28%,
-        rgba($color-background, 0.2) 48%,
-        rgba($color-background, 0) 62%
+        rgba($color-background, 0.7) 0%,
+        rgba($color-background, 0.45) 25%,
+        rgba($color-background, 0.1) 42%,
+        rgba($color-background, 0) 55%
       ),
       linear-gradient(0deg, rgba(#000, 0.3) 0%, rgba(#000, 0) 25%);
   }
@@ -226,5 +225,44 @@ $content-left-desktop: $navbar-inset + $navbar-padding-x; // alinea con el logo
   @include mq(lg) {
     right: $navbar-inset + $space-8;
     bottom: $space-8;
+  }
+}
+
+// ─────────────────────────────────────────────
+// Mobile / tablet: texto abajo, en crema, para no tapar la torre
+// ─────────────────────────────────────────────
+@include mq-down(lg) {
+  .content {
+    margin-top: auto;
+    padding-top: calc(#{$navbar-height-mobile + $navbar-inset-mobile} + #{$space-8});
+    padding-bottom: $space-20;
+
+    @include mq(md) {
+      padding-bottom: $space-32; // deja lugar al indicador "Scroll"
+    }
+  }
+
+  .kicker,
+  .title {
+    color: $warm-ivory;
+  }
+
+  .tagline {
+    color: rgba($warm-ivory, 0.9);
+  }
+
+  .rule {
+    background-color: rgba($warm-ivory, 0.6);
+  }
+
+  .cta {
+    border-color: rgba($warm-ivory, 0.7);
+    background-color: rgba(#000, 0.1);
+    color: $warm-ivory;
+
+    @include hover {
+      background-color: rgba($warm-ivory, 0.15);
+      border-color: $warm-ivory;
+    }
   }
 }

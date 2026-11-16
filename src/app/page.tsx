@@ -8,8 +8,8 @@ export default function Home() {
       <main>
         <Hero
           image={{
-            src: "/images/imagen.png",
-            alt: "Atardecer sobre la pileta de La Torre del Guayaibí, con eucaliptos y el campo correntino de fondo",
+            src: "/images/hero.png",
+            alt: "La Torre del Guayaibí al atardecer, con la casa de piedra reflejada en la pileta",
           }}
         />
         {/* Próxima sección: La experiencia */}
