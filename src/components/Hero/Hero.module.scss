@@ -4,15 +4,14 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  min-height: 92svh;
+  // Siempre exactamente una pantalla: la navbar (que se superpone abajo)
+  // tiene que verse entera sin scrollear. Los tamaños internos escalan con
+  // el alto de la pantalla para que todo entre.
+  height: 100svh;
+  min-height: 560px;
   isolation: isolate;
   overflow: hidden;
   color: $warm-ivory;
-
-  @include mq(lg) {
-    min-height: 100svh;
-    max-height: 1000px;
-  }
 }
 
 // ─────────────────────────────────────────────
@@ -22,6 +21,13 @@
   position: absolute;
   inset: 0;
   z-index: -1;
+}
+
+.fill {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
 }
 
 .image {
@@ -62,9 +68,9 @@
   flex-direction: column;
   align-items: flex-start;
   padding:
-    $space-12
+    clamp(#{$space-6}, 6svh, #{$space-12})
     $space-6
-    calc(#{$navbar-height-mobile + $navbar-offset-mobile} + #{$space-10});
+    calc(#{$navbar-height-mobile + $navbar-offset-mobile} + clamp(#{$space-6}, 5svh, #{$space-10}));
 
   @include mq(md) {
     padding-inline: $space-12;
@@ -72,9 +78,9 @@
 
   @include mq(lg) {
     padding:
-      clamp(#{$space-12}, 9vh, #{$space-24})
+      clamp(#{$space-6}, 8svh, #{$space-24})
       0
-      calc(#{$navbar-height + $navbar-offset} + #{$space-12})
+      calc(#{$navbar-height + $navbar-offset} + clamp(#{$space-6}, 5svh, #{$space-12}))
       clamp(#{$space-16}, 8vw, 116px);
   }
 }
@@ -88,13 +94,13 @@
 
 .mark {
   display: block;
-  height: 48px;
+  height: clamp(36px, 6svh, 48px);
   aspect-ratio: 670 / 421;
   background-color: currentColor;
   mask: url("/logos/logo-negro.svg") center / contain no-repeat;
 
   @include mq(lg) {
-    height: 56px;
+    height: clamp(40px, 6svh, 56px);
   }
 }
 
@@ -138,14 +144,15 @@
   margin-top: auto;
 
   @include mq(lg) {
-    margin-top: clamp(#{$space-10}, 6vh, #{$space-16});
+    margin-top: clamp(#{$space-6}, 5svh, #{$space-16});
   }
 }
 
 .title {
   font-family: $font-heading;
   font-weight: $weight-light;
-  font-size: clamp(56px, 7vw, 112px);
+  // Escala con el ancho y también con el alto (pantallas bajas tipo notebook)
+  font-size: clamp(48px, min(7vw, 12svh), 112px);
   line-height: 0.95;
   letter-spacing: -0.03em;
   color: inherit;
@@ -154,7 +161,7 @@
 
 .tagline {
   max-width: 26em;
-  margin-top: $space-6;
+  margin-top: clamp(#{$space-4}, 3svh, #{$space-6});
   font-family: $font-ui;
   font-size: 11px;
   line-height: 1.7;
@@ -163,7 +170,7 @@
   color: rgba($warm-ivory, 0.92);
 
   @include mq(lg) {
-    margin-top: $space-8;
+    margin-top: clamp(#{$space-4}, 3svh, #{$space-8});
     font-size: 13px;
   }
 }
@@ -171,7 +178,7 @@
 .cta {
   @include btn-base;
   height: 46px;
-  margin-top: $space-8;
+  margin-top: clamp(#{$space-5}, 4svh, #{$space-8});
   padding-inline: $space-6;
   gap: $space-3;
   border: $border-width solid rgba($warm-ivory, 0.75);

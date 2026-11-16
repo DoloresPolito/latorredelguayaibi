@@ -1,18 +1,44 @@
-import Image from "next/image";
+import Image, { getImageProps } from "next/image";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import styles from "./Hero.module.scss";
 
+type HeroImage = { src: string; width: number; height: number };
+
 type HeroProps = {
-  /** Foto principal. Mientras no esté, se muestra un fondo provisorio. */
-  image?: { src: string; alt: string };
+  /** Foto principal (horizontal). Mientras no esté, se muestra un fondo provisorio. */
+  image?: HeroImage & { alt: string };
+  /** Foto opcional para celulares (vertical). Si no está, se usa la principal recortada. */
+  mobileImage?: HeroImage;
 };
 
-export default function Hero({ image }: HeroProps) {
+/** Foto distinta para desktop y mobile ("art direction") con <picture> */
+function ArtDirectedImage({ image, mobileImage }: Required<HeroProps>) {
+  const common = { alt: image.alt, sizes: "100vw", priority: true };
+  const {
+    props: { srcSet: desktop },
+  } = getImageProps({ ...common, ...image });
+  const {
+    props: { srcSet: mobile, ...rest },
+  } = getImageProps({ ...common, ...mobileImage });
+
+  return (
+    <picture>
+      <source media="(min-width: 768px)" srcSet={desktop} />
+      <source srcSet={mobile} />
+      {/* eslint-disable-next-line jsx-a11y/alt-text -- el alt viene en rest */}
+      <img {...rest} className={`${styles.image} ${styles.fill}`} />
+    </picture>
+  );
+}
+
+export default function Hero({ image, mobileImage }: HeroProps) {
   return (
     <section className={styles.hero}>
       <div className={styles.media}>
-        {image ? (
+        {image && mobileImage ? (
+          <ArtDirectedImage image={image} mobileImage={mobileImage} />
+        ) : image ? (
           <Image
             src={image.src}
             alt={image.alt}
