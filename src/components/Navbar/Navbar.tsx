@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { useEffect, useRef, useState, type CSSProperties, type MouseEvent } from "react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 import Logo from "@/components/Logo/Logo";
 import styles from "./Navbar.module.scss";
 
@@ -29,6 +29,9 @@ type NavbarProps = {
 
 export default function Navbar({ variant = "top" }: NavbarProps) {
   const ref = useRef<HTMLElement>(null);
+  const toggleRef = useRef<HTMLButtonElement>(null);
+  const closeRef = useRef<HTMLButtonElement>(null);
+  const wasOpen = useRef(false);
   const [isStuck, setIsStuck] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   // TODO: conectar con i18n cuando se defina la estrategia de idiomas
@@ -78,23 +81,14 @@ export default function Navbar({ variant = "top" }: NavbarProps) {
     };
   }, [isOpen]);
 
-  const close = () => setIsOpen(false);
+  // Foco: al abrir va al botón de cerrar; al cerrar vuelve al botón de menú
+  useEffect(() => {
+    if (isOpen) closeRef.current?.focus({ preventScroll: true });
+    else if (wasOpen.current) toggleRef.current?.focus({ preventScroll: true });
+    wasOpen.current = isOpen;
+  }, [isOpen]);
 
-  // El menú se abre como un círculo que crece desde el botón. Como la barra
-  // puede estar abajo (sobre el hero) o arriba (fija), se mide al abrir.
-  const toggle = (event: MouseEvent<HTMLButtonElement>) => {
-    const header = ref.current;
-    if (!isOpen && header) {
-      const btn = event.currentTarget.getBoundingClientRect();
-      const bar = header.getBoundingClientRect();
-      const barAtBottom = bar.top > window.innerHeight / 2;
-      header.style.setProperty("--menu-x", `${btn.left + btn.width / 2}px`);
-      header.style.setProperty("--menu-y", `${btn.top + btn.height / 2}px`);
-      header.style.setProperty("--menu-pt", barAtBottom ? "0px" : `${bar.bottom}px`);
-      header.style.setProperty("--menu-pb", barAtBottom ? `${window.innerHeight - bar.top}px` : "0px");
-    }
-    setIsOpen((open) => !open);
-  };
+  const close = () => setIsOpen(false);
 
   const langSwitch = (className?: string) => (
     <div className={[styles.lang, className].filter(Boolean).join(" ")} role="group" aria-label="Idioma">
@@ -144,36 +138,62 @@ export default function Navbar({ variant = "top" }: NavbarProps) {
         </Link>
 
         <button
+          ref={toggleRef}
           type="button"
           className={styles.toggle}
           aria-expanded={isOpen}
           aria-controls="mobile-menu"
-          aria-label={isOpen ? "Cerrar menú" : "Abrir menú"}
-          onClick={toggle}
+          aria-label="Abrir menú"
+          onClick={() => setIsOpen(true)}
         >
           <span />
           <span />
         </button>
       </nav>
 
+      {/* Menú mobile: panel lateral que entra desde la derecha */}
+      <div
+        className={[styles.backdrop, isOpen && styles.backdropOpen].filter(Boolean).join(" ")}
+        onClick={close}
+        aria-hidden="true"
+      />
+
       <div
         id="mobile-menu"
-        className={[styles.menu, isOpen && styles.menuOpen].filter(Boolean).join(" ")}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Menú"
+        className={[styles.drawer, isOpen && styles.drawerOpen].filter(Boolean).join(" ")}
         inert={!isOpen}
       >
-        <ul>
+        <div className={styles.drawerHeader}>
+          <span className={styles.drawerTitle}>Menú</span>
+          <button
+            ref={closeRef}
+            type="button"
+            className={styles.close}
+            aria-label="Cerrar menú"
+            onClick={close}
+          >
+            <span />
+            <span />
+          </button>
+        </div>
+
+        <ul className={styles.drawerLinks}>
           {NAV_LINKS.map((link, i) => (
             <li key={link.href} style={{ "--i": i } as CSSProperties}>
               <Link href={link.href} onClick={close}>
+                <span className={styles.drawerIndex}>{String(i + 1).padStart(2, "0")}</span>
                 {link.label}
               </Link>
             </li>
           ))}
         </ul>
 
-        <div className={styles.menuFooter} style={{ "--i": NAV_LINKS.length } as CSSProperties}>
+        <div className={styles.drawerFooter} style={{ "--i": NAV_LINKS.length } as CSSProperties}>
           {langSwitch()}
-          <Link href={CTA.href} className={styles.menuCta} onClick={close}>
+          <Link href={CTA.href} className={styles.drawerCta} onClick={close}>
             {CTA.label}
             <ArrowRight size={16} strokeWidth={1.5} aria-hidden="true" />
           </Link>

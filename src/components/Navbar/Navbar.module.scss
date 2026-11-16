@@ -230,11 +230,6 @@
     transition: transform $transition-default;
   }
 
-  &[aria-expanded="true"] {
-    span:first-child { transform: translateY(4.25px) rotate(45deg); }
-    span:last-child { transform: translateY(-4.25px) rotate(-45deg); }
-  }
-
   &:focus-visible {
     @include focus-ring;
   }
@@ -244,101 +239,203 @@
   }
 }
 
-// El panel se abre como un círculo que crece desde el botón y los links
-// suben de a uno. Las variables --menu-* las calcula Navbar.tsx al abrir.
-$menu-origin: var(--menu-x, calc(100% - 44px)) var(--menu-y, 44px);
+// ─────────────────────────────────────────────
+// Drawer lateral (mobile)
+// Entra desde la derecha con una curva suave; el fondo se oscurece y los
+// links aparecen de a uno, deslizándose hacia la izquierda.
+// ─────────────────────────────────────────────
+$drawer-ease: cubic-bezier(0.22, 1, 0.36, 1);
+$drawer-duration: 650ms;
 
-.menu {
+.backdrop {
   position: fixed;
   inset: 0;
-  z-index: -1;
+  z-index: 3;
+  background-color: rgba($bronco, 0.35);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 450ms ease,
+    visibility 0s linear 450ms;
+
+  @include mq(nav) {
+    display: none;
+  }
+}
+
+.backdropOpen {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 450ms ease;
+}
+
+.drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 4;
   display: flex;
   flex-direction: column;
-  gap: $space-8;
-  padding: calc(var(--menu-pt, 88px) + #{$space-6}) $space-6 calc(var(--menu-pb, 0px) + #{$space-6});
+  width: min(86vw, 420px);
+  padding: $space-5 $space-6 $space-8;
   overflow-y: auto;
   background-color: $color-background;
+  border-left: $border-width solid $color-border;
   visibility: hidden;
-  clip-path: circle(0 at #{$menu-origin});
+  transform: translateX(100%);
   transition:
-    clip-path 650ms cubic-bezier(0.4, 0, 0.2, 1) 150ms,
-    visibility 0s linear 800ms;
+    transform 500ms cubic-bezier(0.55, 0, 0.75, 0.3) 120ms,
+    visibility 0s linear 620ms;
 
   @include mq(md) {
-    padding-inline: $space-12;
+    padding-inline: $space-10;
   }
 
   @include mq(nav) {
     display: none;
   }
+}
 
-  ul {
-    display: flex;
-    flex-direction: column;
+.drawerOpen {
+  visibility: visible;
+  transform: none;
+  transition: transform $drawer-duration $drawer-ease;
+}
+
+.drawerHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: $space-5;
+  border-bottom: $border-width solid $color-border;
+}
+
+.drawerTitle {
+  @include eyebrow;
+}
+
+.close {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  margin-right: -$space-3;
+  background: none;
+  border: 0;
+  border-radius: $radius-full;
+  color: $color-primary;
+  cursor: pointer;
+  transition: background-color $transition-default;
+
+  // Las dos líneas forman la X girando al abrir
+  span {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 1.5px;
+    margin-left: -10px;
+    background-color: currentColor;
+    transition: transform 500ms $drawer-ease 200ms;
   }
 
-  li {
-    overflow: hidden; // máscara: el texto aparece "desde abajo"
+  .drawerOpen & span:first-child { transform: rotate(45deg); }
+  .drawerOpen & span:last-child { transform: rotate(-45deg); }
+
+  @include hover {
+    background-color: $color-date-hover;
   }
 
-  li a {
-    display: block;
-    padding-block: min(#{$space-3}, 1.4svh);
-    border-bottom: $border-width solid $color-border;
-    font-family: $font-heading;
-    font-size: clamp(28px, 4.6svh, 36px);
-    line-height: 1.1;
-    letter-spacing: -0.025em;
-    color: $color-heading;
-    transform: translateY(105%);
-    transition: transform 380ms cubic-bezier(0.55, 0, 0.75, 0.3);
-    transition-delay: calc(var(--i) * 25ms);
+  &:focus-visible {
+    @include focus-ring;
   }
 }
 
-.menuFooter {
+.drawerLinks {
+  display: flex;
+  flex-direction: column;
+  margin-top: $space-4;
+
+  li {
+    overflow: hidden;
+  }
+
+  a {
+    display: flex;
+    align-items: baseline;
+    gap: $space-4;
+    padding-block: min(#{$space-4}, 2svh);
+    border-bottom: $border-width solid $color-border;
+    font-family: $font-heading;
+    font-size: clamp(28px, 4.4svh, 36px);
+    line-height: 1.1;
+    letter-spacing: -0.025em;
+    color: $color-heading;
+    opacity: 0;
+    transform: translateX(40px);
+    transition:
+      transform 300ms ease-in,
+      opacity 250ms ease-in,
+      color $transition-default;
+
+    @include hover {
+      color: $color-primary;
+    }
+
+    &:focus-visible {
+      @include focus-ring;
+    }
+  }
+}
+
+.drawerIndex {
+  font-family: $font-ui;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: $color-muted;
+}
+
+.drawerFooter {
   display: flex;
   flex-direction: column;
   gap: $space-5;
   margin-top: auto;
+  padding-top: $space-8;
   opacity: 0;
-  transform: translateY(16px);
+  transform: translateX(40px);
   transition:
-    opacity 300ms ease-in,
-    transform 300ms ease-in;
+    transform 300ms ease-in,
+    opacity 250ms ease-in;
 }
 
-.menuCta {
+.drawerCta {
   @include btn-primary;
   width: 100%;
   gap: $space-4;
 }
 
-.menuOpen {
-  visibility: visible;
-  clip-path: circle(150% at #{$menu-origin});
-  transition:
-    clip-path 700ms cubic-bezier(0.65, 0, 0.35, 1),
-    visibility 0s;
-
-  li a,
-  .menuFooter {
-    transform: none;
+// Al abrir: los links entran escalonados después del panel
+.drawerOpen {
+  .drawerLinks a,
+  .drawerFooter {
     opacity: 1;
+    transform: none;
     transition:
-      transform 700ms $ease-out,
-      opacity 700ms $ease-out;
-    transition-delay: calc(250ms + var(--i) * 55ms);
+      transform 700ms $drawer-ease,
+      opacity 700ms $drawer-ease,
+      color $transition-default;
+    transition-delay: calc(180ms + var(--i) * 60ms);
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .menu,
-  .menuOpen,
-  .menu li a,
-  .menuFooter {
-    clip-path: none;
-    transform: none !important;
+  .backdrop,
+  .drawer,
+  .drawerLinks a,
+  .drawerFooter,
+  .close span {
     transition-duration: 0s !important;
     transition-delay: 0s !important;
   }
