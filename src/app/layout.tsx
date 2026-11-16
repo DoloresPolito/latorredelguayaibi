@@ -1,13 +1,15 @@
 import type { Metadata } from "next";
-import { EB_Garamond, Instrument_Serif } from "next/font/google";
+import { EB_Garamond, Playfair_Display } from "next/font/google";
 import "@/styles/globals.scss";
 
-// Alternativa gratuita a Canela Light. Si se consigue la licencia de Canela,
-// reemplazar por next/font/local apuntando a los archivos .woff2.
-const heading = Instrument_Serif({
+// Tipografía de títulos. (Antes: Instrument Serif, alternativa gratuita a
+// Canela Light.) Si se consigue la licencia de Canela, reemplazar por
+// next/font/local apuntando a los archivos .woff2.
+const heading = Playfair_Display({
   variable: "--font-heading",
   subsets: ["latin"],
-  weight: "400",
+  weight: ["400", "500"],
+  style: ["normal", "italic"],
 });
 
 const editorial = EB_Garamond({
