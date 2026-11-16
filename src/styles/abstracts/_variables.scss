@@ -1,0 +1,31 @@
+// Colores
+$color-primary: #1f3a4d;
+$color-secondary: #c8a97e;
+$color-bg: #faf8f5;
+$color-text: #222222;
+$color-muted: #6b6b6b;
+$color-white: #ffffff;
+
+// Tipografía
+$font-sans: var(--font-sans), system-ui, sans-serif;
+$font-serif: var(--font-serif), Georgia, serif;
+
+// Espaciados
+$space-xs: 0.5rem;
+$space-sm: 1rem;
+$space-md: 2rem;
+$space-lg: 4rem;
+$space-xl: 6rem;
+
+// Layout
+$container-max: 1200px;
+$radius: 8px;
+$transition: 0.25s ease;
+
+// Breakpoints
+$breakpoints: (
+  "sm": 576px,
+  "md": 768px,
+  "lg": 1024px,
+  "xl": 1280px,
+);

@@ -1,0 +1,19 @@
+@use "abstracts" as *;
+
+.hero {
+  @include flex-center;
+  flex-direction: column;
+  gap: $space-sm;
+  min-height: 100vh;
+  padding: $space-lg $space-sm;
+  text-align: center;
+}
+
+.subtitle {
+  color: $color-muted;
+  font-size: 1.125rem;
+
+  @include mq(md) {
+    font-size: 1.25rem;
+  }
+}
