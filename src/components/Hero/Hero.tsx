@@ -56,19 +56,24 @@ export default function Hero({ image, mobileImage, nextSectionId = "experiencia"
       </div>
 
       <div className={styles.content}>
-        <p className={styles.kicker}>La Torre del Guayaibí</p>
-        <h1 className={styles.title}>
-          Un mundo <br />
-          aparte.
-        </h1>
-        <p className={styles.tagline}>
-          Un refugio singular en el corazón del campo correntino.
-        </p>
-        <span className={styles.rule} aria-hidden="true" />
-        <Link href="/la-torre" className={styles.cta}>
-          Descubrir la torre
-          <ArrowRight size={16} strokeWidth={1.5} aria-hidden="true" />
-        </Link>
+        {/* En mobile/tablet: título arriba (sobre el cielo) y acciones abajo (sobre la pileta) */}
+        <div className={styles.heading}>
+          <p className={styles.kicker}>La Torre del Guayaibí</p>
+          <h1 className={styles.title}>
+            Un mundo <br />
+            aparte.
+          </h1>
+        </div>
+        <div className={styles.actions}>
+          <p className={styles.tagline}>
+            Un refugio singular en el corazón del campo correntino.
+          </p>
+          <span className={styles.rule} aria-hidden="true" />
+          <Link href="/la-torre" className={styles.cta}>
+            Descubrir la torre
+            <ArrowRight size={16} strokeWidth={1.5} aria-hidden="true" />
+          </Link>
+        </div>
       </div>
 
       <div className={styles.scroll} aria-hidden="true">

@@ -32,7 +32,12 @@ $content-left-desktop: $navbar-inset + $space-10; // alinea con el logo de la na
 
 .image {
   object-fit: cover;
-  object-position: center 10%;
+  // Mobile: corrido a la derecha para que se vea la torre
+  object-position: 66% center;
+
+  @include mq(lg) {
+    object-position: center center;
+  }
 }
 
 // Fondo provisorio hasta tener la foto
@@ -42,18 +47,16 @@ $content-left-desktop: $navbar-inset + $space-10; // alinea con el logo de la na
   background: linear-gradient(172deg, #c9d0cc 0%, #eedcbf 48%, $stone 76%, #555038 100%);
 }
 
-// Sin velo claro: sombra oscura suave detrás del texto (en crema).
-// Si en el futuro la foto tiene cielo despejado a la izquierda (como la
-// referencia), se puede volver a texto marrón: ver colores en .kicker/.title.
+// Sin velos claros: el título va en marrón sobre el cielo de la foto.
+// Abajo, una sombra suave: en mobile/tablet para la frase y el botón (en
+// crema, sobre la pileta); en desktop solo para los indicadores de "Scroll".
 .overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(0deg, rgba(#000, 0.6) 0%, rgba(#000, 0.35) 38%, rgba(#000, 0) 62%);
+  background: linear-gradient(0deg, rgba(#000, 0.55) 0%, rgba(#000, 0.3) 30%, rgba(#000, 0) 50%);
 
   @include mq(lg) {
-    background:
-      linear-gradient(90deg, rgba(#000, 0.42) 0%, rgba(#000, 0.18) 35%, rgba(#000, 0) 55%),
-      linear-gradient(0deg, rgba(#000, 0.28) 0%, rgba(#000, 0) 22%);
+    background: linear-gradient(0deg, rgba(#000, 0.25) 0%, rgba(#000, 0) 20%);
   }
 }
 
@@ -65,16 +68,16 @@ $content-left-desktop: $navbar-inset + $space-10; // alinea con el logo de la na
   flex: 1;
   flex-direction: column;
   align-items: flex-start;
-  justify-content: flex-end;
   max-width: 560px;
+  // Mobile/tablet: arriba, sobre el cielo, para que la torre quede libre abajo
   padding:
-    calc(#{$navbar-height-mobile + $navbar-sticky-top-mobile} + #{$space-8})
+    calc(#{$navbar-height-mobile + $navbar-sticky-top-mobile} + clamp(#{$space-5}, 4svh, #{$space-10}))
     $space-6
-    clamp(#{$space-16}, 12svh, #{$space-24});
+    clamp(#{$space-20}, 13svh, #{$space-24}); // deja lugar a la flecha de scroll
 
   @include mq(md) {
     padding-inline: $space-12;
-    padding-bottom: $space-32; // deja lugar al indicador "Scroll"
+    padding-bottom: $space-32;
   }
 
   @include mq(lg) {
@@ -88,12 +91,27 @@ $content-left-desktop: $navbar-inset + $space-10; // alinea con el logo de la na
   }
 }
 
+.heading,
+.actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.actions {
+  margin-top: auto;
+
+  @include mq(lg) {
+    margin-top: 0;
+  }
+}
+
 .kicker {
   font-family: $font-heading;
   font-size: 22px;
   line-height: 1.1;
   letter-spacing: -0.01em;
-  color: $warm-ivory;
+  color: $color-heading;
 
   @include mq(lg) {
     font-size: clamp(22px, 3.4svh, 28px);
@@ -105,25 +123,34 @@ $content-left-desktop: $navbar-inset + $space-10; // alinea con el logo de la na
   margin-top: $space-3;
   font-family: $font-heading;
   font-weight: $weight-light;
-  font-size: clamp(52px, min(7vw, 12svh), 112px);
+  font-size: clamp(44px, 7.5svh, 64px);
   line-height: 0.92;
   letter-spacing: -0.03em;
-  color: $warm-ivory;
-  text-shadow: 0 1px 24px rgba(#000, 0.18);
+  color: $color-heading;
+
+  @include mq(lg) {
+    font-size: clamp(52px, min(7vw, 12svh), 112px);
+  }
 }
 
 .tagline {
   max-width: 28em;
-  margin-top: clamp(#{$space-4}, 3svh, #{$space-8});
+
+  @include mq(lg) {
+    margin-top: clamp(#{$space-4}, 3svh, #{$space-8});
+  }
   font-family: $font-ui;
   font-size: 11px;
   line-height: 1.9;
   letter-spacing: 0.24em;
   text-transform: uppercase;
-  color: rgba($warm-ivory, 0.92);
+  color: rgba($warm-ivory, 0.95);
+  text-shadow: 0 1px 12px rgba(#000, 0.25);
 
   @include mq(lg) {
     font-size: 13px;
+    color: $color-body;
+    text-shadow: none;
   }
 }
 
@@ -133,6 +160,10 @@ $content-left-desktop: $navbar-inset + $space-10; // alinea con el logo de la na
   height: 1px;
   margin-block: clamp(#{$space-4}, 3svh, #{$space-6});
   background-color: rgba($warm-ivory, 0.6);
+
+  @include mq(lg) {
+    background-color: rgba($color-heading, 0.45);
+  }
 }
 
 .cta {
@@ -140,7 +171,7 @@ $content-left-desktop: $navbar-inset + $space-10; // alinea con el logo de la na
   height: 48px;
   padding-inline: $space-6;
   gap: $space-6;
-  border: $border-width solid rgba($warm-ivory, 0.7);
+  border: $border-width solid rgba($warm-ivory, 0.75);
   border-radius: $radius-navbar;
   background-color: rgba(#000, 0.1);
   color: $warm-ivory;
@@ -156,6 +187,17 @@ $content-left-desktop: $navbar-inset + $space-10; // alinea con el logo de la na
     border-color: $warm-ivory;
 
     svg { transform: translateX(3px); }
+  }
+
+  @include mq(lg) {
+    border-color: rgba($color-heading, 0.45);
+    background-color: rgba($color-background, 0.1);
+    color: $color-heading;
+
+    @include hover {
+      background-color: rgba($color-background, 0.55);
+      border-color: $color-heading;
+    }
   }
 }
 
