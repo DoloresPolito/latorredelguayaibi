@@ -14,7 +14,7 @@ const NAV_LINKS = [
   { label: "Nuestra historia", href: "/nuestra-historia" },
 ];
 
-const CTA = { label: "Consultar disponibilidad", href: "/consultas" };
+const CTA = { label: "Consultar disponibilidad", href: "/reservas" };
 
 type Lang = "es" | "en";
 

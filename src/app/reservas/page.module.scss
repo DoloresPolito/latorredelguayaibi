@@ -1,0 +1,212 @@
+@use "abstracts" as *;
+
+// ─────────────────────────────────────────────
+// Layout
+// Mobile: foto → formulario → beneficios → contacto
+// Desktop: formulario (44%) | foto + beneficios (56%)
+// ─────────────────────────────────────────────
+.page {
+  display: flex;
+  flex-direction: column;
+
+  @include mq(lg) {
+    display: grid;
+    grid-template-columns: 44% 56%;
+    grid-template-rows: auto 1fr;
+    grid-template-areas:
+      "form media"
+      "form aside";
+  }
+}
+
+.media {
+  position: relative;
+  height: 56svh;
+  min-height: 360px;
+
+  @include mq(md) {
+    height: 60svh;
+  }
+
+  @include mq(lg) {
+    grid-area: media;
+    height: 66vh;
+    min-height: 520px;
+  }
+}
+
+.image {
+  object-fit: cover;
+  object-position: center 55%;
+}
+
+.formCol {
+  padding: $space-12 $space-5 $space-12;
+
+  @include mq(md) {
+    padding: $space-16 $space-12;
+  }
+
+  @include mq(lg) {
+    grid-area: form;
+    padding: 150px $space-12 $space-12 66px;
+  }
+}
+
+.aside {
+  padding: $space-12 $space-5;
+  border-top: $border-width solid $color-border;
+
+  @include mq(md) {
+    padding: $space-12;
+  }
+
+  @include mq(lg) {
+    grid-area: aside;
+    padding: $space-10 $space-10 $space-8;
+    border-top: 0;
+  }
+}
+
+// ─────────────────────────────────────────────
+// Encabezado
+// ─────────────────────────────────────────────
+.eyebrow {
+  @include eyebrow;
+
+  &::after {
+    content: "";
+    display: block;
+    width: 32px;
+    height: 1px;
+    margin-top: $space-3;
+    background-color: $color-border-strong;
+  }
+}
+
+.aside .eyebrow {
+  // En la referencia la línea va arriba del título
+  display: flex;
+  flex-direction: column-reverse;
+  gap: $space-4;
+
+  &::after {
+    margin-top: 0;
+  }
+}
+
+.title {
+  @include h1;
+  margin-top: $space-8;
+}
+
+.intro {
+  @include text-editorial;
+  max-width: 440px;
+  margin-top: $space-6;
+}
+
+.divider {
+  @include divider;
+  margin-block: $space-8;
+}
+
+.formFallback {
+  min-height: 900px;
+}
+
+// ─────────────────────────────────────────────
+// Beneficios
+// ─────────────────────────────────────────────
+.benefits {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  row-gap: $space-8;
+  margin-top: $space-8;
+
+  @include mq(xl) {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.benefit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $space-3;
+  padding-inline: $space-4;
+  text-align: center;
+
+  // Separadores verticales entre columnas
+  &:nth-child(even) {
+    border-left: $border-width solid $color-border;
+  }
+
+  @include mq(xl) {
+    &:not(:first-child) {
+      border-left: $border-width solid $color-border;
+    }
+  }
+}
+
+.benefitIcon {
+  margin-bottom: $space-3;
+  color: $color-icon;
+}
+
+.benefitTitle {
+  @include eyebrow;
+  font-size: 10px;
+  color: $color-heading;
+}
+
+.benefitText {
+  @include text-small;
+  font-size: 15px;
+}
+
+// ─────────────────────────────────────────────
+// Contacto directo
+// ─────────────────────────────────────────────
+.contact {
+  display: flex;
+  flex-direction: column;
+  gap: $space-4;
+  margin-top: $space-10;
+  padding-top: $space-6;
+  border-top: $border-width solid $color-border;
+
+  @include mq(md) {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.contactText {
+  @include text-small;
+  max-width: 320px;
+  font-size: 13px;
+}
+
+.contactButtons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-3;
+
+  @include mq(md) {
+    flex-wrap: nowrap;
+    flex-shrink: 0;
+  }
+}
+
+.contactButton {
+  @include btn-secondary;
+  gap: $space-3;
+  padding-inline: $space-5;
+  flex: 1 1 auto;
+
+  :global(span) {
+    color: $color-icon;
+  }
+}

@@ -43,6 +43,7 @@
   padding-inline: $navbar-padding-x-mobile;
   background-color: rgba($color-background, 0.94);
   border-radius: $radius-navbar;
+  box-shadow: inset 0 0 0 $border-width rgba($color-border-strong, 0.6); // borde fino, se nota sobre fondos crema
   backdrop-filter: blur(8px);
 
   @include mq(nav) {

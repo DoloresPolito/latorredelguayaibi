@@ -10,8 +10,8 @@
 .text-editorial { @include text-editorial; }
 .text-small { @include text-small; }
 
-.input,
-.select { @include input; }
+.input { @include input; }
+.select { @include select; }
 .textarea { @include textarea; }
 .label { @include label; }
 
