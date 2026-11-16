@@ -28,7 +28,20 @@ export function generateStaticParams() {
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getDictionary();
-  return { title: t.meta.title, description: t.meta.description };
+
+  return {
+    title: t.meta.title,
+    description: t.meta.description,
+    icons: {
+      icon: [
+        { url: "/favicon-96x96.png", type: "image/png", sizes: "96x96" },
+        { url: "/favicon.svg", type: "image/svg+xml" },
+      ],
+      shortcut: "/favicon.ico",
+      apple: "/apple-touch-icon.png",
+    },
+    manifest: "/site.webmanifest",
+  };
 }
 
 export default async function RootLayout({ children }: LayoutProps<"/[lang]">) {
