@@ -1,0 +1,277 @@
+@use "abstracts" as *;
+
+// ─────────────────────────────────────────────
+// Contenedor
+// ─────────────────────────────────────────────
+.header {
+  z-index: $z-navbar;
+  inset-inline: $navbar-inset-mobile;
+  top: $navbar-inset-mobile;
+
+  @include mq(md) {
+    inset-inline: $space-6;
+    top: $space-6;
+  }
+
+  @include mq(nav) {
+    inset-inline: $navbar-inset;
+    top: $space-8;
+  }
+}
+
+.absolute {
+  position: absolute;
+}
+
+.sticky {
+  position: sticky;
+  margin-inline: $navbar-inset-mobile;
+
+  @include mq(md) { margin-inline: $space-6; }
+  @include mq(nav) { margin-inline: $navbar-inset; }
+}
+
+// ─────────────────────────────────────────────
+// Barra
+// ─────────────────────────────────────────────
+.bar {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  height: $navbar-height-mobile;
+  padding-inline: $navbar-padding-x-mobile;
+  background-color: rgba($color-background, 0.94);
+  border-radius: $radius-navbar;
+  backdrop-filter: blur(8px);
+
+  @include mq(nav) {
+    height: $navbar-height;
+    padding-inline: $navbar-padding-x;
+    padding-right: $space-5;
+  }
+}
+
+.brand {
+  display: inline-flex;
+  flex-shrink: 0;
+
+  &:focus-visible {
+    @include focus-ring;
+  }
+}
+
+.separator {
+  display: none;
+  align-self: center;
+  width: 1px;
+  height: 40px;
+  margin-inline: $space-8 clamp(#{$space-6}, 2.5vw, #{$space-12});
+  background-color: $color-border-strong;
+
+  @include mq(nav) {
+    display: block;
+  }
+}
+
+// ─────────────────────────────────────────────
+// Links desktop
+// ─────────────────────────────────────────────
+.links {
+  display: none;
+  gap: clamp(#{$navbar-link-gap * 0.8}, 2.6vw, #{$space-12});
+
+  @include mq(nav) {
+    display: flex;
+  }
+}
+
+.link {
+  @include nav-link;
+  position: relative;
+  padding-block: $space-2;
+  transition: color $transition-default;
+
+  // Subrayado fino al hacer hover
+  &::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 2px;
+    height: 1px;
+    background-color: currentColor;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform $transition-default;
+  }
+
+  @include hover {
+    &::after { transform: scaleX(1); }
+  }
+
+  &:focus-visible {
+    @include focus-ring;
+  }
+}
+
+// ─────────────────────────────────────────────
+// Acciones (idioma + CTA)
+// ─────────────────────────────────────────────
+.actions {
+  display: none;
+  align-items: center;
+  gap: $space-8;
+  margin-left: auto;
+
+  @include mq(nav) {
+    display: flex;
+  }
+}
+
+.lang {
+  @include nav-link;
+  display: flex;
+  align-items: center;
+  color: $color-muted;
+}
+
+.langItem {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-1;
+
+  & + & {
+    margin-left: $space-1;
+  }
+}
+
+.langButton {
+  padding: $space-1;
+  background: none;
+  border: 0;
+  font: inherit;
+  letter-spacing: inherit;
+  color: inherit;
+  cursor: pointer;
+  transition: color $transition-default;
+
+  &[aria-pressed="true"] {
+    color: $color-primary;
+  }
+
+  @include hover {
+    color: $color-primary;
+  }
+
+  &:focus-visible {
+    @include focus-ring;
+  }
+}
+
+.cta {
+  @include btn-primary;
+  padding-inline: $btn-nav-padding-x $space-6;
+  gap: $space-4;
+}
+
+// ─────────────────────────────────────────────
+// Mobile
+// ─────────────────────────────────────────────
+.toggle {
+  @include flex-center;
+  width: 44px;
+  height: 44px;
+  margin-left: auto;
+  margin-right: -$space-2;
+  background: none;
+  border: 0;
+  border-radius: $radius-medium;
+  color: $color-primary;
+  cursor: pointer;
+
+  &:focus-visible {
+    @include focus-ring;
+  }
+
+  @include mq(nav) {
+    display: none;
+  }
+}
+
+.panel {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  padding: calc(#{$navbar-height-mobile + $navbar-inset-mobile} + #{$space-10}) $space-6 $space-8;
+  overflow-y: auto;
+  background-color: $color-background;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-8px);
+  transition:
+    opacity 300ms ease,
+    transform 300ms ease,
+    visibility 0s linear 300ms;
+
+  [data-open="true"] & {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    transition:
+      opacity 300ms ease,
+      transform 300ms ease;
+  }
+
+  @include mq(md) {
+    padding-inline: $space-12;
+  }
+
+  @include mq(nav) {
+    display: none;
+  }
+}
+
+.panelLinks {
+  display: flex;
+  flex-direction: column;
+
+  li {
+    border-bottom: $border-width solid $color-border;
+  }
+}
+
+.panelLink {
+  display: block;
+  padding-block: $space-4;
+  font-family: $font-heading;
+  font-size: 32px;
+  line-height: 1.1;
+  letter-spacing: -0.025em;
+  color: $color-heading;
+  transition: color $transition-default;
+
+  @include hover {
+    color: $color-primary;
+  }
+
+  &:focus-visible {
+    @include focus-ring;
+  }
+}
+
+.panelFooter {
+  display: flex;
+  flex-direction: column;
+  gap: $space-6;
+  margin-top: auto;
+  padding-top: $space-10;
+}
+
+.panelCta {
+  @include btn-primary;
+  width: 100%;
+  gap: $space-4;
+}

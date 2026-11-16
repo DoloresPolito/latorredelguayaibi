@@ -44,7 +44,11 @@ $space-32: 128px;
 // ─────────────────────────────────────────────
 $frame-margin: 20px; // margen exterior del contenedor en desktop
 $navbar-height: 80px;
-$navbar-padding-x: 24px;
+$navbar-height-mobile: 64px;
+$navbar-inset: 40px; // separación de la navbar respecto al borde del hero (desktop)
+$navbar-inset-mobile: 12px;
+$navbar-padding-x: 40px;
+$navbar-padding-x-mobile: 16px;
 $navbar-link-gap: 30px;
 $logo-width: 190px;
 $container-max: 1320px;
@@ -78,4 +82,5 @@ $breakpoints: (
   "lg": 1024px, // desktop
   "xl": 1280px,
   "xxl": 1536px,
+  "nav": 1200px, // a partir de acá se muestra la navbar completa
 );

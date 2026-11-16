@@ -1,0 +1,213 @@
+@use "abstracts" as *;
+
+$content-left-mobile: $space-6;
+$content-left-desktop: $navbar-inset + $navbar-padding-x; // alinea con el logo
+
+.hero {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 92svh;
+  isolation: isolate;
+  overflow: hidden;
+
+  @include mq(lg) {
+    min-height: calc(100svh - #{$frame-margin * 2});
+    max-height: 1000px;
+  }
+}
+
+// ─────────────────────────────────────────────
+// Fondo
+// ─────────────────────────────────────────────
+.media {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+}
+
+.image {
+  object-fit: cover;
+  object-position: 65% center;
+}
+
+// Fondo provisorio hasta tener la foto: cielo de atardecer cálido
+.placeholder {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 45% at 70% 62%, rgba($prairie-gold, 0.35), transparent 70%),
+    linear-gradient(
+      172deg,
+      #c9d0cc 0%,
+      #e6dfd0 30%,
+      #eedcbf 48%,
+      $creme 62%,
+      $stone 76%,
+      #7d7458 90%,
+      #555038 100%
+    );
+}
+
+// Velo sutil: aclara la zona del texto y oscurece el borde inferior
+// para que se lean el texto oscuro (arriba) y los indicadores blancos (abajo)
+.overlay {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgba($color-background, 0.45) 0%, rgba($color-background, 0) 55%),
+    linear-gradient(0deg, rgba(#000, 0.28) 0%, rgba(#000, 0) 28%);
+}
+
+// ─────────────────────────────────────────────
+// Contenido
+// ─────────────────────────────────────────────
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  max-width: 560px;
+  padding: calc(#{$navbar-height-mobile + $navbar-inset-mobile} + #{$space-16}) $content-left-mobile $space-24;
+
+  @include mq(md) {
+    padding-inline: $space-12;
+  }
+
+  @include mq(lg) {
+    max-width: 640px;
+    padding-top: clamp(180px, 25vh, 240px);
+    padding-left: $content-left-desktop;
+  }
+}
+
+.kicker {
+  font-family: $font-heading;
+  font-size: 22px;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  color: $color-heading;
+
+  @include mq(lg) {
+    font-size: 28px;
+  }
+}
+
+// Display: más grande que el H1 estándar, como en la referencia
+.title {
+  margin-top: $space-4;
+  font-family: $font-heading;
+  font-weight: $weight-light;
+  font-size: clamp(56px, 7vw, 112px);
+  line-height: 0.92;
+  letter-spacing: -0.035em;
+  color: $color-heading;
+}
+
+.tagline {
+  max-width: 26em;
+  margin-top: $space-6;
+  font-family: $font-ui;
+  font-size: 11px;
+  font-weight: $weight-regular;
+  line-height: 1.9;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: $color-body;
+
+  @include mq(lg) {
+    margin-top: $space-8;
+    font-size: 13px;
+  }
+}
+
+.rule {
+  display: block;
+  width: 72px;
+  height: 1px;
+  margin-block: $space-6;
+  background-color: rgba($color-heading, 0.45);
+}
+
+.cta {
+  @include btn-base;
+  height: 48px;
+  padding-inline: $space-6;
+  gap: $space-6;
+  border: $border-width solid rgba($color-heading, 0.45);
+  border-radius: $radius-navbar;
+  background-color: rgba($color-background, 0.08);
+  color: $color-heading;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+
+  svg {
+    transition: transform $transition-default;
+  }
+
+  @include hover {
+    background-color: rgba($color-background, 0.55);
+    border-color: $color-heading;
+
+    svg { transform: translateX(3px); }
+  }
+}
+
+// ─────────────────────────────────────────────
+// Indicadores inferiores
+// ─────────────────────────────────────────────
+.scroll {
+  position: absolute;
+  left: $content-left-mobile;
+  bottom: $space-8;
+  display: none;
+  align-items: center;
+  gap: $space-8;
+  font-family: $font-ui;
+  font-size: 10px;
+  font-weight: $weight-semibold;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgba($white, 0.85);
+
+  @include mq(md) {
+    display: flex;
+  }
+
+  @include mq(lg) {
+    left: $navbar-inset + $space-8;
+  }
+}
+
+.scrollLine {
+  display: block;
+  width: 1px;
+  height: 48px;
+  background-color: rgba($white, 0.7);
+}
+
+.down {
+  @include flex-center;
+  position: absolute;
+  right: $space-5;
+  bottom: $space-6;
+  width: 44px;
+  height: 44px;
+  border: $border-width solid rgba($white, 0.75);
+  border-radius: $radius-full;
+  color: $white;
+  transition: background-color $transition-default;
+
+  @include hover {
+    background-color: rgba($white, 0.15);
+  }
+
+  &:focus-visible {
+    outline: $border-width solid $white;
+    outline-offset: 3px;
+  }
+
+  @include mq(lg) {
+    right: $navbar-inset + $space-8;
+    bottom: $space-8;
+  }
+}

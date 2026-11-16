@@ -25,7 +25,9 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="es" className={`${heading.variable} ${editorial.variable}`}>
-      <body>{children}</body>
+      <body>
+        <div className="frame">{children}</div>
+      </body>
     </html>
   );
 }

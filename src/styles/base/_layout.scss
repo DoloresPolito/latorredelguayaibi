@@ -1,0 +1,15 @@
+@use "../abstracts" as *;
+
+// Contenedor principal: en desktop deja un margen alrededor con bordes redondeados
+.frame {
+  position: relative;
+  min-height: 100svh;
+  overflow: clip;
+  background-color: $color-background;
+
+  @include mq(lg) {
+    margin: $frame-margin;
+    min-height: calc(100svh - #{$frame-margin * 2});
+    border-radius: $radius-large;
+  }
+}
