@@ -3,7 +3,7 @@
 export const SITE = {
   name: "La Torre del Guayaibí",
   /** Número de WhatsApp de la dueña, formato internacional sin "+", espacios ni guiones. Ej: 5493794123456 */
-  whatsapp: "5490000000000",
+  whatsapp: "549336584076", // TEMPORAL: número de pruebas, reemplazar por el de la dueña
   email: "reservas@latorredelguayaibi.com",
 };
 
