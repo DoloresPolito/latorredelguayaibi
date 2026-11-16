@@ -1,24 +1,32 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { ArrowRight } from "lucide-react";
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import Logo from "@/components/Logo/Logo";
+import {
+  locales,
+  localizePath,
+  switchLocalePath,
+  type Locale,
+} from "@/i18n/config";
+import type { Dictionary } from "@/i18n/dictionaries/es";
 import styles from "./Navbar.module.scss";
 
 const NAV_LINKS = [
-  { label: "La Torre", href: "/la-torre" },
-  { label: "Habitaciones", href: "/habitaciones" },
-  { label: "Gastronomía", href: "/gastronomia" },
-  { label: "Entorno", href: "/entorno" },
-  { label: "Nuestra historia", href: "/nuestra-historia" },
-];
+  { key: "laTorre", href: "/la-torre" },
+  { key: "habitaciones", href: "/habitaciones" },
+  { key: "gastronomia", href: "/gastronomia" },
+  { key: "entorno", href: "/entorno" },
+  { key: "historia", href: "/nuestra-historia" },
+] as const;
 
-const CTA = { label: "Consultar disponibilidad", href: "/reservas" };
-
-type Lang = "es" | "en";
+const CTA_HREF = "/reservas";
 
 type NavbarProps = {
+  lang: Locale;
+  t: Dictionary["nav"];
   /**
    * "top": fija arriba desde el principio, flotando sobre el contenido (default).
    * "bottom": va en el DOM justo después del hero. Arranca abajo, sobre el borde
@@ -27,15 +35,14 @@ type NavbarProps = {
   variant?: "top" | "bottom";
 };
 
-export default function Navbar({ variant = "top" }: NavbarProps) {
+export default function Navbar({ lang, t, variant = "top" }: NavbarProps) {
   const ref = useRef<HTMLElement>(null);
   const toggleRef = useRef<HTMLButtonElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
   const wasOpen = useRef(false);
   const [isStuck, setIsStuck] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
-  // TODO: conectar con i18n cuando se defina la estrategia de idiomas
-  const [lang, setLang] = useState<Lang>("es");
+  const pathname = usePathname();
 
   // Detecta cuando la barra llegó arriba y quedó fija (sticky)
   useEffect(() => {
@@ -91,30 +98,35 @@ export default function Navbar({ variant = "top" }: NavbarProps) {
   const close = () => setIsOpen(false);
 
   const langSwitch = (className?: string) => (
-    <div className={[styles.lang, className].filter(Boolean).join(" ")} role="group" aria-label="Idioma">
-      {(["es", "en"] as const).map((code, i) => (
+    <div className={[styles.lang, className].filter(Boolean).join(" ")} role="group" aria-label={t.language}>
+      {locales.map((code, i) => (
         <span key={code} className={styles.langItem}>
           {i > 0 && <span aria-hidden="true">/</span>}
-          <button
-            type="button"
+          <Link
+            href={switchLocalePath(pathname, code)}
             className={styles.langButton}
-            aria-pressed={lang === code}
-            onClick={() => setLang(code)}
+            aria-current={lang === code ? "true" : undefined}
+            hrefLang={code}
+            lang={code}
+            scroll={false}
+            onClick={close}
           >
             {code.toUpperCase()}
-          </button>
+          </Link>
         </span>
       ))}
     </div>
   );
+
+  const href = (path: string) => localizePath(lang, path);
 
   return (
     <header
       ref={ref}
       className={[styles.header, styles[variant], isStuck && styles.stuck].filter(Boolean).join(" ")}
     >
-      <nav className={styles.bar} aria-label="Principal">
-        <Link href="/" className={styles.brand} aria-label="La Torre del Guayaibí — Inicio" onClick={close}>
+      <nav className={styles.bar} aria-label={t.ariaLabel}>
+        <Link href={href("/")} className={styles.brand} aria-label={t.home} onClick={close}>
           <Logo />
         </Link>
 
@@ -123,8 +135,8 @@ export default function Navbar({ variant = "top" }: NavbarProps) {
         <ul className={styles.links}>
           {NAV_LINKS.map((link) => (
             <li key={link.href}>
-              <Link href={link.href} className={styles.link}>
-                {link.label}
+              <Link href={href(link.href)} className={styles.link}>
+                {t.links[link.key]}
               </Link>
             </li>
           ))}
@@ -132,8 +144,8 @@ export default function Navbar({ variant = "top" }: NavbarProps) {
 
         {langSwitch(styles.langDesktop)}
 
-        <Link href={CTA.href} className={styles.cta}>
-          {CTA.label}
+        <Link href={href(CTA_HREF)} className={styles.cta}>
+          {t.cta}
           <ArrowRight size={16} strokeWidth={1.5} aria-hidden="true" />
         </Link>
 
@@ -143,7 +155,7 @@ export default function Navbar({ variant = "top" }: NavbarProps) {
           className={styles.toggle}
           aria-expanded={isOpen}
           aria-controls="mobile-menu"
-          aria-label="Abrir menú"
+          aria-label={t.openMenu}
           onClick={() => setIsOpen(true)}
         >
           <span />
@@ -162,17 +174,17 @@ export default function Navbar({ variant = "top" }: NavbarProps) {
         id="mobile-menu"
         role="dialog"
         aria-modal="true"
-        aria-label="Menú"
+        aria-label={t.menu}
         className={[styles.drawer, isOpen && styles.drawerOpen].filter(Boolean).join(" ")}
         inert={!isOpen}
       >
         <div className={styles.drawerHeader}>
-          <span className={styles.drawerTitle}>Menú</span>
+          <span className={styles.drawerTitle}>{t.menu}</span>
           <button
             ref={closeRef}
             type="button"
             className={styles.close}
-            aria-label="Cerrar menú"
+            aria-label={t.closeMenu}
             onClick={close}
           >
             <span />
@@ -183,9 +195,9 @@ export default function Navbar({ variant = "top" }: NavbarProps) {
         <ul className={styles.drawerLinks}>
           {NAV_LINKS.map((link, i) => (
             <li key={link.href} style={{ "--i": i } as CSSProperties}>
-              <Link href={link.href} onClick={close}>
+              <Link href={href(link.href)} onClick={close}>
                 <span className={styles.drawerIndex}>{String(i + 1).padStart(2, "0")}</span>
-                {link.label}
+                {t.links[link.key]}
               </Link>
             </li>
           ))}
@@ -193,8 +205,8 @@ export default function Navbar({ variant = "top" }: NavbarProps) {
 
         <div className={styles.drawerFooter} style={{ "--i": NAV_LINKS.length } as CSSProperties}>
           {langSwitch()}
-          <Link href={CTA.href} className={styles.drawerCta} onClick={close}>
-            {CTA.label}
+          <Link href={href(CTA_HREF)} className={styles.drawerCta} onClick={close}>
+            {t.cta}
             <ArrowRight size={16} strokeWidth={1.5} aria-hidden="true" />
           </Link>
         </div>

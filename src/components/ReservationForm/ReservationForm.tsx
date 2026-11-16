@@ -5,8 +5,10 @@ import { ArrowRight } from "lucide-react";
 import { addDays, differenceInCalendarDays, format, isAfter, startOfDay } from "date-fns";
 import Calendar from "@/components/Calendar/Calendar";
 import Icon from "@/components/Icon/Icon";
-import { COUNTRIES, DIAL_CODES } from "@/lib/countries";
-import { SITE, whatsappUrl } from "@/config/site";
+import { COUNTRIES, DIAL_CODES, countryName } from "@/lib/countries";
+import { whatsappUrl } from "@/config/site";
+import type { Locale } from "@/i18n/config";
+import type { Dictionary } from "@/i18n/dictionaries/es";
 import styles from "./ReservationForm.module.scss";
 
 const GUESTS = Array.from({ length: 10 }, (_, i) => i + 1);
@@ -16,7 +18,12 @@ type Errors = Partial<Record<"checkIn" | "checkOut" | "name" | "email" | "phone"
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-export default function ReservationForm() {
+type ReservationFormProps = {
+  lang: Locale;
+  t: Dictionary["form"];
+};
+
+export default function ReservationForm({ lang, t }: ReservationFormProps) {
   const id = useId();
   const today = startOfDay(new Date());
 
@@ -28,7 +35,7 @@ export default function ReservationForm() {
   const [guests, setGuests] = useState(2);
   const [rooms, setRooms] = useState(1);
   const [name, setName] = useState("");
-  const [country, setCountry] = useState("Argentina");
+  const [country, setCountry] = useState("AR");
   const [email, setEmail] = useState("");
   const [dial, setDial] = useState("+54");
   const [phone, setPhone] = useState("");
@@ -56,17 +63,17 @@ export default function ReservationForm() {
 
   const handleCountry = (value: string) => {
     setCountry(value);
-    const match = COUNTRIES.find((c) => c.name === value);
+    const match = COUNTRIES.find((c) => c.code === value);
     if (match?.dial) setDial(match.dial);
   };
 
   const validate = (): Errors => {
     const e: Errors = {};
-    if (!checkIn) e.checkIn = "Elegí la fecha de llegada.";
-    if (!checkOut) e.checkOut = "Elegí la fecha de salida.";
-    if (!name.trim()) e.name = "Ingresá tu nombre.";
-    if (!EMAIL_RE.test(email.trim())) e.email = "Ingresá un correo válido.";
-    if (phone.replace(/\D/g, "").length < 6) e.phone = "Ingresá un teléfono válido.";
+    if (!checkIn) e.checkIn = t.errors.checkIn;
+    if (!checkOut) e.checkOut = t.errors.checkOut;
+    if (!name.trim()) e.name = t.errors.name;
+    if (!EMAIL_RE.test(email.trim())) e.email = t.errors.email;
+    if (phone.replace(/\D/g, "").length < 6) e.phone = t.errors.phone;
     return e;
   };
 
@@ -82,21 +89,23 @@ export default function ReservationForm() {
       return;
     }
 
-    const fmt = (d: Date) => format(d, "dd/MM/yyyy");
+    // El mensaje sale en el idioma de la página (lo envía el huésped)
+    const w = t.whatsapp;
+    const fmt = (d: Date) => format(d, lang === "en" ? "MM/dd/yyyy" : "dd/MM/yyyy");
     const lines = [
-      `Hola! Quisiera consultar disponibilidad en ${SITE.name}.`,
+      w.intro,
       "",
-      `*Llegada:* ${fmt(checkIn!)}`,
-      `*Salida:* ${fmt(checkOut!)} (${nights} ${nights === 1 ? "noche" : "noches"})`,
-      `*Huéspedes:* ${guests}`,
-      `*Habitaciones:* ${rooms}`,
+      `*${w.checkIn}:* ${fmt(checkIn!)}`,
+      `*${w.checkOut}:* ${fmt(checkOut!)} (${nights} ${nights === 1 ? w.night : w.nights})`,
+      `*${w.guests}:* ${guests}`,
+      `*${w.rooms}:* ${rooms}`,
       "",
-      `*Nombre:* ${name.trim()}`,
-      `*País:* ${country}`,
-      `*Email:* ${email.trim()}`,
-      `*Teléfono:* ${dial} ${phone.trim()}`,
+      `*${w.name}:* ${name.trim()}`,
+      `*${w.country}:* ${countryName(country, lang, t.otherCountry)}`,
+      `*${w.email}:* ${email.trim()}`,
+      `*${w.phone}:* ${dial} ${phone.trim()}`,
     ];
-    if (message.trim()) lines.push("", `*Comentarios:* ${message.trim()}`);
+    if (message.trim()) lines.push("", `*${w.comments}:* ${message.trim()}`);
 
     window.open(whatsappUrl(lines.join("\n")), "_blank", "noopener,noreferrer");
     setSent(true);
@@ -118,12 +127,13 @@ export default function ReservationForm() {
     <form className={styles.form} onSubmit={handleSubmit} noValidate>
       {/* ─── 1. Fechas ─── */}
       <fieldset className={styles.step}>
-        <legend className={styles.stepTitle}>1. Elegí tus fechas</legend>
+        <legend className={styles.stepTitle}>{t.step1}</legend>
 
         <div className={styles.grid}>
           <div className={styles.field} {...errorProps("checkIn")} tabIndex={-1}>
-            <span className={styles.label}>Fecha de llegada</span>
+            <span className={styles.label}>{t.checkIn}</span>
             <Calendar
+              lang={lang}
               selected={checkIn}
               onSelect={handleCheckIn}
               month={inMonth}
@@ -136,8 +146,9 @@ export default function ReservationForm() {
           </div>
 
           <div className={styles.field} {...errorProps("checkOut")} tabIndex={-1}>
-            <span className={styles.label}>Fecha de salida</span>
+            <span className={styles.label}>{t.checkOut}</span>
             <Calendar
+              lang={lang}
               selected={checkOut}
               onSelect={handleCheckOut}
               month={outMonth}
@@ -151,7 +162,7 @@ export default function ReservationForm() {
 
           <div className={styles.field}>
             <label className={styles.label} htmlFor={field("guests")}>
-              Cantidad de huéspedes
+              {t.guests}
             </label>
             <select
               id={field("guests")}
@@ -161,7 +172,7 @@ export default function ReservationForm() {
             >
               {GUESTS.map((n) => (
                 <option key={n} value={n}>
-                  {n} {n === 1 ? "huésped" : "huéspedes"}
+                  {n} {n === 1 ? t.guestOne : t.guestMany}
                 </option>
               ))}
             </select>
@@ -169,7 +180,7 @@ export default function ReservationForm() {
 
           <div className={styles.field}>
             <label className={styles.label} htmlFor={field("rooms")}>
-              Cantidad de habitaciones
+              {t.rooms}
             </label>
             <select
               id={field("rooms")}
@@ -179,7 +190,7 @@ export default function ReservationForm() {
             >
               {ROOMS.map((n) => (
                 <option key={n} value={n}>
-                  {n} {n === 1 ? "habitación" : "habitaciones"}
+                  {n} {n === 1 ? t.roomOne : t.roomMany}
                 </option>
               ))}
             </select>
@@ -191,17 +202,17 @@ export default function ReservationForm() {
 
       {/* ─── 2. Datos ─── */}
       <fieldset className={styles.step}>
-        <legend className={styles.stepTitle}>2. Tus datos</legend>
+        <legend className={styles.stepTitle}>{t.step2}</legend>
 
         <div className={styles.grid}>
           <div className={styles.field}>
             <label className={styles.label} htmlFor={field("name")}>
-              Nombre y apellido
+              {t.name}
             </label>
             <input
               id={field("name")}
               className={styles.input}
-              placeholder="Ej. María González"
+              placeholder={t.namePlaceholder}
               autoComplete="name"
               value={name}
               onChange={(e) => setName(e.target.value)}
@@ -212,7 +223,7 @@ export default function ReservationForm() {
 
           <div className={styles.field}>
             <label className={styles.label} htmlFor={field("country")}>
-              País de residencia
+              {t.country}
             </label>
             <select
               id={field("country")}
@@ -221,8 +232,8 @@ export default function ReservationForm() {
               onChange={(e) => handleCountry(e.target.value)}
             >
               {COUNTRIES.map((c) => (
-                <option key={c.code} value={c.name}>
-                  {c.name}
+                <option key={c.code} value={c.code}>
+                  {countryName(c.code, lang, t.otherCountry)}
                 </option>
               ))}
             </select>
@@ -230,13 +241,13 @@ export default function ReservationForm() {
 
           <div className={styles.field}>
             <label className={styles.label} htmlFor={field("email")}>
-              Correo electrónico
+              {t.email}
             </label>
             <input
               id={field("email")}
               type="email"
               className={styles.input}
-              placeholder="Ej. maria@email.com"
+              placeholder={t.emailPlaceholder}
               autoComplete="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -247,11 +258,11 @@ export default function ReservationForm() {
 
           <div className={styles.field}>
             <label className={styles.label} htmlFor={field("phone")}>
-              Teléfono / WhatsApp
+              {t.phone}
             </label>
             <div className={styles.phone}>
               <select
-                aria-label="Código de país"
+                aria-label={t.dialCode}
                 className={styles.select}
                 value={dial}
                 onChange={(e) => setDial(e.target.value)}
@@ -266,7 +277,7 @@ export default function ReservationForm() {
                 id={field("phone")}
                 type="tel"
                 className={styles.input}
-                placeholder="Ej. 11 1234-5678"
+                placeholder={t.phonePlaceholder}
                 autoComplete="tel-national"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
@@ -278,12 +289,12 @@ export default function ReservationForm() {
 
           <div className={`${styles.field} ${styles.full}`}>
             <label className={styles.label} htmlFor={field("message")}>
-              ¿Hay algo que te gustaría contarnos sobre tu visita? (opcional)
+              {t.message}
             </label>
             <textarea
               id={field("message")}
               className={styles.textarea}
-              placeholder="Ej. Motivo de la visita, preferencias, consultas especiales…"
+              placeholder={t.messagePlaceholder}
               rows={2}
               value={message}
               onChange={(e) => setMessage(e.target.value)}
@@ -294,20 +305,20 @@ export default function ReservationForm() {
 
       <div className={styles.submitRow}>
         <button type="submit" className={styles.submit}>
-          Consultar disponibilidad
+          {t.submit}
           <ArrowRight size={16} strokeWidth={1.5} aria-hidden="true" />
         </button>
         <p className={styles.note}>
           <Icon name="candado" size={22} className={styles.noteIcon} />
-          Tu consulta se enviará por WhatsApp directamente a nuestro equipo.
+          {t.note}
         </p>
       </div>
 
       {sent && (
         <p className={styles.sent} role="status">
-          ¡Gracias! Se abrió WhatsApp con tu consulta lista para enviar. Si no se abrió,{" "}
+          {t.sent}{" "}
           <a href={whatsappUrl()} target="_blank" rel="noopener noreferrer">
-            escribinos acá
+            {t.sentLink}
           </a>
           .
         </p>

@@ -1,11 +1,15 @@
 import Image, { getImageProps } from "next/image";
 import Link from "next/link";
 import { ArrowRight, ChevronDown } from "lucide-react";
+import { localizePath, type Locale } from "@/i18n/config";
+import type { Dictionary } from "@/i18n/dictionaries/es";
 import styles from "./Hero.module.scss";
 
 type HeroImage = { src: string; width: number; height: number };
 
 type HeroProps = {
+  lang: Locale;
+  t: Dictionary["hero"];
   /** Foto principal (horizontal). Mientras no esté, se muestra un fondo provisorio. */
   image?: HeroImage & { alt: string };
   /** Foto opcional para celulares (vertical). Si no está, se usa la principal recortada. */
@@ -15,7 +19,10 @@ type HeroProps = {
 };
 
 /** Foto distinta para desktop y mobile ("art direction") con <picture> */
-function ArtDirectedImage({ image, mobileImage }: Required<Pick<HeroProps, "image" | "mobileImage">>) {
+function ArtDirectedImage({
+  image,
+  mobileImage,
+}: Required<Pick<HeroProps, "image" | "mobileImage">>) {
   const common = { alt: image.alt, sizes: "100vw", priority: true };
   const {
     props: { srcSet: desktop },
@@ -34,7 +41,7 @@ function ArtDirectedImage({ image, mobileImage }: Required<Pick<HeroProps, "imag
   );
 }
 
-export default function Hero({ image, mobileImage, nextSectionId = "experiencia" }: HeroProps) {
+export default function Hero({ lang, t, image, mobileImage, nextSectionId = "experiencia" }: HeroProps) {
   return (
     <section className={styles.hero}>
       <div className={styles.media}>
@@ -58,19 +65,17 @@ export default function Hero({ image, mobileImage, nextSectionId = "experiencia"
       <div className={styles.content}>
         {/* En mobile/tablet: título arriba (sobre el cielo) y acciones abajo (sobre la pileta) */}
         <div className={styles.heading}>
-          <p className={styles.kicker}>La Torre del Guayaibí</p>
+          <p className={styles.kicker}>{t.kicker}</p>
           <h1 className={styles.title}>
-            Un mundo <br />
-            aparte.
+            {t.titleLine1} <br />
+            {t.titleLine2}
           </h1>
         </div>
         <div className={styles.actions}>
-          <p className={styles.tagline}>
-            Un refugio singular en el corazón del campo correntino.
-          </p>
+          <p className={styles.tagline}>{t.tagline}</p>
           <span className={styles.rule} aria-hidden="true" />
-          <Link href="/la-torre" className={styles.cta}>
-            Descubrir la torre
+          <Link href={localizePath(lang, "/la-torre")} className={styles.cta}>
+            {t.cta}
             <ArrowRight size={16} strokeWidth={1.5} aria-hidden="true" />
           </Link>
         </div>
@@ -78,10 +83,10 @@ export default function Hero({ image, mobileImage, nextSectionId = "experiencia"
 
       <div className={styles.scroll} aria-hidden="true">
         <span className={styles.scrollLine} />
-        Scroll
+        {t.scroll}
       </div>
 
-      <a href={`#${nextSectionId}`} className={styles.down} aria-label="Ir a la siguiente sección">
+      <a href={`#${nextSectionId}`} className={styles.down} aria-label={t.next}>
         <ChevronDown size={18} strokeWidth={1.5} aria-hidden="true" />
       </a>
     </section>

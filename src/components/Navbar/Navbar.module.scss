@@ -177,7 +177,7 @@
   cursor: pointer;
   transition: color $transition-default;
 
-  &[aria-pressed="true"] {
+  &[aria-current="true"] {
     color: $color-primary;
   }
 

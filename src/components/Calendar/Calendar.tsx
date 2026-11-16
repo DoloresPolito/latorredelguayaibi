@@ -1,11 +1,16 @@
 "use client";
 
 import { DayPicker, type Matcher } from "react-day-picker";
-import { es } from "react-day-picker/locale";
+import { enUS, es } from "react-day-picker/locale";
+import type { Locale } from "@/i18n/config";
 import "react-day-picker/style.css";
 import styles from "./Calendar.module.scss";
 
+const DAY_PICKER_LOCALES = { es, en: enUS };
+const DATE_LOCALES = { es: "es-AR", en: "en-US" };
+
 type CalendarProps = {
+  lang: Locale;
   selected?: Date;
   onSelect: (date: Date | undefined) => void;
   month: Date;
@@ -17,6 +22,7 @@ type CalendarProps = {
 };
 
 export default function Calendar({
+  lang,
   selected,
   onSelect,
   month,
@@ -30,7 +36,7 @@ export default function Calendar({
     <div className={styles.calendar}>
       <DayPicker
         mode="single"
-        locale={es}
+        locale={DAY_PICKER_LOCALES[lang]}
         weekStartsOn={1}
         showOutsideDays
         selected={selected}
@@ -50,14 +56,14 @@ export default function Calendar({
           stayEnd: styles.stayEnd,
         }}
         formatters={{
-          // "noviembre 2026" → "Noviembre 2026"
+          // "noviembre de 2026" → "Noviembre 2026" / "November 2026"
           formatCaption: (date) => {
-            const label = date.toLocaleDateString("es-AR", { month: "long", year: "numeric" });
+            const label = date.toLocaleDateString(DATE_LOCALES[lang], { month: "long", year: "numeric" });
             return label.charAt(0).toUpperCase() + label.slice(1).replace(" de ", " ");
           },
-          // "lun" → "L"
+          // "lun" → "L" / "Mon" → "M"
           formatWeekdayName: (date) =>
-            date.toLocaleDateString("es-AR", { weekday: "narrow" }).toUpperCase(),
+            date.toLocaleDateString(DATE_LOCALES[lang], { weekday: "narrow" }).toUpperCase(),
         }}
       />
     </div>

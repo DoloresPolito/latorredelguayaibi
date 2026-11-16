@@ -1,17 +1,22 @@
 import Hero from "@/components/Hero/Hero";
 import Navbar from "@/components/Navbar/Navbar";
+import { getDictionary, getLocale } from "@/i18n/getDictionary";
 
-export default function Home() {
+export default async function Home() {
+  const [lang, t] = await Promise.all([getLocale(), getDictionary()]);
+
   return (
     <>
-      <Navbar />
+      <Navbar lang={lang} t={t.nav} />
       <main>
         <Hero
+          lang={lang}
+          t={t.hero}
           image={{
             src: "/images/nuevo-hero.png",
             width: 1672,
             height: 941,
-            alt: "La Torre del Guayaibí al atardecer, con la casa de piedra y los eucaliptos reflejados en la pileta",
+            alt: t.hero.imageAlt,
           }}
         />
         {/* Próxima sección: La experiencia */}

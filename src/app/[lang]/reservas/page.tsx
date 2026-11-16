@@ -5,41 +5,27 @@ import Navbar from "@/components/Navbar/Navbar";
 import ReservationForm from "@/components/ReservationForm/ReservationForm";
 import Icon, { type IconName } from "@/components/Icon/Icon";
 import { SITE, whatsappUrl } from "@/config/site";
+import { getDictionary, getLocale, type Dictionary } from "@/i18n/getDictionary";
 import styles from "./page.module.scss";
 
-export const metadata: Metadata = {
-  title: `Reservas — ${SITE.name}`,
-  description:
-    "Consultá disponibilidad en La Torre del Guayaibí. Elegí tus fechas y te respondemos personalmente.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getDictionary();
+  return { title: t.meta.reservasTitle, description: t.meta.reservasDescription };
+}
 
-const BENEFITS: { icon: IconName; title: string; text: string }[] = [
-  {
-    icon: "cama",
-    title: "Habitaciones amplias y confortables",
-    text: "Con vistas al parque y la naturaleza.",
-  },
-  {
-    icon: "cubiertos",
-    title: "Desayuno incluido",
-    text: "Preparado especialmente para cada huésped.",
-  },
-  {
-    icon: "campana",
-    title: "Almuerzos y cenas",
-    text: "Con reserva previa y costo adicional.",
-  },
-  {
-    icon: "pino",
-    title: "Un entorno extraordinario",
-    text: "En el corazón del campo correntino, cerca de los Esteros del Iberá.",
-  },
+const BENEFITS: { key: keyof Dictionary["reservas"]["benefits"]; icon: IconName }[] = [
+  { key: "rooms", icon: "cama" },
+  { key: "breakfast", icon: "cubiertos" },
+  { key: "meals", icon: "campana" },
+  { key: "nature", icon: "pino" },
 ];
 
-export default function ReservasPage() {
+export default async function ReservasPage() {
+  const [lang, t] = await Promise.all([getLocale(), getDictionary()]);
+
   return (
     <>
-      <Navbar />
+      <Navbar lang={lang} t={t.nav} />
       <main className={styles.page}>
         {/* Columna derecha (desktop): foto + beneficios, una pantalla de alto y fija.
             En mobile el wrapper "desaparece" (display: contents) para ordenar foto → form → beneficios */}
@@ -47,7 +33,7 @@ export default function ReservasPage() {
           <div className={styles.media}>
             <Image
               src="/images/reservas.jpg"
-              alt="Canoa navegando al atardecer en la laguna"
+              alt={t.reservas.imageAlt}
               fill
               priority
               sizes="(min-width: 1024px) 56vw, 100vw"
@@ -56,30 +42,23 @@ export default function ReservasPage() {
           </div>
 
           <aside className={styles.aside}>
-            <BenefitsAndContact />
+            <BenefitsAndContact t={t.reservas} />
           </aside>
         </div>
 
         <section className={styles.formCol} aria-labelledby="reservas-title">
-          <p className={styles.eyebrow}>Consultas</p>
+          <p className={styles.eyebrow}>{t.reservas.eyebrow}</p>
           <h1 id="reservas-title" className={styles.title}>
-            Tu próxima <br />
-            estadía te espera.
+            {t.reservas.titleLine1} <br />
+            {t.reservas.titleLine2}
           </h1>
-          <p className={styles.intro}>
-            Completá el formulario y nos pondremos en contacto a la brevedad
-            para ayudarte a organizar tu estadía en La Torre del Guayaibí.
-          </p>
+          <p className={styles.intro}>{t.reservas.intro}</p>
 
           <hr className={styles.divider} />
 
           {/* Suspense: el formulario usa la fecha actual, que se calcula en cada visita */}
-          <Suspense
-            fallback={
-              <div className={styles.formFallback} aria-hidden="true" />
-            }
-          >
-            <ReservationForm />
+          <Suspense fallback={<div className={styles.formFallback} aria-hidden="true" />}>
+            <ReservationForm lang={lang} t={t.form} />
           </Suspense>
         </section>
       </main>
@@ -87,39 +66,36 @@ export default function ReservasPage() {
   );
 }
 
-function BenefitsAndContact() {
+function BenefitsAndContact({ t }: { t: Dictionary["reservas"] }) {
   return (
     <>
-      <p className={styles.eyebrow}>Una estadía con todo lo esencial</p>
+      <p className={styles.eyebrow}>{t.benefitsTitle}</p>
 
       <ul className={styles.benefits}>
         {BENEFITS.map((b) => (
-          <li key={b.icon} className={styles.benefit}>
+          <li key={b.key} className={styles.benefit}>
             <Icon name={b.icon} size={44} className={styles.benefitIcon} />
-            <h2 className={styles.benefitTitle}>{b.title}</h2>
-            <p className={styles.benefitText}>{b.text}</p>
+            <h2 className={styles.benefitTitle}>{t.benefits[b.key].title}</h2>
+            <p className={styles.benefitText}>{t.benefits[b.key].text}</p>
           </li>
         ))}
       </ul>
 
       <div className={styles.contact}>
-        <p className={styles.contactText}>
-          También podés escribirnos directamente por WhatsApp o por correo
-          electrónico.
-        </p>
+        <p className={styles.contactText}>{t.contactText}</p>
         <div className={styles.contactButtons}>
           <a
-            href={whatsappUrl("Hola! Quisiera hacer una consulta.")}
+            href={whatsappUrl(t.whatsappGreeting)}
             target="_blank"
             rel="noopener noreferrer"
             className={styles.contactButton}
           >
             <Icon name="chat" size={20} />
-            Escribir por WhatsApp
+            {t.whatsappButton}
           </a>
           <a href={`mailto:${SITE.email}`} className={styles.contactButton}>
             <Icon name="mail" size={20} />
-            Enviar un mail
+            {t.emailButton}
           </a>
         </div>
       </div>

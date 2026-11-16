@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { EB_Garamond, Playfair_Display } from "next/font/google";
+import { locales } from "@/i18n/config";
+import { getDictionary, getLocale } from "@/i18n/getDictionary";
 import "@/styles/globals.scss";
 
 // Tipografía de títulos. (Antes: Instrument Serif, alternativa gratuita a
@@ -19,14 +21,20 @@ const editorial = EB_Garamond({
   style: ["normal", "italic"],
 });
 
-export const metadata: Metadata = {
-  title: "La Torre del Guayaibí",
-  description: "Hotel boutique rodeado de naturaleza.",
-};
+// Genera /es y /en de forma estática
+export function generateStaticParams() {
+  return locales.map((lang) => ({ lang }));
+}
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getDictionary();
+  return { title: t.meta.title, description: t.meta.description };
+}
+
+export default async function RootLayout({ children }: LayoutProps<"/[lang]">) {
+  const lang = await getLocale();
   return (
-    <html lang="es" className={`${heading.variable} ${editorial.variable}`}>
+    <html lang={lang} className={`${heading.variable} ${editorial.variable}`}>
       <body>
         <div className="frame">{children}</div>
       </body>

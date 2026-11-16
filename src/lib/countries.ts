@@ -1,29 +1,36 @@
-export type Country = { code: string; name: string; dial: string };
+import type { Locale } from "@/i18n/config";
 
-// Lista acotada: países más probables primero. "Otro" permite cualquier caso.
+export type Country = { code: string; dial: string };
+
+// Lista acotada: países más probables primero. "OT" = Otro.
+// Los nombres se generan en el idioma de la página con Intl.DisplayNames.
 export const COUNTRIES: Country[] = [
-  { code: "AR", name: "Argentina", dial: "+54" },
-  { code: "UY", name: "Uruguay", dial: "+598" },
-  { code: "BR", name: "Brasil", dial: "+55" },
-  { code: "CL", name: "Chile", dial: "+56" },
-  { code: "PY", name: "Paraguay", dial: "+595" },
-  { code: "BO", name: "Bolivia", dial: "+591" },
-  { code: "PE", name: "Perú", dial: "+51" },
-  { code: "CO", name: "Colombia", dial: "+57" },
-  { code: "MX", name: "México", dial: "+52" },
-  { code: "US", name: "Estados Unidos", dial: "+1" },
-  { code: "CA", name: "Canadá", dial: "+1" },
-  { code: "ES", name: "España", dial: "+34" },
-  { code: "IT", name: "Italia", dial: "+39" },
-  { code: "FR", name: "Francia", dial: "+33" },
-  { code: "DE", name: "Alemania", dial: "+49" },
-  { code: "GB", name: "Reino Unido", dial: "+44" },
-  { code: "NL", name: "Países Bajos", dial: "+31" },
-  { code: "CH", name: "Suiza", dial: "+41" },
-  { code: "OT", name: "Otro", dial: "" },
+  { code: "AR", dial: "+54" },
+  { code: "UY", dial: "+598" },
+  { code: "BR", dial: "+55" },
+  { code: "CL", dial: "+56" },
+  { code: "PY", dial: "+595" },
+  { code: "BO", dial: "+591" },
+  { code: "PE", dial: "+51" },
+  { code: "CO", dial: "+57" },
+  { code: "MX", dial: "+52" },
+  { code: "US", dial: "+1" },
+  { code: "CA", dial: "+1" },
+  { code: "ES", dial: "+34" },
+  { code: "IT", dial: "+39" },
+  { code: "FR", dial: "+33" },
+  { code: "DE", dial: "+49" },
+  { code: "GB", dial: "+44" },
+  { code: "NL", dial: "+31" },
+  { code: "CH", dial: "+41" },
+  { code: "OT", dial: "" },
 ];
 
 // Códigos de área únicos para el selector de teléfono
-export const DIAL_CODES = Array.from(
-  new Set(COUNTRIES.map((c) => c.dial).filter(Boolean)),
-);
+export const DIAL_CODES = Array.from(new Set(COUNTRIES.map((c) => c.dial).filter(Boolean)));
+
+/** Nombre del país en el idioma indicado ("AR" → "Argentina") */
+export function countryName(code: string, lang: Locale, otherLabel: string) {
+  if (code === "OT") return otherLabel;
+  return new Intl.DisplayNames([lang], { type: "region" }).of(code) ?? code;
+}
