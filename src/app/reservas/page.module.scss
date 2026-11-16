@@ -12,15 +12,29 @@
   @include mq(lg) {
     display: grid;
     grid-template-columns: 44% 56%;
-    grid-template-rows: auto 1fr;
-    grid-template-areas:
-      "form media"
-      "form aside";
+    align-items: start;
+  }
+}
+
+// Desktop: una pantalla de alto, fija mientras se scrollea el formulario.
+// La foto ocupa el espacio que dejan libre los beneficios.
+.right {
+  display: contents;
+
+  @include mq(lg) {
+    position: sticky;
+    top: 0;
+    order: 2;
+    display: flex;
+    flex-direction: column;
+    height: 100svh;
+    min-height: 620px;
   }
 }
 
 .media {
   position: relative;
+  order: 1;
   height: 56svh;
   min-height: 360px;
 
@@ -29,9 +43,9 @@
   }
 
   @include mq(lg) {
-    grid-area: media;
-    height: 66vh;
-    min-height: 520px;
+    flex: 1;
+    height: auto;
+    min-height: 0;
   }
 }
 
@@ -41,19 +55,26 @@
 }
 
 .formCol {
-  padding: $space-12 $space-5 $space-12;
+  order: 2;
+  padding: $space-12 $space-5;
 
   @include mq(md) {
     padding: $space-16 $space-12;
   }
 
   @include mq(lg) {
-    grid-area: form;
-    padding: 150px $space-12 $space-12 66px;
+    order: 1;
+    // Arranca justo debajo de la navbar y se compacta en pantallas bajas
+    padding:
+      calc(#{$navbar-height + $navbar-sticky-top} + clamp(#{$space-4}, 4svh, #{$space-12}))
+      $space-12
+      $space-12
+      66px;
   }
 }
 
 .aside {
+  order: 3;
   padding: $space-12 $space-5;
   border-top: $border-width solid $color-border;
 
@@ -62,8 +83,8 @@
   }
 
   @include mq(lg) {
-    grid-area: aside;
-    padding: $space-10 $space-10 $space-8;
+    flex-shrink: 0;
+    padding: clamp(#{$space-5}, 3.5svh, #{$space-10}) $space-10 clamp(#{$space-4}, 3svh, #{$space-8});
     border-top: 0;
   }
 }
@@ -98,17 +119,32 @@
 .title {
   @include h1;
   margin-top: $space-8;
+
+  @include mq(lg) {
+    margin-top: clamp(#{$space-3}, 2.5svh, #{$space-8});
+    font-size: clamp(38px, 6.4svh, 60px);
+  }
 }
 
 .intro {
   @include text-editorial;
   max-width: 440px;
   margin-top: $space-6;
+
+  @include mq(lg) {
+    max-width: 480px;
+    margin-top: clamp(#{$space-3}, 2svh, #{$space-6});
+    font-size: clamp(16px, 2.4svh, 19px);
+  }
 }
 
 .divider {
   @include divider;
   margin-block: $space-8;
+
+  @include mq(lg) {
+    margin-block: clamp(#{$space-4}, 3svh, #{$space-8});
+  }
 }
 
 .formFallback {
@@ -124,6 +160,10 @@
   row-gap: $space-8;
   margin-top: $space-8;
 
+  @include mq(lg) {
+    margin-top: clamp(#{$space-4}, 2.5svh, #{$space-8});
+  }
+
   @include mq(xl) {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
@@ -133,7 +173,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: $space-3;
+  gap: $space-2;
   padding-inline: $space-4;
   text-align: center;
 
@@ -150,8 +190,13 @@
 }
 
 .benefitIcon {
-  margin-bottom: $space-3;
+  margin-bottom: $space-2;
   color: $color-icon;
+
+  @include mq(lg) {
+    width: clamp(32px, 5svh, 44px);
+    height: clamp(32px, 5svh, 44px);
+  }
 }
 
 .benefitTitle {
@@ -163,6 +208,10 @@
 .benefitText {
   @include text-small;
   font-size: 15px;
+
+  @include mq(lg) {
+    font-size: 14px;
+  }
 }
 
 // ─────────────────────────────────────────────
@@ -175,6 +224,11 @@
   margin-top: $space-10;
   padding-top: $space-6;
   border-top: $border-width solid $color-border;
+
+  @include mq(lg) {
+    margin-top: clamp(#{$space-4}, 3svh, #{$space-10});
+    padding-top: clamp(#{$space-3}, 2svh, #{$space-6});
+  }
 
   @include mq(md) {
     flex-direction: row;

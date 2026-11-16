@@ -11,10 +11,10 @@
   :global(.rdp-root) {
     --rdp-accent-color: #{$color-date-selected};
     --rdp-accent-background-color: #{$color-date-range};
-    --rdp-day-height: 30px;
+    --rdp-day-height: 28px;
     --rdp-day-width: auto;
-    --rdp-day_button-height: 28px;
-    --rdp-day_button-width: 28px;
+    --rdp-day_button-height: 26px;
+    --rdp-day_button-width: 26px;
     --rdp-day_button-border: 0;
     --rdp-selected-border: 0;
     --rdp-nav-height: 28px;
@@ -22,7 +22,7 @@
     --rdp-nav_button-width: 24px;
     --rdp-outside-opacity: 0.35;
     --rdp-disabled-opacity: 0.35;
-    --rdp-weekday-padding: #{$space-2} 0;
+    --rdp-weekday-padding: #{$space-1} 0;
     --rdp-weekday-opacity: 1;
 
     font-family: $font-ui;

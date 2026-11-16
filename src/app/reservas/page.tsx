@@ -41,15 +41,23 @@ export default function ReservasPage() {
     <>
       <Navbar />
       <main className={styles.page}>
-        <div className={styles.media}>
-          <Image
-            src="/images/reservas.jpg"
-            alt="Canoa navegando al atardecer en la laguna"
-            fill
-            priority
-            sizes="(min-width: 1024px) 56vw, 100vw"
-            className={styles.image}
-          />
+        {/* Columna derecha (desktop): foto + beneficios, una pantalla de alto y fija.
+            En mobile el wrapper "desaparece" (display: contents) para ordenar foto → form → beneficios */}
+        <div className={styles.right}>
+          <div className={styles.media}>
+            <Image
+              src="/images/reservas.jpg"
+              alt="Canoa navegando al atardecer en la laguna"
+              fill
+              priority
+              sizes="(min-width: 1024px) 56vw, 100vw"
+              className={styles.image}
+            />
+          </div>
+
+          <aside className={styles.aside}>
+            <BenefitsAndContact />
+          </aside>
         </div>
 
         <section className={styles.formCol} aria-labelledby="reservas-title">
@@ -59,53 +67,62 @@ export default function ReservasPage() {
             estadía te espera.
           </h1>
           <p className={styles.intro}>
-            Completá el formulario y nos pondremos en contacto a la brevedad para ayudarte a
-            organizar tu estadía en La Torre del Guayaibí.
+            Completá el formulario y nos pondremos en contacto a la brevedad
+            para ayudarte a organizar tu estadía en La Torre del Guayaibí.
           </p>
 
           <hr className={styles.divider} />
 
           {/* Suspense: el formulario usa la fecha actual, que se calcula en cada visita */}
-          <Suspense fallback={<div className={styles.formFallback} aria-hidden="true" />}>
+          <Suspense
+            fallback={
+              <div className={styles.formFallback} aria-hidden="true" />
+            }
+          >
             <ReservationForm />
           </Suspense>
         </section>
-
-        <aside className={styles.aside}>
-          <p className={styles.eyebrow}>Una estadía con todo lo esencial</p>
-
-          <ul className={styles.benefits}>
-            {BENEFITS.map((b) => (
-              <li key={b.icon} className={styles.benefit}>
-                <Icon name={b.icon} size={44} className={styles.benefitIcon} />
-                <h2 className={styles.benefitTitle}>{b.title}</h2>
-                <p className={styles.benefitText}>{b.text}</p>
-              </li>
-            ))}
-          </ul>
-
-          <div className={styles.contact}>
-            <p className={styles.contactText}>
-              También podés escribirnos directamente por WhatsApp o por correo electrónico.
-            </p>
-            <div className={styles.contactButtons}>
-              <a
-                href={whatsappUrl("Hola! Quisiera hacer una consulta.")}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={styles.contactButton}
-              >
-                <Icon name="chat" size={20} />
-                Escribir por WhatsApp
-              </a>
-              <a href={`mailto:${SITE.email}`} className={styles.contactButton}>
-                <Icon name="mail" size={20} />
-                Enviar un mail
-              </a>
-            </div>
-          </div>
-        </aside>
       </main>
+    </>
+  );
+}
+
+function BenefitsAndContact() {
+  return (
+    <>
+      <p className={styles.eyebrow}>Una estadía con todo lo esencial</p>
+
+      <ul className={styles.benefits}>
+        {BENEFITS.map((b) => (
+          <li key={b.icon} className={styles.benefit}>
+            <Icon name={b.icon} size={44} className={styles.benefitIcon} />
+            <h2 className={styles.benefitTitle}>{b.title}</h2>
+            <p className={styles.benefitText}>{b.text}</p>
+          </li>
+        ))}
+      </ul>
+
+      <div className={styles.contact}>
+        <p className={styles.contactText}>
+          También podés escribirnos directamente por WhatsApp o por correo
+          electrónico.
+        </p>
+        <div className={styles.contactButtons}>
+          <a
+            href={whatsappUrl("Hola! Quisiera hacer una consulta.")}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={styles.contactButton}
+          >
+            <Icon name="chat" size={20} />
+            Escribir por WhatsApp
+          </a>
+          <a href={`mailto:${SITE.email}`} className={styles.contactButton}>
+            <Icon name="mail" size={20} />
+            Enviar un mail
+          </a>
+        </div>
+      </div>
     </>
   );
 }
