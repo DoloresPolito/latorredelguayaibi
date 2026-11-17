@@ -56,6 +56,24 @@ export const es = {
     },
   },
 
+  // Sección oscura con el texto que se "enciende" al scrollear.
+  // Entre *asteriscos*: palabras en itálica.
+  manifesto: {
+    text: "Hay lugares que invitan a bajar el ritmo, a *disfrutar* de las pequeñas cosas y a descubrir que, a veces, lo único que necesitamos es quedarnos un poco más.",
+    imageAlt: "Atardecer dorado sobre la pileta, con reposeras y eucaliptos recortados contra el cielo",
+  },
+
+  footer: {
+    ariaLabel: "Pie de página",
+    menu: "Menú",
+    socials: "Redes",
+    contact: "Contacto",
+    instagram: "Instagram",
+    whatsapp: "WhatsApp",
+    rights: "Todos los derechos reservados.",
+    backToTop: "Volver arriba",
+  },
+
   roomsTeaser: {
     title: "Espacios para quedarse.",
     text: "Cada habitación tiene su propia personalidad. Espacios donde la calidez de una casa de campo se encuentra con la tranquilidad de la naturaleza.",

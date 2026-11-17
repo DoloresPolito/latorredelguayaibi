@@ -121,3 +121,8 @@
     text-decoration: underline;
   }
 }
+
+// Diseño nuevo (.theme-v2): mismo botón que el home
+:global(.theme-v2) .submit {
+  @include btn-v2;
+}

@@ -1,3 +1,4 @@
+@use "sass:color";
 @use "abstracts" as *;
 
 // ─────────────────────────────────────────────
@@ -439,4 +440,151 @@ $drawer-duration: 650ms;
     transition-duration: 0s !important;
     transition-delay: 0s !important;
   }
+}
+
+// Home de prueba (.theme-v2)
+:global(.theme-v2) .cta,
+:global(.theme-v2) .drawerCta {
+  @include btn-v2;
+}
+
+// En mobile el botón de la barra se oculta (está en el menú).
+// Mismo tamaño de letra que los links (15px), botón más bajo.
+:global(.theme-v2) .cta {
+  display: none;
+  height: 38px;
+  padding-inline: 14px 12px;
+  gap: 8px;
+  font-size: 15px;
+
+  @include mq(nav) {
+    display: inline-flex;
+  }
+}
+
+:global(.theme-v2) .drawerCta {
+  justify-content: center;
+  height: 48px;
+}
+
+// ─────────────────────────────────────────────
+// Home de prueba (.theme-v2), desktop: barra resumida, siempre igual.
+// Izquierda: solo el isotipo (cambia de color según el fondo).
+// Derecha: los links en una pastilla de vidrio y, al lado, el botón de
+// disponibilidad, diferenciado. Sin fondo de barra, sin idioma.
+// ─────────────────────────────────────────────
+@include mq(nav) {
+  // Mismo margen lateral que los textos del hero ($navbar-inset + $space-10
+  // = 80px en pantallas grandes), así el logo arranca alineado con ellos
+  :global(.theme-v2) .header {
+    padding-inline: clamp(#{$space-6}, 5.5vw, #{$navbar-inset + $space-10});
+  }
+
+  :global(.theme-v2) .bar,
+  :global(.theme-v2) .stuck .bar {
+    gap: $space-2;
+    padding-inline: 0;
+    background-color: transparent;
+    box-shadow: none;
+    backdrop-filter: none;
+  }
+
+  :global(.theme-v2) .separator,
+  :global(.theme-v2) .langDesktop,
+  :global(.theme-v2) .logoName {
+    display: none;
+  }
+
+  // Isotipo: grande arriba de todo y se achica al scrollear (--shrink de 0
+  // a 1, lo escribe Navbar.tsx). Se dibuja al tamaño grande y se reduce con
+  // transform, así queda nítido y el movimiento es fluido.
+  :global(.theme-v2) .logoMark {
+    height: 68px;
+  }
+
+  :global(.theme-v2) .brand {
+    transform: scale(calc(1 - var(--shrink, 0) * 0.4)); // 68px → ~41px
+    transform-origin: left center;
+    will-change: transform;
+  }
+
+  // Isotipo: marrón sobre fondos claros, crema sobre secciones oscuras
+  // (data-nav-theme="dark", lo detecta Navbar.tsx)
+  :global(.theme-v2) .brand > * {
+    transition: color 500ms ease;
+  }
+
+  :global(.theme-v2) .onDark .brand > * {
+    color: $warm-ivory;
+  }
+
+  // Pastilla de vidrio con los links
+  :global(.theme-v2) .links {
+    align-items: center;
+    gap: 0;
+    height: 44px;
+    margin-left: auto;
+    padding-inline: $space-2;
+    border-radius: 6px;
+    background-color: rgba($color-background, 0.6);
+    box-shadow: inset 0 0 0 $border-width rgba($white, 0.35);
+    backdrop-filter: blur(24px) saturate(140%);
+  }
+
+  :global(.theme-v2) .link {
+    padding-inline: 14px;
+
+    // el subrayado del hover, solo bajo el texto
+    &::after {
+      left: 14px;
+      right: 14px;
+      bottom: 6px;
+    }
+  }
+
+  // Botón de disponibilidad: mismo alto que la pastilla, sólido
+  :global(.theme-v2) .cta {
+    height: 44px;
+  }
+
+  :global(.theme-v2) .links,
+  :global(.theme-v2) .link {
+    transition:
+      background-color 500ms ease,
+      box-shadow 500ms ease,
+      color 500ms ease;
+  }
+
+  // Sobre fondo oscuro (como la referencia): pastilla oscura translúcida con
+  // texto crema, y el botón en crema para seguir destacándose
+  // Con cuerpo suficiente para leerse también cuando pasa sobre una foto clara
+  :global(.theme-v2) .onDark .links {
+    background-color: rgba(color.mix($deep-olive, #000, 50%), 0.7);
+    box-shadow: inset 0 0 0 $border-width rgba($white, 0.1);
+  }
+
+  :global(.theme-v2) .onDark .link {
+    color: $warm-ivory;
+  }
+
+  // Sobre fondo oscuro, el botón pasa a crema para seguir destacándose
+  :global(.theme-v2) .onDark .cta {
+    background-color: $creme;
+    color: $color-heading;
+
+    @include hover {
+      background-color: $warm-ivory;
+      color: $color-heading;
+    }
+  }
+}
+
+// Home de prueba (.theme-v2): links en la sans, en minúscula, como los botones
+:global(.theme-v2) .link {
+  font-family: $font-ui;
+  font-weight: $weight-regular;
+  font-size: 15px;
+  letter-spacing: -0.005em;
+  text-transform: none;
+  color: $color-heading;
 }

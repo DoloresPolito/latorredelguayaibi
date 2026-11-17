@@ -1,0 +1,15 @@
+// Diseño nuevo: redefine las variables de tipografía solo dentro de este
+// envoltorio; el resto del sitio (y /original) siguen con Playfair Display,
+// EB Garamond y Helvetica Neue.
+.theme {
+  display: contents; // no agrega una caja: no cambia el layout
+  --font-heading: var(--font-sans-test), Helvetica, Arial, sans-serif;
+  --font-editorial: var(--font-sans-test), Helvetica, Arial, sans-serif;
+  --font-ui: var(--font-sans-test);
+}
+
+// Títulos en Lay Grotesk. Los caracteres que la versión trial no tiene
+// (í, á, ñ…) caen en Inter Tight, que es muy parecida.
+.theme .layTitle { // .theme: para ganarle al font-family del componente
+  font-family: var(--font-lay), var(--font-sans-test), Helvetica, Arial, sans-serif;
+}

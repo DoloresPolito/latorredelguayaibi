@@ -5,6 +5,8 @@ export const SITE = {
   /** Número de WhatsApp de la dueña, formato internacional sin "+", espacios ni guiones. Ej: 5493794123456 */
   whatsapp: "549336584076", // TEMPORAL: número de pruebas, reemplazar por el de la dueña
   email: "reservas@latorredelguayaibi.com",
+  /** TEMPORAL: reemplazar por la cuenta real de Instagram */
+  instagram: "https://www.instagram.com/",
 };
 
 export const whatsappUrl = (text?: string) =>

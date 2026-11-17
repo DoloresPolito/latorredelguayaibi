@@ -12,17 +12,9 @@ import {
   type Locale,
 } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries/es";
+import { CTA_HREF, NAV_LINKS } from "@/config/navigation";
 import styles from "./Navbar.module.scss";
 
-const NAV_LINKS = [
-  { key: "laTorre", href: "/la-torre" },
-  { key: "habitaciones", href: "/habitaciones" },
-  { key: "gastronomia", href: "/gastronomia" },
-  { key: "entorno", href: "/entorno" },
-  { key: "historia", href: "/nuestra-historia" },
-] as const;
-
-const CTA_HREF = "/reservas";
 
 type NavbarProps = {
   lang: Locale;
@@ -41,6 +33,7 @@ export default function Navbar({ lang, t, variant = "top" }: NavbarProps) {
   const closeRef = useRef<HTMLButtonElement>(null);
   const wasOpen = useRef(false);
   const [isStuck, setIsStuck] = useState(false);
+  const [isOnDark, setIsOnDark] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
 
@@ -54,6 +47,20 @@ export default function Navbar({ lang, t, variant = "top" }: NavbarProps) {
       frame = 0;
       const top = parseFloat(getComputedStyle(el).top) || 0;
       setIsStuck(el.getBoundingClientRect().top <= top + 1);
+      // Achique del logo (home nuevo): 0 arriba de todo → 1 a los 240px de
+      // scroll, con una curva suave. Lo usa el CSS como --shrink.
+      const t = Math.min(1, window.scrollY / 240);
+      el.style.setProperty("--shrink", (t * t * (3 - 2 * t)).toFixed(4));
+
+      // ¿La barra está sobre una sección oscura? (marcadas con data-nav-theme="dark")
+      const rect = el.getBoundingClientRect();
+      const y = rect.top + rect.height / 2;
+      setIsOnDark(
+        Array.from(document.querySelectorAll('[data-nav-theme="dark"]')).some((section) => {
+          const r = section.getBoundingClientRect();
+          return r.top <= y && r.bottom >= y;
+        }),
+      );
     };
     const onScroll = () => {
       if (!frame) frame = requestAnimationFrame(update);
@@ -123,11 +130,13 @@ export default function Navbar({ lang, t, variant = "top" }: NavbarProps) {
   return (
     <header
       ref={ref}
-      className={[styles.header, styles[variant], isStuck && styles.stuck].filter(Boolean).join(" ")}
+      className={[styles.header, styles[variant], isStuck && styles.stuck, isOnDark && styles.onDark]
+        .filter(Boolean)
+        .join(" ")}
     >
       <nav className={styles.bar} aria-label={t.ariaLabel}>
         <Link href={href("/")} className={styles.brand} aria-label={t.home} onClick={close}>
-          <Logo />
+          <Logo nameClassName={styles.logoName} markClassName={styles.logoMark} />
         </Link>
 
         <span className={styles.separator} aria-hidden="true" />

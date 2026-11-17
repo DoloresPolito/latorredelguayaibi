@@ -14,8 +14,10 @@ export default function SmoothScroll() {
 
     const lenis = new Lenis({
       autoRaf: true,
-      duration: 1.3,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      // "lerp": el scroll sigue a la rueda/trackpad con inercia, de forma
+      // continua. (Con "duration", cada movimiento reiniciaba una animación
+      // de 1,3s y se sentía pegajoso.) Más bajo = más suave/lento.
+      lerp: 0.1,
       anchors: true, // links "#seccion" (ej. la flecha del hero) también se deslizan
     });
 

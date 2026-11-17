@@ -5,6 +5,7 @@ import Navbar from "@/components/Navbar/Navbar";
 import ReservationForm from "@/components/ReservationForm/ReservationForm";
 import Icon, { type IconName } from "@/components/Icon/Icon";
 import Reveal from "@/components/Reveal/Reveal";
+import ThemeV2 from "@/components/ThemeV2/ThemeV2";
 import { SITE, whatsappUrl } from "@/config/site";
 import { getDictionary, getLocale, type Dictionary } from "@/i18n/getDictionary";
 import styles from "./page.module.scss";
@@ -25,7 +26,7 @@ export default async function ReservasPage() {
   const [lang, t] = await Promise.all([getLocale(), getDictionary()]);
 
   return (
-    <>
+    <ThemeV2>
       <Navbar lang={lang} t={t.nav} />
       <main className={styles.page}>
         {/* Columna derecha (desktop): foto + beneficios, una pantalla de alto y fija.
@@ -65,7 +66,7 @@ export default async function ReservasPage() {
           </div>
         </section>
       </main>
-    </>
+    </ThemeV2>
   );
 }
 

@@ -55,6 +55,22 @@ export const en: Dictionary = {
     },
   },
 
+  manifesto: {
+    text: "There are places that invite you to slow down, to *savor* the little things, and to discover that sometimes all we need is to stay a little longer.",
+    imageAlt: "Golden sunset over the pool, with sun loungers and eucalyptus trees silhouetted against the sky",
+  },
+
+  footer: {
+    ariaLabel: "Footer",
+    menu: "Menu",
+    socials: "Socials",
+    contact: "Contact",
+    instagram: "Instagram",
+    whatsapp: "WhatsApp",
+    rights: "All rights reserved.",
+    backToTop: "Back to top",
+  },
+
   roomsTeaser: {
     title: "Spaces to stay.",
     text: "Each room has a personality of its own. Spaces where the warmth of a country house meets the calm of nature.",

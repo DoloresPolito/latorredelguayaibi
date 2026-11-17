@@ -1,0 +1,32 @@
+@use "abstracts" as *;
+
+// --p: progreso del scroll (0 a 1), lo escribe ScrollText.tsx
+// --n: cantidad total de letras; --i: posición de cada letra
+// --soft: cuántas letras ocupa el degradé entre apagado y encendido
+// --dim: opacidad de las letras todavía "apagadas"
+.text {
+  --p: 0;
+  --soft: 14;
+  --dim: 0.2;
+}
+
+// Cada palabra no se parte entre líneas
+.word {
+  white-space: nowrap;
+}
+
+.char {
+  opacity: clamp(
+    var(--dim),
+    calc((var(--p) * (var(--n) + var(--soft)) - var(--i)) / var(--soft)),
+    1
+  );
+
+  @media (prefers-reduced-motion: reduce) {
+    opacity: 1;
+  }
+}
+
+.srOnly {
+  @include visually-hidden;
+}

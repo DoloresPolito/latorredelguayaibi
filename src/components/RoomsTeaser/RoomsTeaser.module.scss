@@ -27,13 +27,19 @@
   }
 }
 
+.layer {
+  @include drift-layer(6%, 10px);
+}
+
+// Escalada para que el movimiento nunca muestre los bordes
 .image {
   object-fit: cover;
   object-position: 35% center;
-  transition: transform 1200ms $ease-out;
+  transform: scale(1.18);
+  transition: transform 1400ms $ease-out;
 
   .media:hover & {
-    transform: scale(1.02);
+    transform: scale(1.21);
   }
 }
 
@@ -73,6 +79,11 @@
   }
 }
 
+// El título sube desde una máscara, como el nombre en la bienvenida
+.line {
+  @include mask-line(300ms);
+}
+
 .body {
   @include text-editorial;
   max-width: 30em;
@@ -81,27 +92,41 @@
   color: rgba($color-heading, 0.85);
 }
 
-// Link de texto con subrayado fino (no botón)
+// Link de texto con subrayado fino (no botón). Al pasar el mouse, la línea
+// se retira hacia la derecha y vuelve a dibujarse desde la izquierda.
 .cta {
+  position: relative;
   display: inline-flex;
   align-items: center;
   gap: $space-4;
   margin-top: $space-10;
   padding-bottom: $space-2;
-  border-bottom: $border-width solid rgba($color-heading, 0.5);
   font-family: $font-editorial;
   font-size: 14px;
   letter-spacing: 0.28em;
   text-transform: uppercase;
   color: $color-heading;
-  transition: border-color $transition-default;
+
+  &::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: $border-width;
+    background-color: rgba($color-heading, 0.5);
+    transition: background-color $transition-default;
+  }
 
   svg {
     transition: transform $transition-default;
   }
 
   @include hover {
-    border-color: $color-heading;
+    &::after {
+      background-color: $color-heading;
+      animation: underline-sweep 1100ms $ease-in-out-expo;
+    }
 
     svg { transform: translateX(3px); }
   }
@@ -111,25 +136,101 @@
   }
 }
 
-// ─────────────────────────────────────────────
-// Aparición sutil al entrar en pantalla
-// ─────────────────────────────────────────────
-.section {
-  .media {
-    opacity: 0;
-    transition: opacity 1600ms ease;
-
-    @media (prefers-reduced-motion: reduce) {
-      opacity: 1;
-      transition: none;
-    }
+@keyframes underline-sweep {
+  0% {
+    transform: scaleX(1);
+    transform-origin: right center;
   }
-
-  &[data-visible="true"] .media {
-    opacity: 1;
+  50% {
+    transform: scaleX(0);
+    transform-origin: right center;
   }
+  50.01% {
+    transform: scaleX(0);
+    transform-origin: left center;
+  }
+  100% {
+    transform: scaleX(1);
+    transform-origin: left center;
+  }
+}
+
+// ─────────────────────────────────────────────
+// Aparición al entrar en pantalla: la foto se abre como una persiana
+// y se asienta;
+// la línea se dibuja y los textos llegan en cascada.
+// ─────────────────────────────────────────────
+.media {
+  clip-path: inset(0 100% 0 0);
+}
+
+.section[data-visible="true"] .media {
+  animation: curtain 1600ms $ease-out both;
+}
+
+.section[data-visible="true"] .image {
+  animation: settle 2400ms $ease-out backwards;
+}
+
+.panel[data-visible] > .rule {
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 1200ms $ease-out 150ms;
+}
+
+.panel[data-visible="true"] > .rule {
+  transform: none;
 }
 
 .panel {
   @include reveal-children;
+}
+
+@keyframes curtain {
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes settle {
+  from {
+    transform: scale(1.38);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .media {
+    clip-path: none;
+  }
+
+  .section[data-visible="true"] .media,
+  .section[data-visible="true"] .image,
+  .cta::after {
+    animation: none !important;
+  }
+
+  .panel[data-visible] > .rule {
+    transform: none;
+    transition: none;
+  }
+}
+
+// Home de prueba (.theme-v2): botón sólido en vez del link subrayado
+:global(.theme-v2) .cta {
+  @include btn-v2;
+
+  &::after {
+    display: none;
+  }
+}
+
+// Home de prueba (.theme-v2): título en Lay Grotesk, igual que la frase de la
+// sección oscura, y sin la línea corta de arriba
+:global(.theme-v2) .title {
+  @include display-lay;
+  color: $color-heading;
+}
+
+:global(.theme-v2) .rule {
+  display: none;
 }

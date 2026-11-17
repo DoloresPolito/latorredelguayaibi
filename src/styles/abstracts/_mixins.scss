@@ -335,3 +335,104 @@ $enter-duration: 1400ms;
     }
   }
 }
+
+// Línea de título que sube desde una máscara (como el nombre en la bienvenida).
+// Estructura: <span class="line"><span>texto</span></span>; se incluye en .line
+// y se activa cuando un ancestro pasa a data-visible="true" (<Reveal>).
+@mixin mask-line($delay: 0ms, $duration: 1500ms) {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.1em; // que no se corten los descendentes
+  margin-bottom: -0.1em;
+
+  > * {
+    display: block;
+    transform: translateY(105%);
+    transition: transform $duration $ease-out $delay;
+  }
+
+  [data-visible="true"] & > * {
+    transform: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    > * {
+      transform: none;
+      transition: none;
+    }
+  }
+}
+
+// Capa de foto que se mueve con el scroll (<Parallax>, --parallax de -1 a 1)
+// y con el mouse (<PointerDrift>, --mx / --my de -1 a 1). La imagen de adentro
+// tiene que estar escalada para que no se vean los bordes.
+@mixin drift-layer($shift: 5%, $depth: 8px) {
+  position: absolute;
+  inset: 0;
+  transform: translate3d(
+    calc(var(--mx, 0) * #{-$depth}),
+    calc(var(--parallax, 0) * #{$shift} + var(--my, 0) * #{-$depth}),
+    0
+  );
+  will-change: transform;
+
+  @media (prefers-reduced-motion: reduce) {
+    transform: none;
+  }
+}
+
+// ─────────────────────────────────────────────
+// Botón del home de prueba (clase global .theme-v2 en src/app/[lang]/page.tsx):
+// sólido, texto en minúscula, sans y flecha en diagonal (↗).
+// Uso: :global(.theme-v2) .cta { @include btn-v2; }
+// La flecha es la misma ArrowRight girada, así no hay que tocar el JSX.
+// ─────────────────────────────────────────────
+@mixin btn-v2($bg: $color-primary, $fg: $color-on-primary, $bg-hover: $color-primary-hover) {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  height: 44px;
+  padding: 0 14px 0 16px;
+  border: 0;
+  border-radius: 3px;
+  background-color: $bg;
+  color: $fg;
+  font-family: $font-ui;
+  font-weight: $weight-regular;
+  font-size: 17px;
+  letter-spacing: -0.01em;
+  text-transform: none;
+  text-shadow: none;
+
+  svg {
+    transform: rotate(-45deg);
+    transition: transform 300ms $ease-out;
+  }
+
+  @include hover {
+    background-color: $bg-hover;
+    color: $fg;
+
+    svg {
+      transform: rotate(-45deg) translateX(3px);
+    }
+  }
+}
+
+// ─────────────────────────────────────────────
+// Títulos grandes en Lay Grotesk (home de prueba). --font-lay la carga el
+// home nuevo; los acentos y la ñ (que la versión trial no trae) salen de
+// Inter Tight. Sin esas variables, cae en la tipografía de títulos de siempre.
+// ─────────────────────────────────────────────
+@mixin display-lay {
+  font-family: var(--font-lay, var(--font-heading)), var(--font-sans-test, Georgia), sans-serif;
+  font-weight: $weight-regular;
+  font-size: clamp(32px, 7.5vw, 44px);
+  line-height: 1.12;
+  letter-spacing: -0.005em;
+  word-spacing: 0.06em; // Lay Grotesk tiene el espacio entre palabras muy justo
+
+  @include mq(lg) {
+    font-size: clamp(40px, 3.6vw, 60px);
+  }
+}

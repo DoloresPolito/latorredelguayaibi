@@ -16,6 +16,15 @@ type HeroProps = {
   mobileImage?: HeroImage;
   /** id de la sección siguiente, para el botón de scroll */
   nextSectionId?: string;
+  /**
+   * "name": el título es el nombre del hotel (sin el antetítulo).
+   * Por defecto: antetítulo con el nombre + "Un mundo aparte."
+   */
+  variant?: "tagline" | "name";
+  /** Nombre en dos líneas, para la variante "name" */
+  name?: { line1: string; line2: string };
+  /** Clase extra para el título (p. ej. otra tipografía) */
+  titleClassName?: string;
 };
 
 /** Foto distinta para desktop y mobile ("art direction") con <picture> */
@@ -41,7 +50,20 @@ function ArtDirectedImage({
   );
 }
 
-export default function Hero({ lang, t, image, mobileImage, nextSectionId = "experiencia" }: HeroProps) {
+export default function Hero({
+  lang,
+  t,
+  image,
+  mobileImage,
+  nextSectionId = "experiencia",
+  variant = "tagline",
+  name,
+  titleClassName,
+}: HeroProps) {
+  const isName = variant === "name" && name;
+  const line1 = isName ? name.line1 : t.titleLine1;
+  const line2 = isName ? name.line2 : t.titleLine2;
+
   return (
     <section className={styles.hero}>
       <div className={styles.media}>
@@ -65,10 +87,10 @@ export default function Hero({ lang, t, image, mobileImage, nextSectionId = "exp
       <div className={styles.content}>
         {/* En mobile/tablet: título arriba (sobre el cielo) y acciones abajo (sobre la pileta) */}
         <div className={styles.heading}>
-          <p className={styles.kicker}>{t.kicker}</p>
-          <h1 className={styles.title}>
-            <span className={styles.line}>{t.titleLine1}</span>{" "}
-            <span className={styles.line}>{t.titleLine2}</span>
+          {!isName && <p className={styles.kicker}>{t.kicker}</p>}
+          <h1 className={[styles.title, isName && styles.nameTitle, titleClassName].filter(Boolean).join(" ")}>
+            <span className={styles.line}>{line1}</span>{" "}
+            <span className={styles.line}>{line2}</span>
           </h1>
         </div>
         <div className={styles.actions}>

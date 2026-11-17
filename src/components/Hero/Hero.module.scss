@@ -139,6 +139,19 @@ $content-left-desktop: $navbar-inset + $space-10; // alinea con el logo de la na
   }
 }
 
+// Variante "name": el nombre del hotel como título, más grande y en negrita
+.nameTitle {
+  margin-top: 0;
+  font-weight: 500; // Medium
+  font-size: clamp(48px, 8svh, 72px);
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+
+  @include mq(lg) {
+    font-size: clamp(60px, min(8vw, 14svh), 132px);
+  }
+}
+
 .tagline {
   max-width: 28em;
 
@@ -302,4 +315,11 @@ $content-left-desktop: $navbar-inset + $space-10; // alinea con el logo de la na
 :global(html[data-intro="play"]) .scroll,
 :global(html[data-intro="play"]) .down {
   animation-play-state: paused;
+}
+
+// ─────────────────────────────────────────────
+// Home de prueba (.theme-v2): botón sólido claro sobre la foto
+// ─────────────────────────────────────────────
+:global(.theme-v2) .cta {
+  @include btn-v2($creme, $color-heading, $warm-ivory);
 }

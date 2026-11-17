@@ -4,7 +4,7 @@
 // ─────────────────────────────────────────────
 $font-heading: var(--font-heading), "Canela", Georgia, serif;
 $font-editorial: var(--font-editorial), Garamond, Georgia, serif;
-$font-ui: "Helvetica Neue", Helvetica, Arial, sans-serif;
+$font-ui: var(--font-ui, "Helvetica Neue"), Helvetica, Arial, sans-serif; // --font-ui solo existe en el home de prueba
 
 $weight-light: 300;
 $weight-regular: 400;
@@ -22,6 +22,7 @@ $radius-full: 999px;
 $border-width: 1px;
 $transition-default: 200ms ease;
 $ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+$ease-in-out-expo: cubic-bezier(0.76, 0, 0.24, 1); // aperturas tipo "ventana"
 
 // ─────────────────────────────────────────────
 // Espaciados (escala base 4px)
