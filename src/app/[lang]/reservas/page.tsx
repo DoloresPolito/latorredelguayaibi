@@ -4,6 +4,7 @@ import Image from "next/image";
 import Navbar from "@/components/Navbar/Navbar";
 import ReservationForm from "@/components/ReservationForm/ReservationForm";
 import Icon, { type IconName } from "@/components/Icon/Icon";
+import Reveal from "@/components/Reveal/Reveal";
 import { SITE, whatsappUrl } from "@/config/site";
 import { getDictionary, getLocale, type Dictionary } from "@/i18n/getDictionary";
 import styles from "./page.module.scss";
@@ -49,17 +50,19 @@ export default async function ReservasPage() {
         <section className={styles.formCol} aria-labelledby="reservas-title">
           <p className={styles.eyebrow}>{t.reservas.eyebrow}</p>
           <h1 id="reservas-title" className={styles.title}>
-            {t.reservas.titleLine1} <br />
-            {t.reservas.titleLine2}
+            <span className={styles.line}>{t.reservas.titleLine1}</span>{" "}
+            <span className={styles.line}>{t.reservas.titleLine2}</span>
           </h1>
           <p className={styles.intro}>{t.reservas.intro}</p>
 
           <hr className={styles.divider} />
 
-          {/* Suspense: el formulario usa la fecha actual, que se calcula en cada visita */}
-          <Suspense fallback={<div className={styles.formFallback} aria-hidden="true" />}>
-            <ReservationForm lang={lang} t={t.form} />
-          </Suspense>
+          <div className={styles.form}>
+            {/* Suspense: el formulario usa la fecha actual, que se calcula en cada visita */}
+            <Suspense fallback={<div className={styles.formFallback} aria-hidden="true" />}>
+              <ReservationForm lang={lang} t={t.form} />
+            </Suspense>
+          </div>
         </section>
       </main>
     </>
@@ -69,9 +72,11 @@ export default async function ReservasPage() {
 function BenefitsAndContact({ t }: { t: Dictionary["reservas"] }) {
   return (
     <>
-      <p className={styles.eyebrow}>{t.benefitsTitle}</p>
+      <Reveal className={styles.revealEyebrow}>
+        <p className={styles.eyebrow}>{t.benefitsTitle}</p>
+      </Reveal>
 
-      <ul className={styles.benefits}>
+      <Reveal as="ul" className={styles.benefits}>
         {BENEFITS.map((b) => (
           <li key={b.key} className={styles.benefit}>
             <Icon name={b.icon} size={44} className={styles.benefitIcon} />
@@ -79,9 +84,9 @@ function BenefitsAndContact({ t }: { t: Dictionary["reservas"] }) {
             <p className={styles.benefitText}>{t.benefits[b.key].text}</p>
           </li>
         ))}
-      </ul>
+      </Reveal>
 
-      <div className={styles.contact}>
+      <Reveal className={styles.contact}>
         <p className={styles.contactText}>{t.contactText}</p>
         <div className={styles.contactButtons}>
           <a
@@ -98,7 +103,7 @@ function BenefitsAndContact({ t }: { t: Dictionary["reservas"] }) {
             {t.emailButton}
           </a>
         </div>
-      </div>
+      </Reveal>
     </>
   );
 }

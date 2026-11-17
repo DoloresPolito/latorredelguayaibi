@@ -39,6 +39,26 @@ export const es = {
       "La Torre del Guayaibí al atardecer, con la casa de piedra y los eucaliptos reflejados en la pileta",
   },
 
+  intro: {
+    titleLine1: "Un lugar con",
+    titleLine2: "historia propia.",
+    text: "En el corazón de Corrientes, La Torre del Guayaibí combina naturaleza, tradición y una historia familiar única que se respira en cada rincón.",
+    cta: "Conocer la torre",
+    images: {
+      libros: "Biblioteca con estanterías de madera repletas de libros",
+      piedra: "Detalle de los muros de piedra de la torre contra el cielo",
+      hotel: "Galería de la casa de piedra al atardecer, frente al parque",
+    },
+  },
+
+  roomsTeaser: {
+    title: "Espacios para quedarse.",
+    text: "Cada habitación tiene su propia personalidad. Espacios donde la calidez de una casa de campo se encuentra con la tranquilidad de la naturaleza.",
+    cta: "Explorar habitaciones",
+    imageAlt:
+      "Habitación con camas con dosel y cortinas blancas, paredes de piedra y un ventanal hacia el parque",
+  },
+
   reservas: {
     eyebrow: "Consultas",
     titleLine1: "Tu próxima",

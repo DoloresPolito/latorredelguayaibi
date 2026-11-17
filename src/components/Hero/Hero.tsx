@@ -67,8 +67,8 @@ export default function Hero({ lang, t, image, mobileImage, nextSectionId = "exp
         <div className={styles.heading}>
           <p className={styles.kicker}>{t.kicker}</p>
           <h1 className={styles.title}>
-            {t.titleLine1} <br />
-            {t.titleLine2}
+            <span className={styles.line}>{t.titleLine1}</span>{" "}
+            <span className={styles.line}>{t.titleLine2}</span>
           </h1>
         </div>
         <div className={styles.actions}>

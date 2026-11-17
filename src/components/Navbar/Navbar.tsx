@@ -175,6 +175,7 @@ export default function Navbar({ lang, t, variant = "top" }: NavbarProps) {
         role="dialog"
         aria-modal="true"
         aria-label={t.menu}
+        data-lenis-prevent
         className={[styles.drawer, isOpen && styles.drawerOpen].filter(Boolean).join(" ")}
         inert={!isOpen}
       >

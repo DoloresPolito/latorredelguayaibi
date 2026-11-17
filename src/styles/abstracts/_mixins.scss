@@ -246,3 +246,92 @@
   border: 0;
   background-color: $color-border;
 }
+
+// ─────────────────────────────────────────────
+// Animaciones de entrada (sutiles)
+// Las @keyframes se declaran en cada módulo (los nombres de CSS Modules
+// son locales): incluir `@include enter-keyframes;` una vez en el archivo.
+// ─────────────────────────────────────────────
+$enter-duration: 1400ms;
+
+// Al cargar la página: fundido + sube apenas. Para textos en cascada.
+@mixin enter($delay: 0ms) {
+  animation: enter-up $enter-duration $ease-out $delay both;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+}
+
+// Al cargar la página: foto que aparece y se asienta desde un zoom mínimo.
+@mixin enter-image($scale: 1.06, $duration: 7s) {
+  --enter-scale: #{$scale};
+  animation: enter-settle $duration cubic-bezier(0.25, 0.1, 0.25, 1) both;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+}
+
+@mixin enter-keyframes {
+  @keyframes enter-up {
+    from {
+      opacity: 0;
+      transform: translateY(14px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @keyframes enter-settle {
+    from {
+      opacity: 0;
+      transform: scale(var(--enter-scale, 1.06));
+    }
+    12% {
+      opacity: 1;
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+}
+
+// Al entrar en pantalla (con <Reveal>): los hijos directos aparecen en
+// cascada cuando el contenedor pasa a data-visible="true".
+// Se incluye en el contenedor. $extra: otras transitions que tengan los
+// hijos (p. ej. hover de botones) para no pisarlas.
+@mixin reveal-children($step: 120ms, $count: 6, $distance: 12px) {
+  &[data-visible] > * {
+    opacity: 0;
+    transform: translateY($distance);
+    transition:
+      opacity $enter-duration ease,
+      transform $enter-duration $ease-out,
+      background-color $transition-default,
+      border-color $transition-default,
+      color $transition-default;
+  }
+
+  @for $i from 2 through $count {
+    &[data-visible] > :nth-child(#{$i}) {
+      transition-delay: ($i - 1) * $step, ($i - 1) * $step, 0s, 0s, 0s;
+    }
+  }
+
+  &[data-visible="true"] > * {
+    opacity: 1;
+    transform: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    &[data-visible] > * {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+}

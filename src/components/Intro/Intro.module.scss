@@ -1,0 +1,137 @@
+@use "abstracts" as *;
+
+.intro {
+  @include container;
+  display: grid;
+  gap: $space-12;
+  padding-block: $space-20;
+
+  @include mq(lg) {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    align-items: center;
+    gap: $space-16;
+    padding-block: $space-24;
+  }
+}
+
+// ─────────────────────────────────────────────
+// Texto
+// ─────────────────────────────────────────────
+.text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  max-width: 34rem;
+}
+
+// Textos en cascada al entrar en pantalla
+.text {
+  @include reveal-children;
+}
+
+.rule {
+  display: block;
+  width: 64px;
+  height: 2px;
+  margin-bottom: $space-8;
+  background-color: $color-primary;
+}
+
+.title {
+  @include h1;
+
+  @include mq(lg) {
+    font-size: clamp(48px, 4.6vw, 68px);
+  }
+}
+
+.body {
+  @include text-editorial;
+  margin-top: $space-6;
+  line-height: 1.6;
+}
+
+.cta {
+  @include btn-primary;
+  height: 52px;
+  margin-top: $space-10;
+  padding-inline: $space-8;
+  gap: $space-6;
+  font-size: 12px;
+  letter-spacing: 0.14em;
+
+  svg {
+    transition: transform $transition-default;
+  }
+
+  @include hover {
+    svg { transform: translateX(3px); }
+  }
+}
+
+// ─────────────────────────────────────────────
+// Galería: libros alta a la izquierda, piedra y hotel apiladas
+// ─────────────────────────────────────────────
+.gallery {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: $space-2;
+  aspect-ratio: 4 / 3;
+
+  @include mq(md) {
+    gap: $space-3;
+  }
+
+  @include mq(lg) {
+    aspect-ratio: 1.6 / 1;
+  }
+}
+
+.photo {
+  position: relative;
+  overflow: hidden;
+  border-radius: $radius-small;
+  background-color: $color-border;
+
+  // Aparición muy sutil: fundido lento con un desplazamiento mínimo.
+  opacity: 0;
+  transform: translateY(12px);
+  transition:
+    opacity 1600ms ease,
+    transform 1600ms $ease-out;
+
+  &:nth-child(2) { transition-delay: 150ms; }
+  &:nth-child(3) { transition-delay: 300ms; }
+
+  [data-visible="true"] > & {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.tall {
+  grid-row: 1 / span 2;
+}
+
+.inner {
+  position: absolute;
+  inset: 0;
+}
+
+.image {
+  object-fit: cover;
+  transition: transform 1200ms $ease-out;
+
+  .photo:hover & {
+    transform: scale(1.02);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .photo {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}

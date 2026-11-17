@@ -24,6 +24,7 @@ $ironwood: #969483;
 $mesa-clay: #794a37;
 $prairie-gold: #85663a;
 $bronco: #3b2118;
+$sand: #d0c2aa; // fondo de secciones destacadas (habitaciones)
 
 // ─────────────────────────────────────────────
 // Alias semánticos (usar estos en los componentes)
@@ -66,4 +67,5 @@ $colors: (
   "mesa-clay": $mesa-clay,
   "prairie-gold": $prairie-gold,
   "bronco": $bronco,
+  "sand": $sand,
 );

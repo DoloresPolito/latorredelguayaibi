@@ -1,0 +1,135 @@
+@use "abstracts" as *;
+
+.inner {
+  display: grid;
+  background-color: $sand;
+
+  @include mq(lg) {
+    grid-template-columns: minmax(0, 11fr) minmax(0, 9fr);
+    min-height: clamp(420px, 38vw, 560px);
+  }
+}
+
+// ─────────────────────────────────────────────
+// Foto
+// ─────────────────────────────────────────────
+.media {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+
+  @include mq(md) {
+    aspect-ratio: 16 / 9;
+  }
+
+  @include mq(lg) {
+    aspect-ratio: auto;
+  }
+}
+
+.image {
+  object-fit: cover;
+  object-position: 35% center;
+  transition: transform 1200ms $ease-out;
+
+  .media:hover & {
+    transform: scale(1.02);
+  }
+}
+
+// ─────────────────────────────────────────────
+// Texto
+// ─────────────────────────────────────────────
+.panel {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: $space-16 $space-6;
+
+  @include mq(md) {
+    padding: $space-20 $space-12;
+  }
+
+  @include mq(lg) {
+    padding: $space-16 clamp(#{$space-12}, 6vw, #{$space-24});
+  }
+}
+
+.rule {
+  display: block;
+  width: 64px;
+  height: 1px;
+  margin-bottom: $space-6;
+  background-color: rgba($color-heading, 0.55);
+}
+
+// Mismo estilo que el título de la sección anterior ("Un lugar con historia propia.")
+.title {
+  @include h1;
+
+  @include mq(lg) {
+    font-size: clamp(42px, 3.8vw, 56px);
+  }
+}
+
+.body {
+  @include text-editorial;
+  max-width: 30em;
+  margin-top: $space-5;
+  line-height: 1.5;
+  color: rgba($color-heading, 0.85);
+}
+
+// Link de texto con subrayado fino (no botón)
+.cta {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-4;
+  margin-top: $space-10;
+  padding-bottom: $space-2;
+  border-bottom: $border-width solid rgba($color-heading, 0.5);
+  font-family: $font-editorial;
+  font-size: 14px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: $color-heading;
+  transition: border-color $transition-default;
+
+  svg {
+    transition: transform $transition-default;
+  }
+
+  @include hover {
+    border-color: $color-heading;
+
+    svg { transform: translateX(3px); }
+  }
+
+  &:focus-visible {
+    @include focus-ring;
+  }
+}
+
+// ─────────────────────────────────────────────
+// Aparición sutil al entrar en pantalla
+// ─────────────────────────────────────────────
+.section {
+  .media {
+    opacity: 0;
+    transition: opacity 1600ms ease;
+
+    @media (prefers-reduced-motion: reduce) {
+      opacity: 1;
+      transition: none;
+    }
+  }
+
+  &[data-visible="true"] .media {
+    opacity: 1;
+  }
+}
+
+.panel {
+  @include reveal-children;
+}

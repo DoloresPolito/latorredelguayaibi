@@ -1,4 +1,6 @@
 import Hero from "@/components/Hero/Hero";
+import Intro from "@/components/Intro/Intro";
+import RoomsTeaser from "@/components/RoomsTeaser/RoomsTeaser";
 import Navbar from "@/components/Navbar/Navbar";
 import { getDictionary, getLocale } from "@/i18n/getDictionary";
 
@@ -19,8 +21,8 @@ export default async function Home() {
             alt: t.hero.imageAlt,
           }}
         />
-        {/* Próxima sección: La experiencia */}
-        <section id="experiencia" style={{ minHeight: "120vh" }} />
+        <Intro lang={lang} t={t.intro} />
+        <RoomsTeaser lang={lang} t={t.roomsTeaser} />
       </main>
     </>
   );

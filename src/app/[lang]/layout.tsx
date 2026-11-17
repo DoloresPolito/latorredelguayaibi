@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { EB_Garamond, Playfair_Display } from "next/font/google";
+import SmoothScroll from "@/components/SmoothScroll/SmoothScroll";
 import { locales } from "@/i18n/config";
 import { getDictionary, getLocale } from "@/i18n/getDictionary";
 import "@/styles/globals.scss";
@@ -49,6 +50,7 @@ export default async function RootLayout({ children }: LayoutProps<"/[lang]">) {
   return (
     <html lang={lang} className={`${heading.variable} ${editorial.variable}`}>
       <body>
+        <SmoothScroll />
         <div className="frame">{children}</div>
       </body>
     </html>

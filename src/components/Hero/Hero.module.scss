@@ -21,6 +21,12 @@ $content-left-desktop: $navbar-inset + $space-10; // alinea con el logo de la na
   position: absolute;
   inset: 0;
   z-index: -1;
+  overflow: hidden;
+}
+
+// Entrada de la foto: aparece y se asienta muy lentamente (una vez, al cargar)
+.image {
+  @include enter-image;
 }
 
 .fill {
@@ -261,3 +267,21 @@ $content-left-desktop: $navbar-inset + $space-10; // alinea con el logo de la na
     bottom: $space-8;
   }
 }
+
+// ─────────────────────────────────────────────
+// Entrada de los textos, en cascada, mientras la foto se asienta
+// ─────────────────────────────────────────────
+@include enter-keyframes;
+
+.line {
+  display: block;
+}
+
+.kicker { @include enter(500ms); }
+.line:nth-child(1) { @include enter(650ms); }
+.line:nth-child(2) { @include enter(800ms); }
+.tagline { @include enter(1000ms); }
+.rule { @include enter(1100ms); }
+.cta { @include enter(1200ms); }
+.scroll,
+.down { @include enter(1500ms); }

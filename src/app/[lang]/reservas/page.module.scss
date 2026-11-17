@@ -264,3 +264,33 @@
     color: $color-icon;
   }
 }
+
+// ─────────────────────────────────────────────
+// Animaciones de entrada (mismo lenguaje que el home)
+// ─────────────────────────────────────────────
+@include enter-keyframes;
+
+.image {
+  @include enter-image($scale: 1.05);
+}
+
+.line {
+  display: block;
+}
+
+.formCol .eyebrow { @include enter(300ms); }
+.line:nth-child(1) { @include enter(450ms); }
+.line:nth-child(2) { @include enter(600ms); }
+.intro { @include enter(800ms); }
+.divider { @include enter(900ms); }
+.form { @include enter(1000ms); }
+
+// Beneficios y contacto: en cascada al entrar en pantalla
+.revealEyebrow,
+.contact {
+  @include reveal-children;
+}
+
+.benefits {
+  @include reveal-children($step: 140ms, $count: 4);
+}

@@ -38,6 +38,26 @@ export const en: Dictionary = {
       "La Torre del Guayaibí at sunset, with the stone house and eucalyptus trees reflected in the pool",
   },
 
+  intro: {
+    titleLine1: "A place with",
+    titleLine2: "a story of its own.",
+    text: "In the heart of Corrientes, La Torre del Guayaibí brings together nature, tradition and a unique family history you can feel in every corner.",
+    cta: "Discover the tower",
+    images: {
+      libros: "Library with wooden shelves filled with books",
+      piedra: "Detail of the tower's stone walls against the sky",
+      hotel: "Veranda of the stone house at sunset, facing the grounds",
+    },
+  },
+
+  roomsTeaser: {
+    title: "Spaces to stay.",
+    text: "Each room has a personality of its own. Spaces where the warmth of a country house meets the calm of nature.",
+    cta: "Explore the rooms",
+    imageAlt:
+      "Bedroom with canopy beds and white curtains, stone walls and a tall window onto the grounds",
+  },
+
   reservas: {
     eyebrow: "Enquiries",
     titleLine1: "Your next",
