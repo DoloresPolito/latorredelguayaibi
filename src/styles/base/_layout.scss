@@ -8,3 +8,8 @@
   overflow: clip;
   background-color: $color-background;
 }
+
+// Sin scroll mientras corre la animación de bienvenida del home
+html[data-intro="play"] {
+  overflow: hidden;
+}

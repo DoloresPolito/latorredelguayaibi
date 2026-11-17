@@ -285,3 +285,21 @@ $content-left-desktop: $navbar-inset + $space-10; // alinea con el logo de la na
 .cta { @include enter(1200ms); }
 .scroll,
 .down { @include enter(1500ms); }
+
+// ─────────────────────────────────────────────
+// Con la animación de bienvenida (<Opening>): la foto ya llega "asentada"
+// desde la ventana, y los textos esperan a que termine para entrar.
+// ─────────────────────────────────────────────
+:global(html[data-intro]) .image {
+  animation: none;
+}
+
+:global(html[data-intro="play"]) .kicker,
+:global(html[data-intro="play"]) .line,
+:global(html[data-intro="play"]) .tagline,
+:global(html[data-intro="play"]) .rule,
+:global(html[data-intro="play"]) .cta,
+:global(html[data-intro="play"]) .scroll,
+:global(html[data-intro="play"]) .down {
+  animation-play-state: paused;
+}

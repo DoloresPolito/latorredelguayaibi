@@ -27,6 +27,11 @@ export const es = {
     closeMenu: "Cerrar menú",
   },
 
+  opening: {
+    titleLine1: "La Torre",
+    titleLine2: "del Guayaibí",
+  },
+
   hero: {
     kicker: "La Torre del Guayaibí",
     titleLine1: "Un mundo",

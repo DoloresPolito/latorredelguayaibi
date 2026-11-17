@@ -1,0 +1,224 @@
+@use "sass:color";
+@use "abstracts" as *;
+
+// ─────────────────────────────────────────────
+// Línea de tiempo (ms desde que carga la página)
+//   200   aparece el isotipo
+//   350   suben "La Torre" / "del Guayaibí"
+//   1500  la ventana-torre crece desde abajo
+//   2850  la ventana se expande a pantalla completa (el nombre se va)
+//   4500  fin → data-intro="reveal": el velo se funde y entra el hero
+// ─────────────────────────────────────────────
+$window-delay: 1500ms;
+$window-duration: 3000ms;
+$ease-expo: cubic-bezier(0.76, 0, 0.24, 1);
+$bg: color.mix($deep-olive, #000, 45%); // oliva muy oscuro
+
+.opening {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: $z-overlay + 10;
+  overflow: hidden;
+  background-color: $bg;
+  cursor: default;
+  user-select: none;
+}
+
+:global(html[data-intro="play"]) .opening,
+:global(html[data-intro="reveal"]) .opening {
+  display: block;
+}
+
+:global(html[data-intro="reveal"]) .opening {
+  pointer-events: none;
+  animation: fade-out 900ms ease forwards;
+}
+
+// ─────────────────────────────────────────────
+// Ventana: arco angosto (la torre) que crece y se abre a la foto
+// ─────────────────────────────────────────────
+.window {
+  // Medidas del arco: ancho = 100% - 2 × x; radio = mitad del ancho
+  --arch-x: 33%;
+  --arch-y: 22%;
+  --arch-r: 17vw;
+
+  position: absolute;
+  inset: 0;
+  clip-path: inset(calc(100% - var(--arch-y)) var(--arch-x) var(--arch-y) var(--arch-x) round var(--arch-r) var(--arch-r) 0 0);
+  animation: open-window $window-duration $window-delay both;
+
+  @include mq(md) {
+    --arch-x: 40%;
+    --arch-y: 18%;
+    --arch-r: 10vw;
+  }
+
+  @include mq(lg) {
+    --arch-x: 43%;
+    --arch-y: 16%;
+    --arch-r: 7vw;
+  }
+}
+
+// Misma foto y encuadre que el hero
+.photo {
+  object-fit: cover;
+  object-position: 66% center;
+  transform-origin: 50% 60%;
+  animation: settle $window-duration $window-delay both;
+
+  @include mq(lg) {
+    object-position: center center;
+  }
+}
+
+// Oscurece un poco la foto mientras el nombre está encima
+.scrim {
+  position: absolute;
+  inset: 0;
+  background-color: rgba(#000, 0.28);
+  animation: scrim-out $window-duration $window-delay both;
+}
+
+// ─────────────────────────────────────────────
+// Nombre
+// ─────────────────────────────────────────────
+.brand {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: $space-6;
+  padding-inline: $space-5;
+  text-align: center;
+  color: $warm-ivory;
+  pointer-events: none;
+  animation: brand-out 900ms $ease-out 3150ms both;
+}
+
+.mark {
+  display: block;
+  height: 36px;
+  aspect-ratio: 670 / 421;
+  background-color: currentColor;
+  mask: url("/logos/logo-negro.svg") center / contain no-repeat;
+  animation: fade-in 1400ms ease 200ms both;
+
+  @include mq(lg) {
+    height: 48px;
+  }
+}
+
+.title {
+  font-family: $font-heading;
+  font-weight: $weight-light;
+  font-size: clamp(48px, 10vw, 76px);
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+
+  @include mq(lg) {
+    font-size: clamp(76px, min(8.5vw, 15svh), 136px);
+  }
+}
+
+// Cada línea sube desde una máscara
+.line {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.1em; // que no se corten los descendentes
+}
+
+.lineInner {
+  display: block;
+  animation: rise 1400ms $ease-out 350ms both;
+
+  .line:nth-child(2) & {
+    animation-delay: 500ms;
+  }
+}
+
+// ─────────────────────────────────────────────
+// Keyframes
+// ─────────────────────────────────────────────
+@keyframes open-window {
+  // la torre crece desde abajo
+  0% {
+    clip-path: inset(calc(100% - var(--arch-y)) var(--arch-x) var(--arch-y) var(--arch-x) round var(--arch-r) var(--arch-r) 0 0);
+    animation-timing-function: $ease-out;
+  }
+  // pausa
+  30% {
+    clip-path: inset(var(--arch-y) var(--arch-x) var(--arch-y) var(--arch-x) round var(--arch-r) var(--arch-r) 0 0);
+    animation-timing-function: linear;
+  }
+  45% {
+    clip-path: inset(var(--arch-y) var(--arch-x) var(--arch-y) var(--arch-x) round var(--arch-r) var(--arch-r) 0 0);
+    animation-timing-function: $ease-expo;
+  }
+  // se abre a pantalla completa
+  100% {
+    clip-path: inset(0 0 0 0 round 0 0 0 0);
+  }
+}
+
+@keyframes settle {
+  0% {
+    transform: scale(1.3);
+    animation-timing-function: $ease-out;
+  }
+  45% {
+    transform: scale(1.18);
+    animation-timing-function: $ease-expo;
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes scrim-out {
+  0%,
+  55% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes rise {
+  from {
+    transform: translateY(105%);
+  }
+  to {
+    transform: none;
+  }
+}
+
+@keyframes brand-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-16px);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fade-out {
+  to {
+    opacity: 0;
+  }
+}

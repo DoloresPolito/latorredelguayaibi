@@ -26,6 +26,11 @@ export const en: Dictionary = {
     closeMenu: "Close menu",
   },
 
+  opening: {
+    titleLine1: "La Torre",
+    titleLine2: "del Guayaibí",
+  },
+
   hero: {
     kicker: "La Torre del Guayaibí",
     titleLine1: "A world",

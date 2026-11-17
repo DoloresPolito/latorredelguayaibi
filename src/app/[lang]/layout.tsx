@@ -48,7 +48,12 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function RootLayout({ children }: LayoutProps<"/[lang]">) {
   const lang = await getLocale();
   return (
-    <html lang={lang} className={`${heading.variable} ${editorial.variable}`}>
+    <html
+      lang={lang}
+      className={`${heading.variable} ${editorial.variable}`}
+      // <Opening> marca data-intro antes de hidratar
+      suppressHydrationWarning
+    >
       <body>
         <SmoothScroll />
         <div className="frame">{children}</div>
