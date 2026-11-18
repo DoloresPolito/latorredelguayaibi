@@ -4,6 +4,7 @@ export const NAV_LINKS = [
   { key: "laTorre", href: "/la-torre" },
   { key: "habitaciones", href: "/habitaciones" },
   { key: "gastronomia", href: "/gastronomia" },
+  { key: "eventos", href: "/eventos" },
   { key: "entorno", href: "/entorno" },
   { key: "historia", href: "/nuestra-historia" },
 ] as const;

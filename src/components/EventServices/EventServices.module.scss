@@ -1,0 +1,344 @@
+@use "sass:color";
+@use "abstracts" as *;
+
+// Colores de los bloques detrás de cada foto (y del punto de la línea)
+.clay { --tone: #{$mesa-clay}; }
+.sage { --tone: #{color.mix($ironwood, $warm-ivory, 55%)}; }
+.forest { --tone: #{color.mix($deep-olive, #000, 50%)}; } // el mismo verde de la sección oscura
+
+$line-x-mobile: 6px; // posición de la línea en mobile (desde el borde del contenido)
+$row-pad-mobile: $space-8;
+
+.section {
+  background-color: $color-background;
+  overflow: hidden; // los bloques de color sobresalen de las fotos
+}
+
+.inner {
+  @include container;
+  position: relative;
+  padding-block: $space-24;
+
+  @include mq(lg) {
+    padding-block: $space-32 clamp(#{$space-32}, 16vw, 220px);
+  }
+}
+
+// ─────────────────────────────────────────────
+// Línea central: un riel tenue y, encima, el trazo que se dibuja con el
+// scroll (--progress de <ScrollProgress>)
+// ─────────────────────────────────────────────
+.line {
+  position: absolute;
+  top: $space-16;
+  bottom: $space-16;
+  left: calc(#{$space-5} + #{$line-x-mobile});
+  width: 1px;
+  background-color: rgba($color-heading, 0.12);
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-color: rgba($color-heading, 0.55);
+    transform: scaleY(var(--progress, 0));
+    transform-origin: top center;
+  }
+
+  @include mq(lg) {
+    left: 50%;
+  }
+}
+
+.list {
+  display: grid;
+  gap: $space-24;
+
+  @include mq(lg) {
+    gap: clamp(#{$space-32}, 14vw, 220px);
+  }
+}
+
+// ─────────────────────────────────────────────
+// Fila: texto + foto. En desktop, a cada lado de la línea (alternando)
+// ─────────────────────────────────────────────
+.row {
+  --gap: clamp(#{$space-16}, 9vw, 160px);
+
+  position: relative;
+  display: grid;
+  gap: $space-16;
+  padding-left: $row-pad-mobile;
+
+  @include mq(lg) {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: center;
+    column-gap: var(--gap);
+    padding-left: 0;
+  }
+}
+
+// Punto sobre la línea: se enciende con el color de la propuesta
+.dot {
+  position: absolute;
+  top: 6px;
+  left: $line-x-mobile - 5px;
+  z-index: 0; // queda detrás de las fotos que cruzan la línea
+  width: 11px;
+  height: 11px;
+  border: $border-width solid rgba($color-heading, 0.4);
+  border-radius: $radius-full;
+  background-color: $color-background;
+  transition:
+    background-color 600ms ease,
+    border-color 600ms ease,
+    transform 900ms $ease-out;
+
+  // Onda que se expande una vez al encenderse
+  &::after {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    border: $border-width solid var(--tone);
+    opacity: 0;
+  }
+
+  @include mq(lg) {
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
+  }
+}
+
+.row:has([data-visible="true"]) .dot {
+  border-color: var(--tone);
+  background-color: var(--tone);
+  transform: scale(1.15);
+
+  &::after {
+    animation: ripple 1600ms $ease-out 200ms;
+  }
+}
+
+@keyframes ripple {
+  from {
+    opacity: 0.8;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(3.2);
+  }
+}
+
+// ─────────────────────────────────────────────
+// Texto
+// ─────────────────────────────────────────────
+.text {
+  max-width: 24rem;
+
+  @include reveal-children(110ms, 5);
+
+  @include mq(lg) {
+    justify-self: center;
+    width: 100%;
+  }
+}
+
+.number {
+  font-family: $font-ui;
+  font-weight: $weight-semibold;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  color: $color-heading;
+}
+
+.title {
+  @include display-lay;
+  margin-top: $space-3;
+  font-weight: 500;
+  font-size: clamp(30px, 8vw, 36px);
+  line-height: 1.02;
+  letter-spacing: -0.01em;
+  color: $color-heading;
+
+  @include mq(lg) {
+    font-size: clamp(32px, 2.7vw, 42px);
+  }
+}
+
+// Cada línea del título sube desde una máscara
+.titleLine {
+  @include mask-line(150ms, 1300ms);
+
+  & + & {
+    @include mask-line(260ms, 1300ms);
+  }
+}
+
+.subtitle {
+  margin-top: $space-3;
+  font-family: $font-ui;
+  font-weight: $weight-semibold;
+  font-size: 15px;
+  line-height: 1.35;
+  color: $color-heading;
+}
+
+.body {
+  margin-top: $space-3;
+  font-family: $font-ui;
+  font-size: 14px;
+  line-height: 1.6;
+  color: $color-body;
+
+  & + & {
+    margin-top: $space-2;
+  }
+}
+
+// ─────────────────────────────────────────────
+// Foto + bloque de color
+// ─────────────────────────────────────────────
+.media {
+  position: relative;
+  width: calc(100% - #{$space-6});
+  max-width: 460px;
+
+  @include mq(lg) {
+    width: 100%;
+    max-width: 440px;
+    // La foto cruza apenas la línea central
+    margin-left: calc(var(--gap) / -2 - #{$space-8});
+  }
+}
+
+.reverse .media {
+  @include mq(lg) {
+    order: -1;
+    justify-self: end;
+    margin-left: 0;
+    margin-right: calc(var(--gap) / -2 - #{$space-8});
+  }
+}
+
+// Bloque de color: sobresale de la foto hacia afuera. Se mueve más que la
+// foto con el scroll (--parallax de <Parallax>, de 1 a -1): profundidad.
+.block {
+  position: absolute;
+  top: -12%;
+  right: -$space-6;
+  bottom: -16%;
+  left: 42%;
+  background-color: var(--tone);
+  transform: translate3d(0, calc(var(--parallax, 0) * 36px), 0);
+
+  @include mq(lg) {
+    top: -22%;
+    right: -20%;
+    bottom: -28%;
+    left: 40%;
+    transform: translate3d(0, calc(var(--parallax, 0) * 64px), 0);
+  }
+}
+
+.reverse .block {
+  @include mq(lg) {
+    top: -20%;
+    right: 44%;
+    bottom: -36%;
+    left: -16%;
+  }
+}
+
+.photo {
+  position: relative;
+  z-index: 1;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border-radius: 2px;
+  box-shadow: 0 24px 48px -28px rgba($bronco, 0.55);
+  transform: translate3d(0, calc(var(--parallax, 0) * -14px), 0);
+}
+
+// Capa interna: la imagen se desliza dentro del marco (tercer plano)
+.photoInner {
+  position: absolute;
+  inset: 0;
+  transform: translate3d(0, calc(var(--parallax, 0) * 4%), 0);
+}
+
+.image {
+  object-fit: cover;
+  transform: scale(1.12);
+  transition: transform 1400ms $ease-out;
+
+  .media:hover & {
+    transform: scale(1.16);
+  }
+}
+
+// ─────────────────────────────────────────────
+// Aparición: el bloque se despliega (de arriba en las filas impares, de
+// abajo en las pares), la foto se abre como una cortina desde la línea y
+// la imagen se asienta desde un zoom.
+// ─────────────────────────────────────────────
+.media[data-visible] .block {
+  clip-path: inset(0 0 100% 0);
+  transition: clip-path 1300ms $ease-in-out-expo;
+}
+
+.reverse .media[data-visible] .block {
+  clip-path: inset(100% 0 0 0);
+}
+
+.media[data-visible] .photo {
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path 1500ms $ease-in-out-expo 350ms;
+}
+
+.reverse .media[data-visible] .photo {
+  clip-path: inset(0 0 0 100%);
+}
+
+.media[data-visible="true"] .block,
+.media[data-visible="true"] .photo,
+.reverse .media[data-visible="true"] .block,
+.reverse .media[data-visible="true"] .photo {
+  clip-path: inset(0 0 0 0);
+}
+
+.media[data-visible="true"] .image {
+  animation: settle 2600ms $ease-out 350ms backwards;
+}
+
+@keyframes settle {
+  from {
+    transform: scale(1.4);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .media[data-visible] .block,
+  .media[data-visible] .photo,
+  .reverse .media[data-visible] .block,
+  .reverse .media[data-visible] .photo {
+    clip-path: none;
+    transition: none;
+  }
+
+  .media[data-visible="true"] .image {
+    animation: none;
+  }
+
+  .block,
+  .photo,
+  .photoInner {
+    transform: none;
+  }
+
+  .row:has([data-visible="true"]) .dot::after {
+    animation: none;
+  }
+}

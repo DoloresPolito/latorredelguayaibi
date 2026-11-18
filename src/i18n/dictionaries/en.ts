@@ -7,6 +7,9 @@ export const en: Dictionary = {
     reservasTitle: "Bookings — La Torre del Guayaibí",
     reservasDescription:
       "Check availability at La Torre del Guayaibí. Choose your dates and we'll get back to you personally.",
+    eventosTitle: "Events — La Torre del Guayaibí",
+    eventosDescription:
+      "Events with food and drinks, work meetings and La Torre all to yourselves, in the heart of the Corrientes countryside.",
   },
 
   nav: {
@@ -16,6 +19,7 @@ export const en: Dictionary = {
       laTorre: "The Tower",
       habitaciones: "Rooms",
       gastronomia: "Dining",
+      eventos: "Events",
       entorno: "Surroundings",
       historia: "Our story",
     },
@@ -58,6 +62,72 @@ export const en: Dictionary = {
   manifesto: {
     text: "There are places that invite you to slow down, to *savor* the little things, and to discover that sometimes all we need is to stay a little longer.",
     imageAlt: "Golden sunset over the pool, with sun loungers and eucalyptus trees silhouetted against the sky",
+  },
+
+  eventos: {
+    hero: {
+      kicker: "Events at La Torre",
+      titleLine1: "Gatherings",
+      titleLine2: "under open skies.",
+      tagline: "Celebrations, meetings and tailor-made experiences in the heart of the Corrientes countryside.",
+      cta: "See what we offer",
+      scroll: "Scroll",
+      next: "Go to the next section",
+      imageAlt: "The stone tower lit up at night, under a starry sky with the Milky Way",
+    },
+    intro: {
+      title: "A place to come together",
+      text: "Far from the everyday rush, *close to what matters.* Some gatherings deserve to step outside the routine. La Torre offers a different setting to meet, talk and enjoy without hurry.",
+    },
+    services: {
+      ariaLabel: "Event options",
+      items: {
+        gastronomia: {
+          titleLine1: "Events with",
+          titleLine2: "food & drinks",
+          subtitle: "We take care of everything.",
+          paragraphs: [
+            "We host lunches, dinners and corporate gatherings with full food and beverage service.",
+            "From a casual spread of cold cuts to a lunch or dinner prepared especially for the occasion. Our team handles the organization so all you have to do is enjoy.",
+          ],
+          imageAlt: "A long candlelit table with cured meats, cheeses, bread and flowers",
+        },
+        reuniones: {
+          titleLine1: "Meetings and",
+          titleLine2: "workdays",
+          subtitle: "A different place to get together.",
+          paragraphs: [
+            "Our spaces are available for company meetings, team gatherings and workdays.",
+            "An alternative for those looking for a quiet setting away from the office, with the option to add coffee service and simple food options.",
+          ],
+          imageAlt: "A table set with linen napkins, glasses and candles in a warm dining room",
+        },
+        exclusiva: {
+          titleLine1: "La Torre",
+          titleLine2: "all to yourselves",
+          subtitle: "One place, just for you.",
+          paragraphs: [
+            "For groups seeking a more private experience, you can book every room and enjoy all of La Torre's spaces.",
+            "A flexible option that lets you organize your stay your own way, including use of the grill and arranging your own food and drinks.",
+          ],
+          imageAlt: "Stone barbecue area with the grill lit and a wooden bar with stools",
+        },
+      },
+    },
+    experience: {
+      titleLine1: "Flavors and",
+      titleLine2: "traditions",
+      subtitle: "An experience that is truly ours.",
+      paragraphs: [
+        "There is something special about sharing an asado while a guitar plays.",
+        "For those who want to give their event a different character, we can organize experiences that bring together the best of our traditions.",
+        "An asado prepared for the occasion, local musicians, the sound of the accordion and chamamé as the star.",
+        "A way to discover Corrientes through its food, its music and its people.",
+      ],
+      cta: "Ask about this experience",
+      whatsapp: "Hi! I would like to ask about the Flavors and Traditions experience for an event.",
+      imageAlt: "Musicians playing guitar and accordion at night, under a string of lights",
+    },
   },
 
   footer: {

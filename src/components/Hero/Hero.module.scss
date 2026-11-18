@@ -323,3 +323,37 @@ $content-left-desktop: $navbar-inset + $space-10; // alinea con el logo de la na
 :global(.theme-v2) .cta {
   @include btn-v2($creme, $color-heading, $warm-ivory);
 }
+
+// ─────────────────────────────────────────────
+// Tono "light" (p. ej. eventos): foto oscura a la izquierda, así que los
+// textos van siempre en crema, sobre un velo
+// ─────────────────────────────────────────────
+.light {
+  // Mobile/tablet: título arriba, sobre el cielo claro → velo también arriba
+  .overlay {
+    background:
+      linear-gradient(180deg, rgba(#000, 0.45) 0%, rgba(#000, 0) 40%),
+      linear-gradient(0deg, rgba(#000, 0.55) 0%, rgba(#000, 0.3) 30%, rgba(#000, 0) 50%);
+  }
+
+  .kicker,
+  .title {
+    color: $warm-ivory;
+  }
+
+  @include mq(lg) {
+    .overlay {
+      background:
+        linear-gradient(90deg, rgba(#000, 0.5) 0%, rgba(#000, 0.2) 40%, rgba(#000, 0) 65%),
+        linear-gradient(0deg, rgba(#000, 0.3) 0%, rgba(#000, 0) 25%);
+    }
+
+    .tagline {
+      color: rgba($warm-ivory, 0.9);
+    }
+
+    .rule {
+      background-color: rgba($warm-ivory, 0.6);
+    }
+  }
+}

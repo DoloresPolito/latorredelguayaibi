@@ -1,0 +1,86 @@
+@use "sass:color";
+@use "abstracts" as *;
+
+$bg: color.mix($deep-olive, #000, 50%); // el mismo verde oscuro de la sección del home
+
+.section {
+  background-color: $bg;
+  color: $warm-ivory;
+}
+
+.inner {
+  @include container;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: $space-10;
+  padding-block: $space-24;
+
+  @include mq(lg) {
+    gap: $space-12;
+    padding-block: $space-32;
+    min-height: 100svh;
+  }
+}
+
+// ─────────────────────────────────────────────
+// Título chico, con una línea que se dibuja al entrar
+// ─────────────────────────────────────────────
+.heading {
+  display: flex;
+  align-items: center;
+  gap: $space-5;
+
+  @include reveal-children(150ms, 2);
+}
+
+.rule {
+  display: block;
+  width: 48px;
+  height: 1px;
+  background-color: rgba($warm-ivory, 0.7);
+}
+
+.heading[data-visible] > .rule {
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 1200ms $ease-out 150ms;
+}
+
+.heading[data-visible="true"] > .rule {
+  transform: none;
+}
+
+.title {
+  font-family: $font-ui;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 1.4;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: $creme;
+
+  @include mq(lg) {
+    font-size: 13px;
+  }
+}
+
+// ─────────────────────────────────────────────
+// Texto: mismo tamaño que la frase de la sección del home
+// ─────────────────────────────────────────────
+.text {
+  @include display-lay;
+  max-width: 22em;
+
+  em {
+    font-style: italic;
+    color: $creme;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .heading[data-visible] > .rule {
+    transform: none;
+    transition: none;
+  }
+}

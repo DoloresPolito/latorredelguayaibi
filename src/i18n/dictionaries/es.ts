@@ -8,6 +8,9 @@ export const es = {
     reservasTitle: "Reservas — La Torre del Guayaibí",
     reservasDescription:
       "Consultá disponibilidad en La Torre del Guayaibí. Elegí tus fechas y te respondemos personalmente.",
+    eventosTitle: "Eventos — La Torre del Guayaibí",
+    eventosDescription:
+      "Eventos con gastronomía, reuniones de trabajo y La Torre en exclusiva, en el corazón del campo correntino.",
   },
 
   nav: {
@@ -17,6 +20,7 @@ export const es = {
       laTorre: "La Torre",
       habitaciones: "Habitaciones",
       gastronomia: "Gastronomía",
+      eventos: "Eventos",
       entorno: "Entorno",
       historia: "Nuestra historia",
     },
@@ -61,6 +65,74 @@ export const es = {
   manifesto: {
     text: "Hay lugares que invitan a bajar el ritmo, a *disfrutar* de las pequeñas cosas y a descubrir que, a veces, lo único que necesitamos es quedarnos un poco más.",
     imageAlt: "Atardecer dorado sobre la pileta, con reposeras y eucaliptos recortados contra el cielo",
+  },
+
+  eventos: {
+    hero: {
+      kicker: "Eventos en La Torre",
+      titleLine1: "Encuentros",
+      titleLine2: "a cielo abierto.",
+      tagline: "Celebraciones, reuniones y experiencias a medida en el corazón del campo correntino.",
+      cta: "Ver propuestas",
+      scroll: "Scroll",
+      next: "Ir a la siguiente sección",
+      imageAlt: "La torre de piedra iluminada de noche, bajo un cielo estrellado con la Vía Láctea",
+    },
+    // Sección oscura: título chico y el texto que se "enciende" letra por
+    // letra al scrollear. Entre *asteriscos*: palabras en itálica.
+    intro: {
+      title: "Un lugar para encontrarse",
+      text: "Lejos del ritmo de todos los días, *cerca de lo que importa.* Hay reuniones que merecen salir de lo cotidiano. La Torre ofrece un entorno diferente para reunirse, conversar y disfrutar sin apuro.",
+    },
+    services: {
+      ariaLabel: "Propuestas para eventos",
+      items: {
+        gastronomia: {
+          titleLine1: "Eventos con",
+          titleLine2: "gastronomía",
+          subtitle: "Nosotros nos ocupamos de todo.",
+          paragraphs: [
+            "Organizamos almuerzos, cenas y encuentros empresariales con servicio completo de gastronomía y bebidas.",
+            "Desde una picada informal hasta un almuerzo o una cena especialmente preparados para la ocasión. Nuestro equipo se encarga de la organización para que ustedes solo tengan que disfrutar.",
+          ],
+          imageAlt: "Mesa larga iluminada con velas, con fiambres, quesos, panes y flores",
+        },
+        reuniones: {
+          titleLine1: "Reuniones y",
+          titleLine2: "jornadas de trabajo",
+          subtitle: "Un espacio diferente para reunirse.",
+          paragraphs: [
+            "Ofrecemos nuestros espacios para reuniones de empresas, encuentros de equipos y jornadas de trabajo.",
+            "Una alternativa para quienes buscan un entorno tranquilo, fuera de la oficina, con la posibilidad de incorporar servicio de café y opciones gastronómicas sencillas.",
+          ],
+          imageAlt: "Mesa puesta con servilletas de lino, copas y velas en un salón cálido",
+        },
+        exclusiva: {
+          titleLine1: "La Torre",
+          titleLine2: "en exclusiva",
+          subtitle: "Un lugar, solo para ustedes.",
+          paragraphs: [
+            "Para grupos que buscan una experiencia más privada, ofrecemos la posibilidad de reservar todas las habitaciones y disfrutar de los espacios de La Torre.",
+            "Una propuesta flexible que permite organizar la estadía a su manera, incluyendo la posibilidad de utilizar la parrilla y coordinar sus propias comidas y bebidas.",
+          ],
+          imageAlt: "Quincho de piedra con la parrilla encendida y una barra de madera con banquetas",
+        },
+      },
+    },
+    experience: {
+      titleLine1: "Sabores y",
+      titleLine2: "tradiciones",
+      subtitle: "Una experiencia bien nuestra.",
+      paragraphs: [
+        "Hay algo especial en compartir un asado mientras suena una guitarra.",
+        "Para quienes buscan darle a su evento un carácter diferente, podemos organizar experiencias que reúnen lo mejor de nuestras tradiciones.",
+        "Un asado preparado para la ocasión, músicos locales, el sonido del acordeón y el chamamé como protagonista.",
+        "Una manera de descubrir Corrientes a través de su gastronomía, su música y su gente.",
+      ],
+      cta: "Consultar por esta experiencia",
+      whatsapp: "Hola! Quisiera consultar por la experiencia Sabores y Tradiciones para un evento.",
+      imageAlt: "Músicos tocando guitarra y acordeón de noche, bajo una guirnalda de luces",
+    },
   },
 
   footer: {

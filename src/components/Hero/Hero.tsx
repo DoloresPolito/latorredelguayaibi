@@ -25,6 +25,10 @@ type HeroProps = {
   name?: { line1: string; line2: string };
   /** Clase extra para el título (p. ej. otra tipografía) */
   titleClassName?: string;
+  /** Destino del botón: ruta interna ("/la-torre") o ancla ("#seccion") */
+  ctaHref?: string;
+  /** "light": textos claros también en desktop (fotos oscuras a la izquierda) */
+  tone?: "dark" | "light";
 };
 
 /** Foto distinta para desktop y mobile ("art direction") con <picture> */
@@ -59,13 +63,18 @@ export default function Hero({
   variant = "tagline",
   name,
   titleClassName,
+  ctaHref = "/la-torre",
+  tone = "dark",
 }: HeroProps) {
   const isName = variant === "name" && name;
   const line1 = isName ? name.line1 : t.titleLine1;
   const line2 = isName ? name.line2 : t.titleLine2;
 
   return (
-    <section className={styles.hero}>
+    <section
+      className={`${styles.hero} ${tone === "light" ? styles.light : ""}`}
+      data-nav-theme={tone === "light" ? "dark" : undefined}
+    >
       <div className={styles.media}>
         {image && mobileImage ? (
           <ArtDirectedImage image={image} mobileImage={mobileImage} />
@@ -96,10 +105,17 @@ export default function Hero({
         <div className={styles.actions}>
           <p className={styles.tagline}>{t.tagline}</p>
           <span className={styles.rule} aria-hidden="true" />
-          <Link href={localizePath(lang, "/la-torre")} className={styles.cta}>
-            {t.cta}
-            <ArrowRight size={16} strokeWidth={1.5} aria-hidden="true" />
-          </Link>
+          {ctaHref.startsWith("/") ? (
+            <Link href={localizePath(lang, ctaHref)} className={styles.cta}>
+              {t.cta}
+              <ArrowRight size={16} strokeWidth={1.5} aria-hidden="true" />
+            </Link>
+          ) : (
+            <a href={ctaHref} className={styles.cta}>
+              {t.cta}
+              <ArrowRight size={16} strokeWidth={1.5} aria-hidden="true" />
+            </a>
+          )}
         </div>
       </div>
 
