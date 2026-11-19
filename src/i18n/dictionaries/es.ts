@@ -8,6 +8,9 @@ export const es = {
     reservasTitle: "Reservas — La Torre del Guayaibí",
     reservasDescription:
       "Consultá disponibilidad en La Torre del Guayaibí. Elegí tus fechas y te respondemos personalmente.",
+    habitacionesTitle: "Habitaciones — La Torre del Guayaibí",
+    habitacionesDescription:
+      "Cinco suites en una casa de piedra, en el corazón del campo correntino.",
     eventosTitle: "Eventos — La Torre del Guayaibí",
     eventosDescription:
       "Eventos con gastronomía, reuniones de trabajo y La Torre en exclusiva, en el corazón del campo correntino.",
@@ -67,13 +70,38 @@ export const es = {
     imageAlt: "Atardecer dorado sobre la pileta, con reposeras y eucaliptos recortados contra el cielo",
   },
 
+  habitaciones: {
+    intro: {
+      text: "Espacios amplios y luminosos",
+    },
+    list: {
+      title: "Habitaciones",
+      countLabel: "Suites",
+      cardCta: "Consultar",
+      beds: {
+        twoDoubles: "2 camas dobles",
+        threeSingles: "3 camas simples",
+      },
+      guests: "Hasta {n} huéspedes",
+      extraBed: "Cama extra opcional",
+    },
+    rooms: {
+      piedra: { name: "Suite de piedra", imageAlt: "Suite de piedra" },
+      espejos: { name: "Suite de los espejos", imageAlt: "Suite de los espejos" },
+      triple: { name: "Suite triple", imageAlt: "Suite triple" },
+      azul: { name: "Suite azul petróleo", imageAlt: "Suite azul petróleo" },
+      verde: { name: "Suite verde", imageAlt: "Suite verde" },
+    },
+  },
+
   eventos: {
     hero: {
       kicker: "Eventos en La Torre",
       titleLine1: "Encuentros",
       titleLine2: "a cielo abierto.",
       tagline: "Celebraciones, reuniones y experiencias a medida en el corazón del campo correntino.",
-      cta: "Ver propuestas",
+      cta: "Consultá por eventos",
+      whatsapp: "Hola! Quisiera consultar por un evento en La Torre.",
       scroll: "Scroll",
       next: "Ir a la siguiente sección",
       imageAlt: "La torre de piedra iluminada de noche, bajo un cielo estrellado con la Vía Láctea",
@@ -117,21 +145,17 @@ export const es = {
           ],
           imageAlt: "Quincho de piedra con la parrilla encendida y una barra de madera con banquetas",
         },
+        chamame: {
+          titleLine1: "Noche de",
+          titleLine2: "tradición",
+          subtitle: "Corrientes, en cada acorde.",
+          paragraphs: [
+            "Para quienes buscan darle a su evento un carácter diferente, organizamos noches con músicos locales en vivo, el sonido del acordeón y el chamamé como protagonista.",
+            "Una propuesta pensada para vivir de cerca la música que nos identifica y descubrir Corrientes a través de sus tradiciones, su cultura y su gente.",
+          ],
+          imageAlt: "Dos músicos tocando guitarra y acordeón de noche en el jardín, bajo una guirnalda de luces",
+        },
       },
-    },
-    experience: {
-      titleLine1: "Sabores y",
-      titleLine2: "tradiciones",
-      subtitle: "Una experiencia bien nuestra.",
-      paragraphs: [
-        "Hay algo especial en compartir un asado mientras suena una guitarra.",
-        "Para quienes buscan darle a su evento un carácter diferente, podemos organizar experiencias que reúnen lo mejor de nuestras tradiciones.",
-        "Un asado preparado para la ocasión, músicos locales, el sonido del acordeón y el chamamé como protagonista.",
-        "Una manera de descubrir Corrientes a través de su gastronomía, su música y su gente.",
-      ],
-      cta: "Consultar por esta experiencia",
-      whatsapp: "Hola! Quisiera consultar por la experiencia Sabores y Tradiciones para un evento.",
-      imageAlt: "Músicos tocando guitarra y acordeón de noche, bajo una guirnalda de luces",
     },
   },
 
@@ -150,8 +174,28 @@ export const es = {
     title: "Espacios para quedarse.",
     text: "Cada habitación tiene su propia personalidad. Espacios donde la calidez de una casa de campo se encuentra con la tranquilidad de la naturaleza.",
     cta: "Explorar habitaciones",
+    // Home nuevo: una frase centrada, sin párrafo (una línea por renglón)
+    quoteLines: ["Habitaciones", "donde", "el verdadero lujo", "es la tranquilidad."],
+    quoteCta: "Ver más sobre las habitaciones",
     imageAlt:
       "Habitación con camas con dosel y cortinas blancas, paredes de piedra y un ventanal hacia el parque",
+  },
+
+  expandImage: {
+    title: "Un lugar con historia propia",
+    cta: "Conocer la torre",
+    text: "En el corazón de Corrientes, La Torre del Guayaibí combina naturaleza, tradición y una historia familiar única que se respira en cada rincón.",
+    imageAlt:
+      "Galería de piedra de La Torre al atardecer, con mesas, macetas y un gran árbol sobre el parque",
+  },
+
+  eventsTeaser: {
+    titleLine1: "Eventos",
+    titleLine2: "en La Torre.",
+    text: "Celebraciones íntimas, encuentros y experiencias que encuentran en La Torre un escenario único.",
+    cta: "Descubrir eventos",
+    imageAlt1: "Mesa de banquete con candelabros encendidos, flores, frutas, quesos y fiambres",
+    imageAlt2: "Muelle sobre la laguna al atardecer con cortinas de lino blanco movidas por el viento",
   },
 
   reservas: {

@@ -567,6 +567,20 @@ $drawer-duration: 650ms;
     color: $warm-ivory;
   }
 
+  // Sobre una sección partida en oscuro | claro (data-nav-split, p. ej. la
+  // de eventos del home): vidrio casi transparente para que se vea el fondo
+  // desenfocado, y cada link en crema o marrón según el lado del corte
+  :global(.theme-v2) .onSplit .links {
+    background-color: rgba($color-background, 0.14);
+    box-shadow: inset 0 0 0 $border-width rgba($white, 0.22);
+    backdrop-filter: blur(32px) saturate(150%);
+  }
+
+  :global(.theme-v2) .onSplit .link[data-over-dark],
+  :global(.theme-v2) .onSplit .brand[data-over-dark] > * {
+    color: $warm-ivory;
+  }
+
   // Sobre fondo oscuro, el botón pasa a crema para seguir destacándose
   :global(.theme-v2) .onDark .cta {
     background-color: $creme;

@@ -27,6 +27,11 @@
   }
 }
 
+.drift {
+  position: absolute;
+  inset: 0;
+}
+
 .layer {
   @include drift-layer(6%, 10px);
 }
@@ -70,7 +75,7 @@
   background-color: rgba($color-heading, 0.55);
 }
 
-// Mismo estilo que el título de la sección anterior ("Un lugar con historia propia.")
+// Mismo estilo que el título de "Un lugar con historia propia." (Intro)
 .title {
   @include h1;
 
@@ -233,4 +238,107 @@
 
 :global(.theme-v2) .rule {
   display: none;
+}
+
+// ─────────────────────────────────────────────
+// Variante "quote" (home nuevo): panel verde claro, frase centrada en verde
+// oscuro y un link subrayado en mayúsculas en vez del botón sólido.
+// ─────────────────────────────────────────────
+$quote-bg: #bcb79b; // el mismo verde claro de la sección de eventos
+$quote-ink: $deep-olive; // verde de los botones, como en el diseño
+
+.quote .panel {
+  align-items: center;
+  text-align: center;
+  background-color: $quote-bg;
+}
+
+:global(.theme-v2) .quote .title {
+  color: $quote-ink;
+}
+
+// Cada renglón sube un poco después del anterior
+.quote .line > * {
+  transition-delay: calc(300ms + var(--i, 0) * 110ms);
+}
+
+:global(.theme-v2) .quote .cta {
+  height: auto;
+  margin-top: $space-12;
+  padding: 0 0 $space-3;
+  border: 0;
+  border-radius: 0;
+  background-color: transparent;
+  gap: $space-6;
+  font-family: $font-ui;
+  font-size: 11px;
+  font-weight: $weight-regular;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: $quote-ink;
+
+  svg {
+    transform: none;
+  }
+
+  &::after {
+    display: block;
+    background-color: rgba($quote-ink, 0.45);
+  }
+
+  @include hover {
+    background-color: transparent;
+    color: $quote-ink;
+
+    &::after {
+      background-color: $quote-ink;
+    }
+
+    svg {
+      transform: translateX(3px);
+    }
+  }
+}
+
+// Animación del home nuevo: la foto ocupa todo el alto desde el principio,
+// sin recortes ni zoom. Solo se mueve: aparece con un fundido suave y,
+// después, se desplaza con el scroll y sigue apenas al mouse (drift-layer).
+.quote .media {
+  clip-path: none;
+  animation: none !important;
+}
+
+.quote .image {
+  transform: scale(1.18); // margen para que el movimiento no muestre bordes
+  animation: none !important;
+}
+
+.quote .media:hover .image {
+  transform: scale(1.18);
+}
+
+.quote .drift {
+  opacity: 0;
+  transition: opacity 1800ms ease;
+}
+
+.section[data-visible="true"] .quote .drift {
+  opacity: 1;
+}
+
+// Un poco más de recorrido vertical con el scroll que en la versión original
+.quote .layer {
+  @include drift-layer(9%, 10px);
+}
+
+// Los textos llegan más despacio y desde más cerca
+.quote .panel[data-visible] > * {
+  transition-duration: 1800ms, 1800ms, 200ms, 200ms, 200ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .quote .drift {
+    opacity: 1;
+    transition: none;
+  }
 }

@@ -34,6 +34,7 @@ export default function Navbar({ lang, t, variant = "top" }: NavbarProps) {
   const wasOpen = useRef(false);
   const [isStuck, setIsStuck] = useState(false);
   const [isOnDark, setIsOnDark] = useState(false);
+  const [isOnSplit, setIsOnSplit] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
 
@@ -61,6 +62,27 @@ export default function Navbar({ lang, t, variant = "top" }: NavbarProps) {
           return r.top <= y && r.bottom >= y;
         }),
       );
+
+      // ¿Está sobre una sección partida en oscuro | claro? (data-nav-split =
+      // dónde cae el corte, de 0 a 1 del ancho; solo desde lg, en mobile el
+      // corte es horizontal). La pastilla pasa a vidrio transparente y cada
+      // link / el isotipo toma el color según el lado del corte en que queda.
+      const split = Array.from(document.querySelectorAll<HTMLElement>("[data-nav-split]")).find(
+        (section) => {
+          const r = section.getBoundingClientRect();
+          return r.top <= y && r.bottom >= y;
+        },
+      );
+      let splitX = -1;
+      if (split && window.matchMedia("(min-width: 1024px)").matches) {
+        const r = split.getBoundingClientRect();
+        splitX = r.left + r.width * Number(split.dataset.navSplit);
+      }
+      setIsOnSplit(splitX >= 0);
+      el.querySelectorAll<HTMLElement>("[data-split-target]").forEach((node) => {
+        const b = node.getBoundingClientRect();
+        node.toggleAttribute("data-over-dark", splitX >= 0 && b.left + b.width / 2 < splitX);
+      });
     };
     const onScroll = () => {
       if (!frame) frame = requestAnimationFrame(update);
@@ -130,12 +152,12 @@ export default function Navbar({ lang, t, variant = "top" }: NavbarProps) {
   return (
     <header
       ref={ref}
-      className={[styles.header, styles[variant], isStuck && styles.stuck, isOnDark && styles.onDark]
+      className={[styles.header, styles[variant], isStuck && styles.stuck, isOnDark && styles.onDark, isOnSplit && styles.onSplit]
         .filter(Boolean)
         .join(" ")}
     >
       <nav className={styles.bar} aria-label={t.ariaLabel}>
-        <Link href={href("/")} className={styles.brand} aria-label={t.home} onClick={close}>
+        <Link href={href("/")} className={styles.brand} aria-label={t.home} onClick={close} data-split-target>
           <Logo nameClassName={styles.logoName} markClassName={styles.logoMark} />
         </Link>
 
@@ -144,7 +166,7 @@ export default function Navbar({ lang, t, variant = "top" }: NavbarProps) {
         <ul className={styles.links}>
           {NAV_LINKS.map((link) => (
             <li key={link.href}>
-              <Link href={href(link.href)} className={styles.link}>
+              <Link href={href(link.href)} className={styles.link} data-split-target>
                 {t.links[link.key]}
               </Link>
             </li>

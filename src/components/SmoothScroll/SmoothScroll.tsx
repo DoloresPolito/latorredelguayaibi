@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
+import { usePathname } from "next/navigation";
 import Lenis from "lenis";
 import "lenis/dist/lenis.css";
 
@@ -9,6 +10,17 @@ import "lenis/dist/lenis.css";
  * scroll nativo, y se desactiva si el usuario pidió reducir animaciones.
  */
 export default function SmoothScroll() {
+  const lenisRef = useRef<Lenis | null>(null);
+  const pathname = usePathname();
+
+  // Al cambiar de página, arriba de todo y sin animación. Lenis guarda su
+  // propia posición: si no se la reinicia, sigue desde la de la página anterior.
+  useEffect(() => {
+    if (window.location.hash) return; // links a una sección: que vayan ahí
+    window.scrollTo(0, 0);
+    lenisRef.current?.scrollTo(0, { immediate: true, force: true });
+  }, [pathname]);
+
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
@@ -20,6 +32,7 @@ export default function SmoothScroll() {
       lerp: 0.1,
       anchors: true, // links "#seccion" (ej. la flecha del hero) también se deslizan
     });
+    lenisRef.current = lenis;
 
     // Cuando algo bloquea el scroll en <html> (el menú mobile), Lenis se frena
     const html = document.documentElement;
@@ -30,6 +43,7 @@ export default function SmoothScroll() {
     return () => {
       observer.disconnect();
       lenis.destroy();
+      lenisRef.current = null;
     };
   }, []);
 

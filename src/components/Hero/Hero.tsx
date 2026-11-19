@@ -111,7 +111,11 @@ export default function Hero({
               <ArrowRight size={16} strokeWidth={1.5} aria-hidden="true" />
             </Link>
           ) : (
-            <a href={ctaHref} className={styles.cta}>
+            <a
+              href={ctaHref}
+              className={styles.cta}
+              {...(ctaHref.startsWith("http") && { target: "_blank", rel: "noopener noreferrer" })}
+            >
               {t.cta}
               <ArrowRight size={16} strokeWidth={1.5} aria-hidden="true" />
             </a>

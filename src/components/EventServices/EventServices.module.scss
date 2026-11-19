@@ -5,6 +5,7 @@
 .clay { --tone: #{$mesa-clay}; }
 .sage { --tone: #{color.mix($ironwood, $warm-ivory, 55%)}; }
 .forest { --tone: #{color.mix($deep-olive, #000, 50%)}; } // el mismo verde de la sección oscura
+.sand { --tone: #beaa8e; }
 
 $line-x-mobile: 6px; // posición de la línea en mobile (desde el borde del contenido)
 $row-pad-mobile: $space-8;

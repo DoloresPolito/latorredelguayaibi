@@ -7,6 +7,9 @@ export const en: Dictionary = {
     reservasTitle: "Bookings — La Torre del Guayaibí",
     reservasDescription:
       "Check availability at La Torre del Guayaibí. Choose your dates and we'll get back to you personally.",
+    habitacionesTitle: "Rooms — La Torre del Guayaibí",
+    habitacionesDescription:
+      "Five suites in a stone house, in the heart of the Corrientes countryside.",
     eventosTitle: "Events — La Torre del Guayaibí",
     eventosDescription:
       "Events with food and drinks, work meetings and La Torre all to yourselves, in the heart of the Corrientes countryside.",
@@ -64,13 +67,38 @@ export const en: Dictionary = {
     imageAlt: "Golden sunset over the pool, with sun loungers and eucalyptus trees silhouetted against the sky",
   },
 
+  habitaciones: {
+    intro: {
+      text: "Spacious, light-filled rooms",
+    },
+    list: {
+      title: "Rooms",
+      countLabel: "Suites",
+      cardCta: "Enquire",
+      beds: {
+        twoDoubles: "2 double beds",
+        threeSingles: "3 single beds",
+      },
+      guests: "Up to {n} guests",
+      extraBed: "Optional extra bed",
+    },
+    rooms: {
+      piedra: { name: "Stone Suite", imageAlt: "Stone Suite" },
+      espejos: { name: "Mirror Suite", imageAlt: "Mirror Suite" },
+      triple: { name: "Triple Suite", imageAlt: "Triple Suite" },
+      azul: { name: "Petrol Blue Suite", imageAlt: "Petrol Blue Suite" },
+      verde: { name: "Green Suite", imageAlt: "Green Suite" },
+    },
+  },
+
   eventos: {
     hero: {
       kicker: "Events at La Torre",
       titleLine1: "Gatherings",
       titleLine2: "under open skies.",
       tagline: "Celebrations, meetings and tailor-made experiences in the heart of the Corrientes countryside.",
-      cta: "See what we offer",
+      cta: "Ask about events",
+      whatsapp: "Hi! I would like to ask about holding an event at La Torre.",
       scroll: "Scroll",
       next: "Go to the next section",
       imageAlt: "The stone tower lit up at night, under a starry sky with the Milky Way",
@@ -112,21 +140,17 @@ export const en: Dictionary = {
           ],
           imageAlt: "Stone barbecue area with the grill lit and a wooden bar with stools",
         },
+        chamame: {
+          titleLine1: "A night of",
+          titleLine2: "tradition",
+          subtitle: "Corrientes, in every chord.",
+          paragraphs: [
+            "For those who want to give their event a different character, we host nights with live local musicians, the sound of the accordion and chamamé at center stage.",
+            "An experience designed to enjoy up close the music that defines us, and to discover Corrientes through its traditions, its culture and its people.",
+          ],
+          imageAlt: "Two musicians playing guitar and accordion at night in the garden, under a string of lights",
+        },
       },
-    },
-    experience: {
-      titleLine1: "Flavors and",
-      titleLine2: "traditions",
-      subtitle: "An experience that is truly ours.",
-      paragraphs: [
-        "There is something special about sharing an asado while a guitar plays.",
-        "For those who want to give their event a different character, we can organize experiences that bring together the best of our traditions.",
-        "An asado prepared for the occasion, local musicians, the sound of the accordion and chamamé as the star.",
-        "A way to discover Corrientes through its food, its music and its people.",
-      ],
-      cta: "Ask about this experience",
-      whatsapp: "Hi! I would like to ask about the Flavors and Traditions experience for an event.",
-      imageAlt: "Musicians playing guitar and accordion at night, under a string of lights",
     },
   },
 
@@ -145,8 +169,27 @@ export const en: Dictionary = {
     title: "Spaces to stay.",
     text: "Each room has a personality of its own. Spaces where the warmth of a country house meets the calm of nature.",
     cta: "Explore the rooms",
+    quoteLines: ["Rooms", "where", "true luxury", "is tranquility."],
+    quoteCta: "More about the rooms",
     imageAlt:
       "Bedroom with canopy beds and white curtains, stone walls and a tall window onto the grounds",
+  },
+
+  expandImage: {
+    title: "A place with a story of its own",
+    cta: "Discover the tower",
+    text: "In the heart of Corrientes, La Torre del Guayaibí brings together nature, tradition and a unique family history you can feel in every corner.",
+    imageAlt:
+      "La Torre's stone veranda at sunset, with tables, potted plants and a large tree on the grounds",
+  },
+
+  eventsTeaser: {
+    titleLine1: "Events",
+    titleLine2: "at La Torre.",
+    text: "Intimate celebrations, gatherings and experiences that find a unique setting at La Torre.",
+    cta: "Discover events",
+    imageAlt1: "Banquet table with lit candelabras, flowers, fruit, cheeses and cured meats",
+    imageAlt2: "Pier over the lagoon at sunset with white linen curtains blowing in the wind",
   },
 
   reservas: {

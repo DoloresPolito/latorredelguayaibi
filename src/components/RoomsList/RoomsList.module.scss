@@ -1,0 +1,296 @@
+@use "sass:color";
+@use "abstracts" as *;
+
+$bg: color.mix($deep-olive, #000, 50%); // el verde oscuro del manifiesto
+
+.section {
+  padding: calc(#{$navbar-height-mobile} + #{$space-12}) $space-5 $space-32;
+  background-color: $bg;
+  color: $warm-ivory;
+
+  @include mq(lg) {
+    padding: calc(#{$navbar-height} + #{$space-20}) clamp(#{$space-6}, 5.5vw, #{$navbar-inset + $space-10}) 18vw;
+  }
+}
+
+// ─────────────────────────────────────────────
+// Encabezado: frase y contador a la izquierda, título grande a la derecha
+// ─────────────────────────────────────────────
+.header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: $space-6;
+  margin-bottom: $space-12;
+
+  @include mq(lg) {
+    margin-bottom: $space-16;
+  }
+
+  @include mq-down(md) {
+    flex-direction: column-reverse;
+    align-items: flex-start;
+  }
+
+  @include reveal-children(150ms, 2);
+}
+
+.intro {
+  display: flex;
+  flex-direction: column;
+  gap: $space-6;
+  padding-bottom: 0.6em;
+}
+
+// Antetítulo con línea, como en eventos ("Un lugar para encontrarse")
+.introText {
+  display: flex;
+  align-items: center;
+  gap: $space-5;
+  font-family: $font-ui;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 1.4;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: $creme;
+
+  @include mq(lg) {
+    font-size: 13px;
+  }
+}
+
+.rule {
+  flex-shrink: 0;
+  display: block;
+  width: 48px;
+  height: 1px;
+  background-color: rgba($warm-ivory, 0.7);
+}
+
+.count {
+  display: flex;
+  gap: 4px;
+  font-family: $font-ui;
+  font-size: 13px;
+
+  span {
+    padding: 4px 10px;
+    border-radius: $radius-full;
+    background-color: rgba($warm-ivory, 0.08);
+    color: rgba($warm-ivory, 0.75);
+  }
+}
+
+.title {
+  @include display-lay;
+  overflow: hidden;
+  padding-bottom: 0.08em;
+  font-size: clamp(38px, 8vw, 56px);
+  line-height: 1;
+  color: $creme;
+
+  @include mq(lg) {
+    font-size: clamp(48px, 4.4vw, 72px);
+  }
+
+  > span {
+    display: block;
+    transform: translateY(105%);
+    transition: transform 1500ms $ease-out 200ms;
+  }
+
+  [data-visible="true"] > & > span {
+    transform: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    > span {
+      transform: none;
+      transition: none;
+    }
+  }
+}
+
+// ─────────────────────────────────────────────
+// Grilla en dos columnas. La derecha arranca más abajo y, con el scroll,
+// sube más rápido que la izquierda (--parallax de <Parallax>, de 1 a -1).
+// ─────────────────────────────────────────────
+.grid {
+  display: grid;
+  gap: $space-12;
+
+  @include mq(lg) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+    gap: $space-6;
+  }
+}
+
+.column {
+  display: grid;
+  gap: $space-12;
+
+  @include mq(lg) {
+    gap: $space-24;
+  }
+}
+
+// Columna derecha: arranca un poco más abajo que la izquierda y sube un 18%
+// más rápido que la página
+.offset {
+  @include mq(lg) {
+    margin-top: 7vw;
+    transform: translate3d(0, calc(var(--sy, 0) * -0.18px), 0);
+    will-change: transform;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transform: none;
+  }
+}
+
+// ─────────────────────────────────────────────
+// Tarjeta
+// ─────────────────────────────────────────────
+.card {
+  opacity: 0;
+  transform: translateY(32px);
+  transition:
+    opacity 1800ms ease,
+    transform 1800ms $ease-out;
+
+  &[data-visible="true"] {
+    opacity: 1;
+    transform: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+.link {
+  display: block;
+  cursor: none;
+
+  &:focus-visible {
+    @include focus-ring;
+  }
+
+  @media (hover: none) {
+    cursor: pointer;
+  }
+}
+
+.frame {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border-radius: 2px;
+
+  @include mq(lg) {
+    &.tall {
+      aspect-ratio: 5 / 4.4;
+    }
+  }
+}
+
+// La foto se desliza dentro del marco con el scroll
+.layer {
+  position: absolute;
+  inset: 0;
+  transform: translate3d(0, calc(var(--parallax, 0) * 7%), 0);
+
+  @media (prefers-reduced-motion: reduce) {
+    transform: none;
+  }
+}
+
+.image {
+  object-fit: cover;
+  transform: scale(1.18);
+  transition: transform 1400ms $ease-out;
+
+  .link:hover & {
+    transform: scale(1.22);
+  }
+}
+
+// Etiqueta que sigue al mouse (posición en --cx / --cy, de HoverLabel)
+.label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: $space-2;
+  padding: 7px 10px;
+  border-radius: 3px;
+  background-color: $bg;
+  font-family: $font-ui;
+  font-size: 14px;
+  color: $warm-ivory;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transform: translate3d(calc(var(--cx, 0px) + 14px), calc(var(--cy, 0px) + 14px), 0);
+  transition: opacity 250ms ease;
+
+  .link:hover & {
+    opacity: 1;
+  }
+
+  svg {
+    transform: rotate(-45deg);
+  }
+
+  @media (hover: none) {
+    display: none;
+  }
+}
+
+.caption {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: $space-3 $space-6;
+  margin-top: $space-4;
+}
+
+.name {
+  font-family: $font-ui;
+  font-weight: $weight-regular;
+  font-size: 20px;
+  line-height: 1.2;
+  color: $warm-ivory;
+
+  @include mq(lg) {
+    font-size: 22px;
+  }
+}
+
+.pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  li {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 10px;
+    border-radius: $radius-full;
+    background-color: rgba($warm-ivory, 0.08);
+    font-family: $font-ui;
+    font-size: 13px;
+    color: rgba($warm-ivory, 0.8);
+  }
+}

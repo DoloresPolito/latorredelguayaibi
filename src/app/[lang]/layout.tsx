@@ -51,6 +51,9 @@ export default async function RootLayout({ children }: LayoutProps<"/[lang]">) {
     <html
       lang={lang}
       className={`${heading.variable} ${editorial.variable}`}
+      // Que Next saque el scroll suave al cambiar de página (si no, el salto
+      // arriba de todo se anima y termina en cualquier lado)
+      data-scroll-behavior="smooth"
       // <Opening> marca data-intro antes de hidratar
       suppressHydrationWarning
     >

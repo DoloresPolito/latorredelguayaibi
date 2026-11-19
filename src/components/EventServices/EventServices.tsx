@@ -14,6 +14,7 @@ const ITEMS = [
   { key: "gastronomia", src: "/images/eventos/gastronomia.png", tone: styles.clay },
   { key: "reuniones", src: "/images/eventos/reuniones.png", tone: styles.sage },
   { key: "exclusiva", src: "/images/eventos/exclusiva.png", tone: styles.forest },
+  { key: "chamame", src: "/images/eventos/musica.png", tone: styles.sand },
 ] as const;
 
 /**
