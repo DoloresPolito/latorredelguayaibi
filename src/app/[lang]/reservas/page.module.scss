@@ -310,7 +310,7 @@
 // Botones de WhatsApp y email: claros, para diferenciarse del principal.
 // Sus íconos no se giran (la flecha del mixin sí).
 :global(.theme-v2) .contactButton {
-  @include btn-v2($creme, $color-heading, $sand);
+  @include btn-v2($butter, $color-heading, $butter-hover);
   gap: $space-3;
   padding-inline: $space-4;
   font-size: 15px;

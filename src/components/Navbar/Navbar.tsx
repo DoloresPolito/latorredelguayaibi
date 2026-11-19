@@ -148,6 +148,9 @@ export default function Navbar({ lang, t, variant = "top" }: NavbarProps) {
   );
 
   const href = (path: string) => localizePath(lang, path);
+  // Sección actual (también sus subpáginas), para marcarla en la barra
+  const isCurrent = (path: string) =>
+    pathname === href(path) || pathname.startsWith(`${href(path)}/`);
 
   return (
     <header
@@ -166,7 +169,12 @@ export default function Navbar({ lang, t, variant = "top" }: NavbarProps) {
         <ul className={styles.links}>
           {NAV_LINKS.map((link) => (
             <li key={link.href}>
-              <Link href={href(link.href)} className={styles.link} data-split-target>
+              <Link
+                href={href(link.href)}
+                className={styles.link}
+                aria-current={isCurrent(link.href) ? "page" : undefined}
+                data-split-target
+              >
                 {t.links[link.key]}
               </Link>
             </li>
@@ -227,8 +235,11 @@ export default function Navbar({ lang, t, variant = "top" }: NavbarProps) {
         <ul className={styles.drawerLinks}>
           {NAV_LINKS.map((link, i) => (
             <li key={link.href} style={{ "--i": i } as CSSProperties}>
-              <Link href={href(link.href)} onClick={close}>
-                <span className={styles.drawerIndex}>{String(i + 1).padStart(2, "0")}</span>
+              <Link
+                href={href(link.href)}
+                onClick={close}
+                aria-current={isCurrent(link.href) ? "page" : undefined}
+              >
                 {t.links[link.key]}
               </Link>
             </li>

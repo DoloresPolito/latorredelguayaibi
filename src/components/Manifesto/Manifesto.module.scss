@@ -1,11 +1,10 @@
-@use "sass:color";
 @use "abstracts" as *;
 
-$bg: color.mix($deep-olive, #000, 50%); // verde oliva muy oscuro
+$bg: $forest; // verde oliva muy oscuro
 
 .section {
   background-color: $bg;
-  color: $warm-ivory;
+  color: $butter;
 }
 
 .inner {
@@ -32,7 +31,7 @@ $bg: color.mix($deep-olive, #000, 50%); // verde oliva muy oscuro
 
   em {
     font-style: italic;
-    color: $creme;
+    color: $butter;
   }
 }
 

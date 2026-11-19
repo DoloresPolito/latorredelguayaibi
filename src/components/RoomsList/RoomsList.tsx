@@ -94,8 +94,8 @@ export default function RoomsList({ lang, intro, t, rooms, id = "suites" }: Room
             <span>{t.countLabel}</span>
           </p>
         </div>
-        <h1 id={`${id}-title`} className={styles.title}>
-          <span>{t.title}</span>
+        <h1 id={`${id}-title`} className="visually-hidden">
+          {t.title}
         </h1>
       </Reveal>
 

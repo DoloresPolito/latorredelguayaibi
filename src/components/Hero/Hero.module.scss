@@ -50,7 +50,7 @@ $content-left-desktop: $navbar-inset + $space-10; // alinea con el logo de la na
 .placeholder {
   position: absolute;
   inset: 0;
-  background: linear-gradient(172deg, #c9d0cc 0%, #eedcbf 48%, $stone 76%, #555038 100%);
+  background: linear-gradient(172deg, #c9d0cc 0%, #eedcbf 48%, #c3ac92 76%, #555038 100%);
 }
 
 // Sin velos claros: el título va en marrón sobre el cielo de la foto.
@@ -163,7 +163,7 @@ $content-left-desktop: $navbar-inset + $space-10; // alinea con el logo de la na
   line-height: 1.9;
   letter-spacing: 0.24em;
   text-transform: uppercase;
-  color: rgba($warm-ivory, 0.95);
+  color: rgba($butter, 0.95);
   text-shadow: 0 1px 12px rgba(#000, 0.25);
 
   @include mq(lg) {
@@ -178,7 +178,7 @@ $content-left-desktop: $navbar-inset + $space-10; // alinea con el logo de la na
   width: 72px;
   height: 1px;
   margin-block: clamp(#{$space-4}, 3svh, #{$space-6});
-  background-color: rgba($warm-ivory, 0.6);
+  background-color: rgba($butter, 0.6);
 
   @include mq(lg) {
     background-color: rgba($color-heading, 0.45);
@@ -190,10 +190,10 @@ $content-left-desktop: $navbar-inset + $space-10; // alinea con el logo de la na
   height: 48px;
   padding-inline: $space-6;
   gap: $space-6;
-  border: $border-width solid rgba($warm-ivory, 0.75);
+  border: $border-width solid rgba($butter, 0.75);
   border-radius: $radius-navbar;
   background-color: rgba(#000, 0.1);
-  color: $warm-ivory;
+  color: $butter;
   font-size: 11px;
   letter-spacing: 0.16em;
 
@@ -202,8 +202,8 @@ $content-left-desktop: $navbar-inset + $space-10; // alinea con el logo de la na
   }
 
   @include hover {
-    background-color: rgba($warm-ivory, 0.15);
-    border-color: $warm-ivory;
+    background-color: rgba($butter, 0.15);
+    border-color: $butter;
 
     svg { transform: translateX(3px); }
   }
@@ -235,7 +235,7 @@ $content-left-desktop: $navbar-inset + $space-10; // alinea con el logo de la na
   font-weight: $weight-semibold;
   letter-spacing: 0.3em;
   text-transform: uppercase;
-  color: rgba($white, 0.85);
+  color: rgba($butter, 0.85);
 
   @include mq(md) {
     display: flex;
@@ -251,7 +251,7 @@ $content-left-desktop: $navbar-inset + $space-10; // alinea con el logo de la na
   display: block;
   width: 1px;
   height: 48px;
-  background-color: rgba($white, 0.7);
+  background-color: rgba($butter, 0.7);
 }
 
 .down {
@@ -261,17 +261,17 @@ $content-left-desktop: $navbar-inset + $space-10; // alinea con el logo de la na
   bottom: $space-6;
   width: 44px;
   height: 44px;
-  border: $border-width solid rgba($white, 0.75);
+  border: $border-width solid rgba($butter, 0.75);
   border-radius: $radius-full;
-  color: $white;
+  color: $butter;
   transition: background-color $transition-default;
 
   @include hover {
-    background-color: rgba($white, 0.15);
+    background-color: rgba($butter, 0.15);
   }
 
   &:focus-visible {
-    outline: $border-width solid $white;
+    outline: $border-width solid $butter;
     outline-offset: 3px;
   }
 
@@ -321,7 +321,7 @@ $content-left-desktop: $navbar-inset + $space-10; // alinea con el logo de la na
 // Home de prueba (.theme-v2): botón sólido claro sobre la foto
 // ─────────────────────────────────────────────
 :global(.theme-v2) .cta {
-  @include btn-v2($creme, $color-heading, $warm-ivory);
+  @include btn-v2($butter, $color-heading, $butter-hover);
 }
 
 // ─────────────────────────────────────────────
@@ -338,7 +338,7 @@ $content-left-desktop: $navbar-inset + $space-10; // alinea con el logo de la na
 
   .kicker,
   .title {
-    color: $warm-ivory;
+    color: $butter;
   }
 
   @include mq(lg) {
@@ -349,11 +349,11 @@ $content-left-desktop: $navbar-inset + $space-10; // alinea con el logo de la na
     }
 
     .tagline {
-      color: rgba($warm-ivory, 0.9);
+      color: rgba($butter, 0.9);
     }
 
     .rule {
-      background-color: rgba($warm-ivory, 0.6);
+      background-color: rgba($butter, 0.6);
     }
   }
 }

@@ -1,4 +1,3 @@
-@use "sass:color";
 @use "abstracts" as *;
 
 // ─────────────────────────────────────────────
@@ -57,13 +56,10 @@
   padding-inline: $space-4 $space-2;
   border-radius: $radius-navbar;
   background-color: rgba($color-background, 0.9);
-  box-shadow: inset 0 0 0 $border-width rgba($white, 0.35);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   color: $color-heading;
-  transition:
-    background-color $transition-default,
-    box-shadow $transition-default;
+  transition: background-color $transition-default;
 
   @include mq(nav) {
     padding-inline: $space-10 $space-4;
@@ -71,7 +67,27 @@
 
   .stuck & {
     background-color: rgba($color-background, 0.97);
-    box-shadow: inset 0 0 0 $border-width rgba($color-border-strong, 0.7);
+  }
+}
+
+// Mobile: barra de vidrio (casi sin color, con desenfoque del fondo)
+@include mq-down(nav) {
+  .bar,
+  .stuck .bar {
+    background-color: rgba($color-background, 0.18);
+    backdrop-filter: blur(20px) saturate(140%);
+    -webkit-backdrop-filter: blur(20px) saturate(140%);
+  }
+
+  // Sobre secciones oscuras, logo y menú en crema para que se lean
+  .brand > *,
+  .toggle {
+    transition: color 500ms ease;
+  }
+
+  .onDark .brand > *,
+  .onDark .toggle {
+    color: $butter;
   }
 }
 
@@ -131,6 +147,11 @@
 
   @include hover {
     &::after { transform: scaleX(1); }
+  }
+
+  // Sección actual: queda subrayada
+  &[aria-current="page"]::after {
+    transform: scaleX(1);
   }
 
   &:focus-visible {
@@ -196,6 +217,7 @@
 // ─────────────────────────────────────────────
 .cta {
   @include btn-primary;
+  color: $butter;
   display: none;
   flex-shrink: 0;
   padding-inline: $btn-nav-padding-x $space-6;
@@ -252,7 +274,7 @@ $drawer-duration: 650ms;
   position: fixed;
   inset: 0;
   z-index: 3;
-  background-color: rgba($bronco, 0.35);
+  background-color: rgba($forest, 0.35);
   backdrop-filter: blur(3px);
   -webkit-backdrop-filter: blur(3px);
   opacity: 0;
@@ -280,11 +302,10 @@ $drawer-duration: 650ms;
   z-index: 4;
   display: flex;
   flex-direction: column;
-  width: min(86vw, 420px);
+  width: 100%; // pantalla completa en mobile
   padding: $space-5 $space-6 $space-8;
   overflow-y: auto;
   background-color: $color-background;
-  border-left: $border-width solid $color-border;
   visibility: hidden;
   transform: translateX(100%);
   transition:
@@ -385,17 +406,24 @@ $drawer-duration: 650ms;
       color: $color-primary;
     }
 
+    &[aria-current="page"] {
+      color: $color-primary;
+      text-decoration: underline;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 0.18em;
+    }
+
     &:focus-visible {
       @include focus-ring;
     }
   }
 }
 
-.drawerIndex {
-  font-family: $font-ui;
-  font-size: 10px;
-  letter-spacing: 0.08em;
-  color: $color-muted;
+// En mobile la barra muestra solo el isotipo, sin el nombre
+.logoName {
+  @include mq-down(nav) {
+    display: none;
+  }
 }
 
 .drawerFooter {
@@ -413,6 +441,7 @@ $drawer-duration: 650ms;
 
 .drawerCta {
   @include btn-primary;
+  color: $butter;
   width: 100%;
   gap: $space-4;
 }
@@ -445,7 +474,7 @@ $drawer-duration: 650ms;
 // Home de prueba (.theme-v2)
 :global(.theme-v2) .cta,
 :global(.theme-v2) .drawerCta {
-  @include btn-v2;
+  @include btn-v2($fg: $butter);
 }
 
 // En mobile el botón de la barra se oculta (está en el menú).
@@ -515,7 +544,7 @@ $drawer-duration: 650ms;
   }
 
   :global(.theme-v2) .onDark .brand > * {
-    color: $warm-ivory;
+    color: $butter;
   }
 
   // Pastilla de vidrio con los links
@@ -527,7 +556,6 @@ $drawer-duration: 650ms;
     padding-inline: $space-2;
     border-radius: 6px;
     background-color: rgba($color-background, 0.6);
-    box-shadow: inset 0 0 0 $border-width rgba($white, 0.35);
     backdrop-filter: blur(24px) saturate(140%);
   }
 
@@ -551,7 +579,6 @@ $drawer-duration: 650ms;
   :global(.theme-v2) .link {
     transition:
       background-color 500ms ease,
-      box-shadow 500ms ease,
       color 500ms ease;
   }
 
@@ -559,12 +586,11 @@ $drawer-duration: 650ms;
   // texto crema, y el botón en crema para seguir destacándose
   // Con cuerpo suficiente para leerse también cuando pasa sobre una foto clara
   :global(.theme-v2) .onDark .links {
-    background-color: rgba(color.mix($deep-olive, #000, 50%), 0.7);
-    box-shadow: inset 0 0 0 $border-width rgba($white, 0.1);
+    background-color: rgba($forest, 0.7);
   }
 
   :global(.theme-v2) .onDark .link {
-    color: $warm-ivory;
+    color: $butter;
   }
 
   // Sobre una sección partida en oscuro | claro (data-nav-split, p. ej. la
@@ -572,22 +598,21 @@ $drawer-duration: 650ms;
   // desenfocado, y cada link en crema o marrón según el lado del corte
   :global(.theme-v2) .onSplit .links {
     background-color: rgba($color-background, 0.14);
-    box-shadow: inset 0 0 0 $border-width rgba($white, 0.22);
     backdrop-filter: blur(32px) saturate(150%);
   }
 
   :global(.theme-v2) .onSplit .link[data-over-dark],
   :global(.theme-v2) .onSplit .brand[data-over-dark] > * {
-    color: $warm-ivory;
+    color: $butter;
   }
 
   // Sobre fondo oscuro, el botón pasa a crema para seguir destacándose
   :global(.theme-v2) .onDark .cta {
-    background-color: $creme;
+    background-color: $butter;
     color: $color-heading;
 
     @include hover {
-      background-color: $warm-ivory;
+      background-color: $butter-hover;
       color: $color-heading;
     }
   }

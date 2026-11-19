@@ -51,7 +51,7 @@
 .input,
 .textarea {
   &[aria-invalid="true"] {
-    border-color: $mesa-clay;
+    border-color: $color-error;
   }
 }
 
@@ -64,7 +64,7 @@
 .error {
   font-family: $font-ui;
   font-size: 11px;
-  color: $mesa-clay;
+  color: $color-error;
 }
 
 .divider {

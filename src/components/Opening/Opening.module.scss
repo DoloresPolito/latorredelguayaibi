@@ -1,4 +1,3 @@
-@use "sass:color";
 @use "abstracts" as *;
 
 // ─────────────────────────────────────────────
@@ -12,7 +11,7 @@
 $window-delay: 1500ms;
 $window-duration: 3000ms;
 $ease-expo: cubic-bezier(0.76, 0, 0.24, 1);
-$bg: color.mix($deep-olive, #000, 45%); // oliva muy oscuro
+$bg: $forest; // oliva muy oscuro
 
 .opening {
   display: none;
@@ -95,7 +94,7 @@ $bg: color.mix($deep-olive, #000, 45%); // oliva muy oscuro
   gap: $space-6;
   padding-inline: $space-5;
   text-align: center;
-  color: $warm-ivory;
+  color: $butter;
   pointer-events: none;
   animation: brand-out 900ms $ease-out 3150ms both;
 }

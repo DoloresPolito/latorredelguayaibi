@@ -1,8 +1,7 @@
-@use "sass:color";
 @use "abstracts" as *;
 
-$dark: color.mix($deep-olive, #000, 50%); // mismo verde que el manifiesto
-$light: #bcb79b;
+$dark: $forest; // mismo verde que el manifiesto
+$light: $butter;
 $ink: $dark; // textos sobre el verde claro
 
 // En desktop el corte vertical cae por debajo de la segunda foto;

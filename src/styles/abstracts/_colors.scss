@@ -1,49 +1,52 @@
+@use "sass:color";
+
 // ─────────────────────────────────────────────
-// Paleta principal de la web
+// Paleta de la web (unificada). Cada color tiene un rol;
+// no agregar colores sueltos en los componentes.
 // ─────────────────────────────────────────────
-$warm-ivory: #f4f0e7; // fondo principal y navbar
-$soft-ivory: #f7f4ec; // inputs, formularios, superficies secundarias
+
+// Claros
+$butter: #fef1ca; // fondo del sitio, textos y botones claros sobre fondos oscuros
+$butter-hover: color.mix($butter, #493328, 90%); // hover de botones crema (derivado)
+
+// Verdes
+$forest: #1d2419; // secciones oscuras (manifiesto, historia, eventos, habitaciones)
 $deep-olive: #394831; // botones principales, navegación, acentos
 $olive-hover: #4a5a3f; // hover de botones principales
-$dark-brown: #493328; // títulos y textos destacados
-$warm-gray: #625a50; // párrafos y textos secundarios
-$muted-gray: #716b60; // textos auxiliares
-$sage: #dde4d5; // rango de fechas
+$sage: #dde4d5; // rango de fechas del calendario
 $sage-light: #e5e9df; // hover de fechas
+
+// Tierras
+$dark-brown: #493328; // títulos y textos destacados sobre claro
+$warm-gray: #625a50; // párrafos
+$muted-gray: #716b60; // textos auxiliares
+$terracotta: #a85c37; // fondo del footer y acentos cálidos
+$mesa-clay: #794a37; // errores de formularios
+
+// Líneas e íconos
 $soft-border: #ddd8cc; // bordes, divisores, inputs
 $strong-border: #cfc9bc; // bordes de botones secundarios
 $icon-color: #626a58; // íconos
-$white: #ffffff;
-
-// ─────────────────────────────────────────────
-// Paleta complementaria de marca (uso puntual)
-// ─────────────────────────────────────────────
-$creme: #e2ceb2;
-$stone: #c3ac92;
-$ironwood: #969483;
-$mesa-clay: #794a37;
-$prairie-gold: #85663a;
-$bronco: #3b2118;
-$sand: #d0c2aa; // fondo de secciones destacadas (habitaciones)
-$terracotta: #a85c37; // fondo del footer
-$cream-light: #fbefcf; // textos sobre terracota
 
 // ─────────────────────────────────────────────
 // Alias semánticos (usar estos en los componentes)
 // ─────────────────────────────────────────────
-$color-background: $warm-ivory;
-$color-surface: $soft-ivory;
+$color-background: $butter;
+$color-surface: $butter;
+$color-dark: $forest;
+$color-on-dark: $butter;
 $color-primary: $deep-olive;
 $color-primary-hover: $olive-hover;
-$color-on-primary: $warm-ivory;
+$color-on-primary: $butter;
 $color-heading: $dark-brown;
 $color-body: $warm-gray;
 $color-muted: $muted-gray;
+$color-error: $mesa-clay;
 $color-border: $soft-border;
 $color-border-strong: $strong-border;
 $color-icon: $icon-color;
 $color-date-selected: $deep-olive;
-$color-date-selected-text: $white;
+$color-date-selected-text: $butter;
 $color-date-range: $sage;
 $color-date-hover: $sage-light;
 
@@ -51,23 +54,20 @@ $color-date-hover: $sage-light;
 $colors: (
   "background": $color-background,
   "surface": $color-surface,
+  "dark": $color-dark,
+  "on-dark": $color-on-dark,
   "primary": $color-primary,
   "primary-hover": $color-primary-hover,
   "on-primary": $color-on-primary,
   "heading": $color-heading,
   "body": $color-body,
   "muted": $color-muted,
+  "error": $color-error,
   "border": $color-border,
   "border-strong": $color-border-strong,
   "icon": $color-icon,
   "date-selected": $color-date-selected,
   "date-range": $color-date-range,
   "date-hover": $color-date-hover,
-  "creme": $creme,
-  "stone": $stone,
-  "ironwood": $ironwood,
-  "mesa-clay": $mesa-clay,
-  "prairie-gold": $prairie-gold,
-  "bronco": $bronco,
-  "sand": $sand,
+  "terracotta": $terracotta,
 );

@@ -1,11 +1,10 @@
-@use "sass:color";
 @use "abstracts" as *;
 
-$bg: color.mix($deep-olive, #000, 50%); // el mismo verde oscuro de la sección del home
+$bg: $forest; // el mismo verde oscuro de la sección del home
 
 .section {
   background-color: $bg;
-  color: $warm-ivory;
+  color: $butter;
 }
 
 .inner {
@@ -38,7 +37,7 @@ $bg: color.mix($deep-olive, #000, 50%); // el mismo verde oscuro de la sección 
   display: block;
   width: 48px;
   height: 1px;
-  background-color: rgba($warm-ivory, 0.7);
+  background-color: rgba($butter, 0.7);
 }
 
 .heading[data-visible] > .rule {
@@ -58,7 +57,7 @@ $bg: color.mix($deep-olive, #000, 50%); // el mismo verde oscuro de la sección 
   line-height: 1.4;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: $creme;
+  color: $butter;
 
   @include mq(lg) {
     font-size: 13px;
@@ -74,7 +73,7 @@ $bg: color.mix($deep-olive, #000, 50%); // el mismo verde oscuro de la sección 
 
   em {
     font-style: italic;
-    color: $creme;
+    color: $butter;
   }
 }
 

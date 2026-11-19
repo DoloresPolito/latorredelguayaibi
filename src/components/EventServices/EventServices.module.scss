@@ -1,11 +1,10 @@
-@use "sass:color";
 @use "abstracts" as *;
 
 // Colores de los bloques detrás de cada foto (y del punto de la línea)
-.clay { --tone: #{$mesa-clay}; }
-.sage { --tone: #{color.mix($ironwood, $warm-ivory, 55%)}; }
-.forest { --tone: #{color.mix($deep-olive, #000, 50%)}; } // el mismo verde de la sección oscura
-.sand { --tone: #beaa8e; }
+.clay { --tone: #{$terracotta}; }
+.sage { --tone: #{$deep-olive}; }
+.forest { --tone: #{$forest}; }
+.sand { --tone: #{$dark-brown}; }
 
 $line-x-mobile: 6px; // posición de la línea en mobile (desde el borde del contenido)
 $row-pad-mobile: $space-8;
@@ -259,7 +258,7 @@ $row-pad-mobile: $space-8;
   aspect-ratio: 4 / 3;
   overflow: hidden;
   border-radius: 2px;
-  box-shadow: 0 24px 48px -28px rgba($bronco, 0.55);
+  box-shadow: 0 24px 48px -28px rgba($forest, 0.55);
   transform: translate3d(0, calc(var(--parallax, 0) * -14px), 0);
 }
 

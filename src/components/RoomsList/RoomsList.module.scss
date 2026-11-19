@@ -1,12 +1,11 @@
-@use "sass:color";
 @use "abstracts" as *;
 
-$bg: color.mix($deep-olive, #000, 50%); // el verde oscuro del manifiesto
+$bg: $forest; // el verde oscuro del manifiesto
 
 .section {
   padding: calc(#{$navbar-height-mobile} + #{$space-12}) $space-5 $space-32;
   background-color: $bg;
-  color: $warm-ivory;
+  color: $butter;
 
   @include mq(lg) {
     padding: calc(#{$navbar-height} + #{$space-20}) clamp(#{$space-6}, 5.5vw, #{$navbar-inset + $space-10}) 18vw;
@@ -53,7 +52,7 @@ $bg: color.mix($deep-olive, #000, 50%); // el verde oscuro del manifiesto
   line-height: 1.4;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: $creme;
+  color: $butter;
 
   @include mq(lg) {
     font-size: 13px;
@@ -65,7 +64,7 @@ $bg: color.mix($deep-olive, #000, 50%); // el verde oscuro del manifiesto
   display: block;
   width: 48px;
   height: 1px;
-  background-color: rgba($warm-ivory, 0.7);
+  background-color: rgba($butter, 0.7);
 }
 
 .count {
@@ -77,38 +76,8 @@ $bg: color.mix($deep-olive, #000, 50%); // el verde oscuro del manifiesto
   span {
     padding: 4px 10px;
     border-radius: $radius-full;
-    background-color: rgba($warm-ivory, 0.08);
-    color: rgba($warm-ivory, 0.75);
-  }
-}
-
-.title {
-  @include display-lay;
-  overflow: hidden;
-  padding-bottom: 0.08em;
-  font-size: clamp(38px, 8vw, 56px);
-  line-height: 1;
-  color: $creme;
-
-  @include mq(lg) {
-    font-size: clamp(48px, 4.4vw, 72px);
-  }
-
-  > span {
-    display: block;
-    transform: translateY(105%);
-    transition: transform 1500ms $ease-out 200ms;
-  }
-
-  [data-visible="true"] > & > span {
-    transform: none;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    > span {
-      transform: none;
-      transition: none;
-    }
+    background-color: rgba($butter, 0.08);
+    color: rgba($butter, 0.75);
   }
 }
 
@@ -233,7 +202,7 @@ $bg: color.mix($deep-olive, #000, 50%); // el verde oscuro del manifiesto
   background-color: $bg;
   font-family: $font-ui;
   font-size: 14px;
-  color: $warm-ivory;
+  color: $butter;
   white-space: nowrap;
   pointer-events: none;
   opacity: 0;
@@ -267,7 +236,7 @@ $bg: color.mix($deep-olive, #000, 50%); // el verde oscuro del manifiesto
   font-weight: $weight-regular;
   font-size: 20px;
   line-height: 1.2;
-  color: $warm-ivory;
+  color: $butter;
 
   @include mq(lg) {
     font-size: 22px;
@@ -288,9 +257,9 @@ $bg: color.mix($deep-olive, #000, 50%); // el verde oscuro del manifiesto
     gap: 6px;
     padding: 5px 10px;
     border-radius: $radius-full;
-    background-color: rgba($warm-ivory, 0.08);
+    background-color: rgba($butter, 0.08);
     font-family: $font-ui;
     font-size: 13px;
-    color: rgba($warm-ivory, 0.8);
+    color: rgba($butter, 0.8);
   }
 }

@@ -2,7 +2,7 @@
 
 .inner {
   display: grid;
-  background-color: $sand;
+  background-color: $color-background;
 
   @include mq(lg) {
     grid-template-columns: minmax(0, 11fr) minmax(0, 9fr);
@@ -244,7 +244,7 @@
 // Variante "quote" (home nuevo): panel verde claro, frase centrada en verde
 // oscuro y un link subrayado en mayúsculas en vez del botón sólido.
 // ─────────────────────────────────────────────
-$quote-bg: #bcb79b; // el mismo verde claro de la sección de eventos
+$quote-bg: $butter;
 $quote-ink: $deep-olive; // verde de los botones, como en el diseño
 
 .quote .panel {
