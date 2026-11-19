@@ -11,50 +11,45 @@ const DATE_LOCALES = { es: "es-AR", en: "en-US" };
 
 type CalendarProps = {
   lang: Locale;
-  selected?: Date;
-  onSelect: (date: Date | undefined) => void;
+  /** Llegada y salida elegidas (se pintan los extremos y la banda del medio) */
+  from?: Date;
+  to?: Date;
+  /** Día tocado; la lógica de llegada / salida la decide el formulario */
+  onDayClick: (date: Date) => void;
   month: Date;
   onMonthChange: (month: Date) => void;
   disabled?: Matcher | Matcher[];
-  /** Estadía a pintar con la banda verde suave (llegada → salida) */
-  stay?: { from?: Date; to?: Date };
   startMonth?: Date;
 };
 
+/** Calendario de un mes para elegir la estadía (llegada → salida). */
 export default function Calendar({
   lang,
-  selected,
-  onSelect,
+  from,
+  to,
+  onDayClick,
   month,
   onMonthChange,
   disabled,
-  stay,
   startMonth,
 }: CalendarProps) {
-  const hasStay = Boolean(stay?.from && stay?.to);
   return (
     <div className={styles.calendar}>
       <DayPicker
-        mode="single"
         locale={DAY_PICKER_LOCALES[lang]}
         weekStartsOn={1}
-        showOutsideDays
-        selected={selected}
-        onSelect={onSelect}
         month={month}
         onMonthChange={onMonthChange}
         startMonth={startMonth}
         disabled={disabled}
+        onDayClick={(day, modifiers) => {
+          if (!modifiers.disabled) onDayClick(day);
+        }}
         modifiers={{
-          stay: hasStay ? { from: stay!.from!, to: stay!.to! } : [],
-          stayStart: hasStay ? stay!.from! : [],
-          stayEnd: hasStay ? stay!.to! : [],
+          edge: [from, to].filter((d): d is Date => Boolean(d)),
+          between: from && to ? { after: from, before: to } : [],
         }}
-        modifiersClassNames={{
-          stay: styles.stay,
-          stayStart: styles.stayStart,
-          stayEnd: styles.stayEnd,
-        }}
+        modifiersClassNames={{ edge: styles.edge, between: styles.between }}
         formatters={{
           // "noviembre de 2026" → "Noviembre 2026" / "November 2026"
           formatCaption: (date) => {

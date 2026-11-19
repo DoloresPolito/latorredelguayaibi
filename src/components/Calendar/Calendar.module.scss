@@ -1,32 +1,34 @@
 @use "abstracts" as *;
 
 // Personalización de react-day-picker según el design system.
+// Sin caja: los días son celdas cuadradas; llegada y salida en el verde
+// oscuro y los días del medio en la banda verde suave.
 // (Turbopack requiere :global(...) por selector, no bloques :global {})
 .calendar {
-  padding: $space-3;
-  background-color: $color-surface;
-  border: $border-width solid $color-border;
-  border-radius: $radius-medium;
-
   :global(.rdp-root) {
     --rdp-accent-color: #{$color-date-selected};
     --rdp-accent-background-color: #{$color-date-range};
-    --rdp-day-height: 28px;
+    --rdp-day-height: 44px;
     --rdp-day-width: auto;
-    --rdp-day_button-height: 26px;
-    --rdp-day_button-width: 26px;
+    --rdp-day_button-height: 100%;
+    --rdp-day_button-width: 100%;
     --rdp-day_button-border: 0;
+    --rdp-day_button-border-radius: 0;
     --rdp-selected-border: 0;
-    --rdp-nav-height: 28px;
-    --rdp-nav_button-height: 28px;
-    --rdp-nav_button-width: 24px;
-    --rdp-outside-opacity: 0.35;
+    --rdp-nav-height: 40px;
+    --rdp-nav_button-height: 32px;
+    --rdp-nav_button-width: 32px;
     --rdp-disabled-opacity: 0.35;
-    --rdp-weekday-padding: #{$space-1} 0;
+    --rdp-weekday-padding: #{$space-3} 0;
     --rdp-weekday-opacity: 1;
 
+    position: relative;
     font-family: $font-ui;
     color: $color-heading;
+
+    @include mq(md) {
+      --rdp-day-height: 48px;
+    }
   }
 
   :global(.rdp-months),
@@ -37,19 +39,24 @@
 
   :global(.rdp-month_grid) {
     width: 100%;
-    border-collapse: separate;
-    border-spacing: 0 2px;
+    border-collapse: collapse;
   }
 
   :global(.rdp-month_caption) {
-    height: 28px;
+    height: 40px;
+    margin-bottom: $space-2;
   }
 
+  // Mes en la tipografía de los títulos del sitio
   :global(.rdp-caption_label) {
-    font-family: $font-ui;
-    font-size: 13px;
-    font-weight: $weight-regular;
+    @include display-lay;
+    font-size: 24px;
+    line-height: 1;
     color: $color-heading;
+
+    @include mq(lg) {
+      font-size: 26px;
+    }
   }
 
   :global(.rdp-chevron) {
@@ -60,49 +67,45 @@
 
   :global(.rdp-button_previous),
   :global(.rdp-button_next) {
-    border-radius: $radius-small;
+    border-radius: $radius-full;
     transition: background-color $transition-default;
 
     &:hover:not(:disabled) {
       background-color: $color-date-hover;
+    }
+
+    &:disabled :global(.rdp-chevron) {
+      opacity: 0.3;
     }
   }
 
   :global(.rdp-weekday) {
     font-size: 10px;
     font-weight: $weight-regular;
-    color: $color-body;
+    letter-spacing: 0.08em;
+    color: $color-muted;
   }
 
   :global(.rdp-day) {
-    font-size: 11px;
+    font-size: 13px;
     text-align: center;
   }
 
   :global(.rdp-day_button) {
-    margin-inline: auto;
-    font-size: 11px;
+    font-size: 13px;
     color: inherit;
-    transition: background-color $transition-default;
+    transition:
+      background-color $transition-default,
+      color $transition-default;
   }
 
-  :global(.rdp-day:not(.rdp-disabled):not(.rdp-selected) .rdp-day_button:hover) {
+  :global(.rdp-day:not(.rdp-disabled) .rdp-day_button:hover) {
     background-color: $color-date-hover;
   }
 
-  :global(.rdp-today:not(.rdp-selected)) {
+  :global(.rdp-today:not(.rdp-disabled)) {
     color: inherit;
     font-weight: $weight-semibold;
-  }
-
-  :global(.rdp-selected) {
-    font-size: 11px;
-    font-weight: $weight-semibold;
-  }
-
-  :global(.rdp-selected .rdp-day_button) {
-    background-color: $color-date-selected;
-    color: $butter;
   }
 
   :global(.rdp-disabled) {
@@ -111,32 +114,19 @@
 
   :global(.rdp-day_button:focus-visible) {
     outline: $border-width solid $color-primary;
-    outline-offset: 2px;
+    outline-offset: -2px;
   }
 }
 
-// Días de la estadía: banda verde suave con extremos redondeados
-.stay {
+// Días entre la llegada y la salida
+.between {
   background-color: $color-date-range;
-
-  :global(.rdp-day_button) {
-    font-weight: $weight-semibold;
-  }
-
-  // La banda no "cruza" a días de otro mes
-  &:global(.rdp-outside) {
-    background-color: transparent;
-  }
 }
 
-.stay.stayStart,
-.stay:first-child {
-  border-start-start-radius: $radius-full;
-  border-end-start-radius: $radius-full;
-}
-
-.stay.stayEnd,
-.stay:last-child {
-  border-start-end-radius: $radius-full;
-  border-end-end-radius: $radius-full;
+// Llegada y salida
+.edge,
+.edge :global(.rdp-day_button),
+.edge :global(.rdp-day_button):hover {
+  background-color: $color-date-selected !important;
+  color: $color-date-selected-text;
 }

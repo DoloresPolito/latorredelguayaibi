@@ -13,6 +13,7 @@ import {
 } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries/es";
 import { CTA_HREF, NAV_LINKS } from "@/config/navigation";
+import { SITE, whatsappUrl } from "@/config/site";
 import styles from "./Navbar.module.scss";
 
 
@@ -148,9 +149,10 @@ export default function Navbar({ lang, t, variant = "top" }: NavbarProps) {
   );
 
   const href = (path: string) => localizePath(lang, path);
-  // Sección actual (también sus subpáginas), para marcarla en la barra
+  // Sección actual (también sus subpáginas), para marcarla en la barra.
+  // El home ("/") solo cuenta como actual en sí mismo, no en sus subpáginas.
   const isCurrent = (path: string) =>
-    pathname === href(path) || pathname.startsWith(`${href(path)}/`);
+    pathname === href(path) || (path !== "/" && pathname.startsWith(`${href(path)}/`));
 
   return (
     <header
@@ -219,7 +221,7 @@ export default function Navbar({ lang, t, variant = "top" }: NavbarProps) {
         inert={!isOpen}
       >
         <div className={styles.drawerHeader}>
-          <span className={styles.drawerTitle}>{t.menu}</span>
+          <span className={styles.chip}>{t.menu}</span>
           <button
             ref={closeRef}
             type="button"
@@ -247,7 +249,39 @@ export default function Navbar({ lang, t, variant = "top" }: NavbarProps) {
         </ul>
 
         <div className={styles.drawerFooter} style={{ "--i": NAV_LINKS.length } as CSSProperties}>
-          {langSwitch()}
+          {/* Redes y contacto, como en el footer */}
+          <div className={styles.drawerInfo}>
+            <div>
+              <p className={styles.chip}>{t.socials}</p>
+              <ul className={styles.infoList}>
+                <li>
+                  <a href={SITE.instagram} target="_blank" rel="noopener noreferrer">
+                    {t.instagram}
+                  </a>
+                </li>
+                <li>
+                  <a href={whatsappUrl()} target="_blank" rel="noopener noreferrer">
+                    {t.whatsapp}
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <div>
+              <p className={styles.chip}>{t.contact}</p>
+              <ul className={styles.infoList}>
+                <li>
+                  <a href={`mailto:${SITE.email}`}>{SITE.email}</a>
+                </li>
+                <li>
+                  <a href={whatsappUrl()} target="_blank" rel="noopener noreferrer">
+                    +{SITE.whatsapp}
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          {langSwitch(styles.langDrawer)}
           <Link href={href(CTA_HREF)} className={styles.drawerCta} onClick={close}>
             {t.cta}
             <ArrowRight size={16} strokeWidth={1.5} aria-hidden="true" />

@@ -1,322 +1,315 @@
 @use "abstracts" as *;
 
+$side: clamp(#{$space-6}, 5.5vw, #{$navbar-inset + $space-10}); // margen lateral del sitio
+$media-width: 42%; // ancho de la foto fija (desktop); igual que data-nav-split
+
 // ─────────────────────────────────────────────
-// Layout
-// Mobile: foto → formulario → beneficios → contacto
-// Desktop: formulario (44%) | foto + beneficios (56%)
+// 1. Bloque terracota: lo esencial + contacto directo
 // ─────────────────────────────────────────────
-.page {
-  display: flex;
-  flex-direction: column;
+.essentials {
+  padding: calc(#{$navbar-height-mobile} + #{$space-16}) $space-5 $space-12;
+  background-color: $terracotta;
+  color: $butter;
 
   @include mq(lg) {
-    display: grid;
-    grid-template-columns: 44% 56%;
-    align-items: start;
+    padding: calc(#{$navbar-height} + #{$space-24}) $side $space-16;
   }
 }
 
-// Desktop: una pantalla de alto, fija mientras se scrollea el formulario.
-// La foto ocupa el espacio que dejan libre los beneficios.
-.right {
-  display: contents;
+// Título chico con línea, como en eventos y habitaciones
+.kicker {
+  @include enter(100ms);
+  display: flex;
+  align-items: center;
+  gap: $space-5;
+  margin-bottom: $space-8;
+  font-family: $font-ui;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 1.4;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: $butter;
 
   @include mq(lg) {
-    position: sticky;
-    top: 0;
-    order: 2;
-    display: flex;
-    flex-direction: column;
-    height: 100svh;
-    min-height: 620px;
+    font-size: 13px;
+  }
+}
+
+.rule {
+  flex-shrink: 0;
+  display: block;
+  width: 48px;
+  height: 1px;
+  background-color: rgba($butter, 0.7);
+}
+
+.essentialsTitle {
+  @include display-lay;
+  @include enter(200ms);
+  color: $butter;
+
+  em {
+    font-style: italic;
+  }
+}
+
+.benefits {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: $space-8 0;
+  margin-top: $space-12;
+  border-top: $border-width solid rgba($butter, 0.25);
+
+  @include mq(lg) {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    margin-top: $space-16;
+  }
+
+  @include reveal-children(140ms, 4);
+}
+
+.benefit {
+  padding: $space-6 $space-4 0 0;
+
+  // Separadores verticales entre columnas
+  &:nth-child(even) {
+    padding-left: $space-4;
+    border-left: $border-width solid rgba($butter, 0.25);
+  }
+
+  @include mq(lg) {
+    padding: $space-8 $space-6 0;
+
+    &:first-child {
+      padding-left: 0;
+    }
+
+    &:not(:first-child) {
+      border-left: $border-width solid rgba($butter, 0.25);
+    }
+  }
+}
+
+.benefitNumber {
+  display: block;
+  font-family: $font-editorial;
+  font-style: italic;
+  font-size: 18px;
+  color: rgba($butter, 0.6);
+}
+
+.benefitTitle {
+  margin-top: $space-4;
+  font-family: $font-ui;
+  font-weight: $weight-semibold;
+  font-size: 15px;
+  line-height: 1.3;
+  color: $butter;
+}
+
+.benefitText {
+  margin-top: $space-2;
+  font-family: $font-ui;
+  font-size: 13px;
+  line-height: 1.5;
+  color: rgba($butter, 0.75);
+}
+
+// "¿Preferís hablar directo?" + WhatsApp / Correo
+.contact {
+  display: flex;
+  flex-direction: column;
+  gap: $space-6;
+  margin-top: $space-16;
+  padding-top: $space-10;
+  border-top: $border-width solid rgba($butter, 0.25);
+
+  @include mq(md) {
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+  }
+
+  @include mq(lg) {
+    margin-top: $space-20;
+  }
+
+  @include reveal-children(150ms, 2);
+}
+
+.contactTitle {
+  @include display-lay;
+  font-size: clamp(26px, 6vw, 32px);
+  color: $butter;
+
+  @include mq(lg) {
+    font-size: clamp(28px, 2.4vw, 38px);
+  }
+}
+
+.contactText {
+  margin-top: $space-2;
+  font-family: $font-ui;
+  font-size: 14px;
+  color: rgba($butter, 0.75);
+}
+
+.contactLinks {
+  display: flex;
+  gap: $space-10;
+
+  a {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: $space-2;
+    padding-block: $space-1;
+    font-family: $font-ui;
+    font-size: 18px;
+    color: $butter;
+
+    // Subrayado fino que se dibuja al hover
+    &::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 1px;
+      background-color: rgba($butter, 0.5);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 400ms $ease-out;
+    }
+
+    svg {
+      transition: transform $transition-default;
+    }
+
+    @include hover {
+      &::after { transform: scaleX(1); }
+      svg { transform: translate(2px, -2px); }
+    }
+
+    &:focus-visible {
+      outline: $border-width solid $butter;
+      outline-offset: 3px;
+    }
+  }
+}
+
+// ─────────────────────────────────────────────
+// 2. Foto fija | formulario que se scrollea
+// ─────────────────────────────────────────────
+.split {
+  @include mq(lg) {
+    display: grid;
+    grid-template-columns: $media-width minmax(0, 1fr);
+    align-items: start;
   }
 }
 
 .media {
   position: relative;
-  order: 1;
-  height: 56svh;
-  min-height: 360px;
+  height: 72svh;
+  min-height: 460px;
+  overflow: hidden;
+  color: $butter;
 
-  @include mq(md) {
-    height: 60svh;
+  // Degradé para que el texto se lea sobre la foto
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(0deg, rgba(#000, 0.55) 0%, rgba(#000, 0.2) 40%, rgba(#000, 0) 65%);
+    pointer-events: none;
   }
 
+  // Desktop: una pantalla de alto, fija mientras se scrollea el formulario
   @include mq(lg) {
-    flex: 1;
-    height: auto;
-    min-height: 0;
+    position: sticky;
+    top: 0;
+    height: 100svh;
+    min-height: 600px;
   }
+}
+
+// Capa absoluta: next/image con fill necesita un padre relative/absolute
+.imageLayer {
+  position: absolute;
+  inset: 0;
 }
 
 .image {
   object-fit: cover;
-  object-position: center 55%;
+  object-position: center 45%;
 }
 
-.formCol {
-  order: 2;
-  padding: $space-12 $space-5;
-
-  @include mq(md) {
-    padding: $space-16 $space-12;
-  }
+.mediaText {
+  position: absolute;
+  z-index: 1;
+  left: $space-5;
+  right: $space-5;
+  bottom: $space-10;
 
   @include mq(lg) {
-    order: 1;
-    // Arranca justo debajo de la navbar y se compacta en pantallas bajas
-    padding:
-      calc(#{$navbar-height + $navbar-sticky-top} + clamp(#{$space-4}, 4svh, #{$space-12}))
-      $space-12
-      $space-12
-      66px;
-  }
-}
-
-.aside {
-  order: 3;
-  padding: $space-12 $space-5;
-  border-top: $border-width solid $color-border;
-
-  @include mq(md) {
-    padding: $space-12;
-  }
-
-  @include mq(lg) {
-    flex-shrink: 0;
-    padding: clamp(#{$space-5}, 3.5svh, #{$space-10}) $space-10 clamp(#{$space-4}, 3svh, #{$space-8});
-    border-top: 0;
-  }
-}
-
-// ─────────────────────────────────────────────
-// Encabezado
-// ─────────────────────────────────────────────
-.eyebrow {
-  @include eyebrow;
-
-  &::after {
-    content: "";
-    display: block;
-    width: 32px;
-    height: 1px;
-    margin-top: $space-3;
-    background-color: $color-border-strong;
-  }
-}
-
-.aside .eyebrow {
-  // En la referencia la línea va arriba del título
-  display: flex;
-  flex-direction: column-reverse;
-  gap: $space-4;
-
-  &::after {
-    margin-top: 0;
+    left: $side;
+    right: $space-10;
+    bottom: $space-16;
   }
 }
 
 .title {
-  @include h1;
-  margin-top: $space-8;
+  @include display-lay;
+  color: $butter;
 
-  @include mq(lg) {
-    margin-top: clamp(#{$space-3}, 2.5svh, #{$space-8});
-    font-size: clamp(38px, 6.4svh, 60px);
+  em {
+    font-style: italic;
   }
-}
-
-.intro {
-  @include text-editorial;
-  max-width: 440px;
-  margin-top: $space-6;
-
-  @include mq(lg) {
-    max-width: 480px;
-    margin-top: clamp(#{$space-3}, 2svh, #{$space-6});
-    font-size: clamp(16px, 2.4svh, 19px);
-  }
-}
-
-.divider {
-  @include divider;
-  margin-block: $space-8;
-
-  @include mq(lg) {
-    margin-block: clamp(#{$space-4}, 3svh, #{$space-8});
-  }
-}
-
-.formFallback {
-  min-height: 900px;
-}
-
-// ─────────────────────────────────────────────
-// Beneficios
-// ─────────────────────────────────────────────
-.benefits {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  row-gap: $space-8;
-  margin-top: $space-8;
-
-  @include mq(lg) {
-    margin-top: clamp(#{$space-4}, 2.5svh, #{$space-8});
-  }
-
-  @include mq(xl) {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
-}
-
-.benefit {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: $space-2;
-  padding-inline: $space-4;
-  text-align: center;
-
-  // Separadores verticales entre columnas
-  &:nth-child(even) {
-    border-left: $border-width solid $color-border;
-  }
-
-  @include mq(xl) {
-    &:not(:first-child) {
-      border-left: $border-width solid $color-border;
-    }
-  }
-}
-
-.benefitIcon {
-  margin-bottom: $space-2;
-  color: $color-icon;
-
-  @include mq(lg) {
-    width: clamp(32px, 5svh, 44px);
-    height: clamp(32px, 5svh, 44px);
-  }
-}
-
-.benefitTitle {
-  @include eyebrow;
-  font-size: 10px;
-  color: $color-heading;
-}
-
-.benefitText {
-  @include text-small;
-  font-size: 15px;
-
-  @include mq(lg) {
-    font-size: 14px;
-  }
-}
-
-// ─────────────────────────────────────────────
-// Contacto directo
-// ─────────────────────────────────────────────
-.contact {
-  display: flex;
-  flex-direction: column;
-  gap: $space-4;
-  margin-top: $space-10;
-  padding-top: $space-6;
-  border-top: $border-width solid $color-border;
-
-  @include mq(lg) {
-    margin-top: clamp(#{$space-4}, 3svh, #{$space-10});
-    padding-top: clamp(#{$space-3}, 2svh, #{$space-6});
-  }
-
-  @include mq(md) {
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-  }
-}
-
-.contactText {
-  @include text-small;
-  max-width: 320px;
-  font-size: 13px;
-}
-
-.contactButtons {
-  display: flex;
-  flex-wrap: wrap;
-  gap: $space-3;
-
-  @include mq(md) {
-    flex-wrap: nowrap;
-    flex-shrink: 0;
-  }
-}
-
-.contactButton {
-  @include btn-secondary;
-  gap: $space-3;
-  padding-inline: $space-5;
-  flex: 1 1 auto;
-
-  :global(span) {
-    color: $color-icon;
-  }
-}
-
-// ─────────────────────────────────────────────
-// Animaciones de entrada (mismo lenguaje que el home)
-// ─────────────────────────────────────────────
-@include enter-keyframes;
-
-.image {
-  @include enter-image($scale: 1.05);
 }
 
 .line {
   display: block;
 }
 
-.formCol .eyebrow { @include enter(300ms); }
-.line:nth-child(1) { @include enter(450ms); }
-.line:nth-child(2) { @include enter(600ms); }
-.intro { @include enter(800ms); }
-.divider { @include enter(900ms); }
-.form { @include enter(1000ms); }
+.formCol {
+  padding: $space-12 $space-5 $space-16;
 
-// Beneficios y contacto: en cascada al entrar en pantalla
-.revealEyebrow,
-.contact {
-  @include reveal-children;
-}
-
-.benefits {
-  @include reveal-children($step: 140ms, $count: 4);
-}
-
-// ─────────────────────────────────────────────
-// Diseño nuevo (.theme-v2): título en Lay Grotesk como en el home y
-// botones con el mismo estilo (btn-v2)
-// ─────────────────────────────────────────────
-:global(.theme-v2) .title {
-  @include display-lay;
+  @include mq(md) {
+    padding: $space-16 $space-12 $space-20;
+  }
 
   @include mq(lg) {
-    margin-top: clamp(#{$space-3}, 2.5svh, #{$space-8});
+    padding: calc(#{$navbar-height} + #{$space-16}) clamp(#{$space-10}, 6vw, #{$space-24}) $space-24;
+  }
+
+  > * {
+    max-width: 560px;
   }
 }
 
-// Botones de WhatsApp y email: claros, para diferenciarse del principal.
-// Sus íconos no se giran (la flecha del mixin sí).
-:global(.theme-v2) .contactButton {
-  @include btn-v2($butter, $color-heading, $butter-hover);
-  gap: $space-3;
-  padding-inline: $space-4;
-  font-size: 15px;
+.intro {
+  @include display-lay;
+  margin-bottom: $space-12;
+  font-size: clamp(22px, 5.5vw, 26px);
+  line-height: 1.3;
+  color: $color-heading;
 
-  svg,
-  &:hover svg {
-    transform: none;
+  @include mq(lg) {
+    font-size: clamp(22px, 1.7vw, 26px);
+  }
+
+  em {
+    font-style: italic;
   }
 }
+
+.formFallback {
+  min-height: 1400px;
+}
+
+// ─────────────────────────────────────────────
+// Animaciones de entrada (mismo lenguaje que el resto del sitio)
+// ─────────────────────────────────────────────
+@include enter-keyframes;

@@ -11,17 +11,17 @@ type EventServicesProps = {
 };
 
 const ITEMS = [
-  { key: "gastronomia", src: "/images/eventos/gastronomia.png", tone: styles.clay },
-  { key: "reuniones", src: "/images/eventos/reuniones.png", tone: styles.sage },
-  { key: "exclusiva", src: "/images/eventos/exclusiva.png", tone: styles.forest },
-  { key: "chamame", src: "/images/eventos/musica.png", tone: styles.sand },
+  { key: "gastronomia", src: "/images/eventos/gastronomia.png", tone: styles.terracotta },
+  { key: "reuniones", src: "/images/eventos/reuniones.png", tone: styles.green },
+  { key: "exclusiva", src: "/images/eventos/exclusiva.png", tone: styles.terracotta },
+  { key: "chamame", src: "/images/eventos/musica.png", tone: styles.green },
 ] as const;
 
 /**
  * Propuestas para eventos, alternadas a cada lado de una línea central.
- * - La línea se dibuja al ritmo del scroll y cada propuesta enciende su punto.
- * - Al entrar, el bloque de color se despliega, la foto se abre como una
- *   cortina desde la línea y los textos suben en cascada.
+ * - La línea se dibuja al ritmo del scroll.
+ * - Al entrar, bloque y foto llegan con un fundido suave subiendo apenas
+ *   (como el resto del sitio) y los textos llegan en cascada.
  * - Después, bloque y foto se mueven a distinta velocidad (profundidad).
  */
 export default function EventServices({ t, id = "propuestas" }: EventServicesProps) {
@@ -37,8 +37,6 @@ export default function EventServices({ t, id = "propuestas" }: EventServicesPro
           return (
             <li key={item.key} className={`${i % 2 ? styles.reverse : ""} ${item.tone}`}>
               <Parallax className={styles.row}>
-                <span className={styles.dot} aria-hidden="true" />
-
                 <Reveal className={styles.text} threshold={0.25}>
                   <p className={styles.number} aria-hidden="true">
                     {number}
@@ -59,7 +57,7 @@ export default function EventServices({ t, id = "propuestas" }: EventServicesPro
                   ))}
                 </Reveal>
 
-                <Reveal className={styles.media} threshold={0.3}>
+                <Reveal className={styles.media} threshold={0.25}>
                   <span className={styles.block} aria-hidden="true" />
                   <div className={styles.photo}>
                     <div className={styles.photoInner}>

@@ -10,9 +10,9 @@ $butter: #fef1ca; // fondo del sitio, textos y botones claros sobre fondos oscur
 $butter-hover: color.mix($butter, #493328, 90%); // hover de botones crema (derivado)
 
 // Verdes
-$forest: #1d2419; // secciones oscuras (manifiesto, historia, eventos, habitaciones)
-$deep-olive: #394831; // botones principales, navegación, acentos
-$olive-hover: #4a5a3f; // hover de botones principales
+$forest: #1c2419; // verde oscuro único: secciones oscuras, botones, navegación y acentos
+$deep-olive: $forest; // botones principales, navegación, acentos (mismo verde oscuro)
+$olive-hover: color.mix($forest, $butter, 85%); // hover de botones principales (derivado)
 $sage: #dde4d5; // rango de fechas del calendario
 $sage-light: #e5e9df; // hover de fechas
 

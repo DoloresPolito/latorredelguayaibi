@@ -22,7 +22,6 @@ export const es = {
     links: {
       laTorre: "La Torre",
       habitaciones: "Habitaciones",
-      gastronomia: "Gastronomía",
       eventos: "Eventos",
       entorno: "Entorno",
       historia: "Nuestra historia",
@@ -32,6 +31,11 @@ export const es = {
     menu: "Menú",
     openMenu: "Abrir menú",
     closeMenu: "Cerrar menú",
+    // Pie del menú mobile (como el footer)
+    socials: "Redes",
+    contact: "Contacto",
+    instagram: "Instagram",
+    whatsapp: "WhatsApp",
   },
 
   opening: {
@@ -106,9 +110,15 @@ export const es = {
       next: "Ir a la siguiente sección",
       imageAlt: "La torre de piedra iluminada de noche, bajo un cielo estrellado con la Vía Láctea",
     },
-    // Sección oscura: título chico y el texto que se "enciende" letra por
-    // letra al scrollear. Entre *asteriscos*: palabras en itálica.
+    // Primera sección: antetítulo con línea, las propuestas en chips y,
+    // más abajo, el texto que se "enciende" letra por letra al scrollear.
+    // Entre *asteriscos*: palabras en itálica.
     intro: {
+      pageTitle: "Eventos",
+      kicker: "Eventos en La Torre",
+      tagsLabel: "Propuestas",
+      tags: ["Gastronomía", "Reuniones", "Exclusividad", "Chamamé"],
+      imageAlt: "Fogón encendido frente a un banco de piedra curvo, con el campo y el ganado al atardecer",
       title: "Un lugar para encontrarse",
       text: "Lejos del ritmo de todos los días, *cerca de lo que importa.* Hay reuniones que merecen salir de lo cotidiano. La Torre ofrece un entorno diferente para reunirse, conversar y disfrutar sin apuro.",
     },
@@ -199,16 +209,11 @@ export const es = {
   },
 
   reservas: {
-    eyebrow: "Consultas",
-    titleLine1: "Tu próxima",
-    titleLine2: "estadía te espera.",
-    intro:
-      "Completá el formulario y nos pondremos en contacto a la brevedad para ayudarte a organizar tu estadía en La Torre del Guayaibí.",
-    imageAlt: "Canoa navegando al atardecer en la laguna",
-    benefitsTitle: "Una estadía con todo lo esencial",
+    // Bloque terracota de arriba. Entre *asteriscos*: palabras en itálica.
+    benefitsTitle: "Una estadía con *todo lo esencial.*",
     benefits: {
       rooms: {
-        title: "Habitaciones amplias y confortables",
+        title: "Habitaciones amplias",
         text: "Con vistas al parque y la naturaleza.",
       },
       breakfast: {
@@ -224,36 +229,48 @@ export const es = {
         text: "En el corazón del campo correntino, cerca de los Esteros del Iberá.",
       },
     },
-    contactText: "También podés escribirnos directamente por WhatsApp o por correo electrónico.",
-    whatsappButton: "Escribir por WhatsApp",
-    emailButton: "Enviar un mail",
+    contactTitle: "¿Preferís hablar directo?",
+    contactText: "Escribinos y te respondemos personalmente.",
+    whatsappButton: "WhatsApp",
+    emailButton: "Correo",
     whatsappGreeting: "Hola! Quisiera hacer una consulta.",
+    // Título chico de arriba (con línea); foto fija y columna del formulario
+    eyebrow: "Consultas",
+    titleLine1: "Tu próxima",
+    titleLine2: "estadía *te espera.*",
+    imageAlt: "Laguna al atardecer con cielo rosado, pastizales en la orilla y camalotes en el agua",
+    formTitle: "Formulario de consulta",
+    intro: "Contanos cuándo querés venir y nos pondremos en contacto a la brevedad para ayudarte a *organizar tu estadía.*",
   },
 
   form: {
-    step1: "1. Elegí tus fechas",
-    checkIn: "Fecha de llegada",
-    checkOut: "Fecha de salida",
-    guests: "Cantidad de huéspedes",
-    guestOne: "huésped",
-    guestMany: "huéspedes",
-    rooms: "Cantidad de habitaciones",
-    roomOne: "habitación",
-    roomMany: "habitaciones",
-    step2: "2. Tus datos",
+    step1: "Elegí tus fechas",
+    calendarHint: "Tocá un día para la llegada y otro para la salida.",
+    checkIn: "Llegada",
+    checkOut: "Salida",
+    nights: "Noches",
+    step2: "Huéspedes y habitaciones",
+    guests: "Huéspedes",
+    guestsHint: "Adultos y niños",
+    rooms: "Habitaciones",
+    roomsHint: "Hasta 6 en La Torre",
+    decrease: "Restar",
+    increase: "Sumar",
+    step3: "Tus datos",
     name: "Nombre y apellido",
-    namePlaceholder: "Ej. María González",
+    namePlaceholder: "",
     country: "País de residencia",
     otherCountry: "Otro",
     email: "Correo electrónico",
-    emailPlaceholder: "Ej. maria@email.com",
+    emailPlaceholder: "",
     phone: "Teléfono / WhatsApp",
-    phonePlaceholder: "Ej. 11 1234-5678",
+    phonePlaceholder: "",
     dialCode: "Código de país",
-    message: "¿Hay algo que te gustaría contarnos sobre tu visita? (opcional)",
-    messagePlaceholder: "Ej. Motivo de la visita, preferencias, consultas especiales…",
+    message: "¿Algo que quieras contarnos?",
+    optional: "(opcional)",
+    messagePlaceholder: "Un aniversario, una dieta especial, la hora de llegada…",
     submit: "Consultar disponibilidad",
-    note: "Tu consulta se enviará por WhatsApp directamente a nuestro equipo.",
+    note: "Tu consulta se envía por WhatsApp directamente a nuestro equipo.",
     sent: "¡Gracias! Se abrió WhatsApp con tu consulta lista para enviar. Si no se abrió,",
     sentLink: "escribinos acá",
     errors: {

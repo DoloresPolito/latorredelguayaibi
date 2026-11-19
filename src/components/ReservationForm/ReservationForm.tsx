@@ -1,20 +1,21 @@
 "use client";
 
-import { useId, useState, type FormEvent } from "react";
-import { ArrowRight } from "lucide-react";
-import { addDays, differenceInCalendarDays, format, isAfter, startOfDay } from "date-fns";
+import { useId, useState, type FormEvent, type ReactNode } from "react";
+import { ArrowRight, Minus, Plus } from "lucide-react";
+import { differenceInCalendarDays, format, isAfter, startOfDay } from "date-fns";
 import Calendar from "@/components/Calendar/Calendar";
-import Icon from "@/components/Icon/Icon";
 import { COUNTRIES, DIAL_CODES, countryName } from "@/lib/countries";
 import { whatsappUrl } from "@/config/site";
 import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries/es";
 import styles from "./ReservationForm.module.scss";
 
-const GUESTS = Array.from({ length: 10 }, (_, i) => i + 1);
-const ROOMS = Array.from({ length: 6 }, (_, i) => i + 1);
+const MAX_GUESTS = 10;
+const MAX_ROOMS = 6;
 
-type Errors = Partial<Record<"checkIn" | "checkOut" | "name" | "email" | "phone", string>>;
+const DATE_LOCALES = { es: "es-AR", en: "en-US" };
+
+type Errors = Partial<Record<"dates" | "name" | "email" | "phone", string>>;
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -23,14 +24,25 @@ type ReservationFormProps = {
   t: Dictionary["form"];
 };
 
+/** Encabezado de cada paso: número en itálica y título en versalitas */
+function StepTitle({ n, children }: { n: number; children: ReactNode }) {
+  return (
+    <legend className={styles.stepTitle}>
+      <span className={styles.stepNumber} aria-hidden="true">
+        {String(n).padStart(2, "0")}
+      </span>
+      {children}
+    </legend>
+  );
+}
+
 export default function ReservationForm({ lang, t }: ReservationFormProps) {
   const id = useId();
   const today = startOfDay(new Date());
 
   const [checkIn, setCheckIn] = useState<Date>();
   const [checkOut, setCheckOut] = useState<Date>();
-  const [inMonth, setInMonth] = useState(today);
-  const [outMonth, setOutMonth] = useState(today);
+  const [month, setMonth] = useState(today);
 
   const [guests, setGuests] = useState(2);
   const [rooms, setRooms] = useState(1);
@@ -46,19 +58,16 @@ export default function ReservationForm({ lang, t }: ReservationFormProps) {
 
   const nights = checkIn && checkOut ? differenceInCalendarDays(checkOut, checkIn) : 0;
 
-  const handleCheckIn = (date: Date | undefined) => {
-    setCheckIn(date);
-    setErrors((e) => ({ ...e, checkIn: undefined }));
-    if (!date) return;
-    // Si la salida quedó antes de la nueva llegada, se borra
-    if (checkOut && !isAfter(checkOut, date)) setCheckOut(undefined);
-    // El calendario de salida salta al mes de la llegada
-    if (!checkOut || !isAfter(checkOut, date)) setOutMonth(date);
-  };
-
-  const handleCheckOut = (date: Date | undefined) => {
-    setCheckOut(date);
-    setErrors((e) => ({ ...e, checkOut: undefined }));
+  // Primer toque: llegada. Segundo (posterior): salida. Si ya estaban las dos,
+  // o se toca un día anterior a la llegada, empieza de nuevo.
+  const handleDay = (date: Date) => {
+    setErrors((e) => ({ ...e, dates: undefined }));
+    if (checkIn && !checkOut && isAfter(date, checkIn)) {
+      setCheckOut(date);
+    } else {
+      setCheckIn(date);
+      setCheckOut(undefined);
+    }
   };
 
   const handleCountry = (value: string) => {
@@ -69,8 +78,8 @@ export default function ReservationForm({ lang, t }: ReservationFormProps) {
 
   const validate = (): Errors => {
     const e: Errors = {};
-    if (!checkIn) e.checkIn = t.errors.checkIn;
-    if (!checkOut) e.checkOut = t.errors.checkOut;
+    if (!checkIn) e.dates = t.errors.checkIn;
+    else if (!checkOut) e.dates = t.errors.checkOut;
     if (!name.trim()) e.name = t.errors.name;
     if (!EMAIL_RE.test(email.trim())) e.email = t.errors.email;
     if (phone.replace(/\D/g, "").length < 6) e.phone = t.errors.phone;
@@ -123,102 +132,138 @@ export default function ReservationForm({ lang, t }: ReservationFormProps) {
       </p>
     ) : null;
 
+  // "vie 27 nov" / "Fri, Nov 27"
+  const shortDate = (d?: Date) =>
+    d
+      ? d
+          .toLocaleDateString(DATE_LOCALES[lang], { weekday: "short", day: "numeric", month: "short" })
+          .replace(/\./g, "")
+          .replace(/,(?= \d)/, "")
+      : "—";
+
+  const stepper = (
+    key: "guests" | "rooms",
+    value: number,
+    set: (n: number) => void,
+    max: number,
+    label: string,
+    hint: string,
+  ) => (
+    <div className={styles.counter}>
+      <div>
+        <p className={styles.counterLabel} id={field(key)}>
+          {label}
+        </p>
+        <p className={styles.counterHint}>{hint}</p>
+      </div>
+      <div className={styles.counterControls} role="group" aria-labelledby={field(key)}>
+        <button
+          type="button"
+          className={styles.counterButton}
+          onClick={() => set(Math.max(1, value - 1))}
+          disabled={value <= 1}
+          aria-label={`${t.decrease} ${label.toLowerCase()}`}
+        >
+          <Minus size={14} strokeWidth={1.5} aria-hidden="true" />
+        </button>
+        <output className={styles.counterValue} aria-live="polite">
+          {value}
+        </output>
+        <button
+          type="button"
+          className={styles.counterButton}
+          onClick={() => set(Math.min(max, value + 1))}
+          disabled={value >= max}
+          aria-label={`${t.increase} ${label.toLowerCase()}`}
+        >
+          <Plus size={14} strokeWidth={1.5} aria-hidden="true" />
+        </button>
+      </div>
+    </div>
+  );
+
   return (
     <form className={styles.form} onSubmit={handleSubmit} noValidate>
-      {/* ─── 1. Fechas ─── */}
+      {/* ─── 01. Fechas ─── */}
       <fieldset className={styles.step}>
-        <legend className={styles.stepTitle}>{t.step1}</legend>
+        <StepTitle n={1}>{t.step1}</StepTitle>
 
-        <div className={styles.grid}>
-          <div className={styles.field} {...errorProps("checkIn")} tabIndex={-1}>
-            <span className={styles.label}>{t.checkIn}</span>
-            <Calendar
-              lang={lang}
-              selected={checkIn}
-              onSelect={handleCheckIn}
-              month={inMonth}
-              onMonthChange={setInMonth}
-              startMonth={today}
-              disabled={{ before: today }}
-              stay={{ from: checkIn, to: checkOut }}
-            />
-            {errorText("checkIn")}
-          </div>
+        <div className={styles.dates} {...errorProps("dates")} tabIndex={-1}>
+          <Calendar
+            lang={lang}
+            from={checkIn}
+            to={checkOut}
+            onDayClick={handleDay}
+            month={month}
+            onMonthChange={setMonth}
+            startMonth={today}
+            disabled={{ before: today }}
+          />
+          <p className={styles.hint}>{t.calendarHint}</p>
+          {errorText("dates")}
+        </div>
 
-          <div className={styles.field} {...errorProps("checkOut")} tabIndex={-1}>
-            <span className={styles.label}>{t.checkOut}</span>
-            <Calendar
-              lang={lang}
-              selected={checkOut}
-              onSelect={handleCheckOut}
-              month={outMonth}
-              onMonthChange={setOutMonth}
-              startMonth={checkIn ?? today}
-              disabled={{ before: addDays(checkIn ?? today, 1) }}
-              stay={{ from: checkIn, to: checkOut }}
-            />
-            {errorText("checkOut")}
+        <dl className={styles.summary} aria-live="polite">
+          <div>
+            <dt>{t.checkIn}</dt>
+            <dd>{shortDate(checkIn)}</dd>
           </div>
+          <div>
+            <dt>{t.checkOut}</dt>
+            <dd>{shortDate(checkOut)}</dd>
+          </div>
+          <div>
+            <dt>{t.nights}</dt>
+            <dd>{nights || "—"}</dd>
+          </div>
+        </dl>
+      </fieldset>
 
-          <div className={styles.field}>
-            <label className={styles.label} htmlFor={field("guests")}>
-              {t.guests}
-            </label>
-            <select
-              id={field("guests")}
-              className={styles.select}
-              value={guests}
-              onChange={(e) => setGuests(Number(e.target.value))}
-            >
-              {GUESTS.map((n) => (
-                <option key={n} value={n}>
-                  {n} {n === 1 ? t.guestOne : t.guestMany}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div className={styles.field}>
-            <label className={styles.label} htmlFor={field("rooms")}>
-              {t.rooms}
-            </label>
-            <select
-              id={field("rooms")}
-              className={styles.select}
-              value={rooms}
-              onChange={(e) => setRooms(Number(e.target.value))}
-            >
-              {ROOMS.map((n) => (
-                <option key={n} value={n}>
-                  {n} {n === 1 ? t.roomOne : t.roomMany}
-                </option>
-              ))}
-            </select>
-          </div>
+      {/* ─── 02. Huéspedes y habitaciones ─── */}
+      <fieldset className={styles.step}>
+        <StepTitle n={2}>{t.step2}</StepTitle>
+        <div className={styles.counters}>
+          {stepper("guests", guests, setGuests, MAX_GUESTS, t.guests, t.guestsHint)}
+          {stepper("rooms", rooms, setRooms, MAX_ROOMS, t.rooms, t.roomsHint)}
         </div>
       </fieldset>
 
-      <hr className={styles.divider} />
-
-      {/* ─── 2. Datos ─── */}
+      {/* ─── 03. Datos ─── */}
       <fieldset className={styles.step}>
-        <legend className={styles.stepTitle}>{t.step2}</legend>
+        <StepTitle n={3}>{t.step3}</StepTitle>
 
         <div className={styles.grid}>
-          <div className={styles.field}>
+          <div className={`${styles.field} ${styles.full}`}>
             <label className={styles.label} htmlFor={field("name")}>
               {t.name}
             </label>
             <input
               id={field("name")}
               className={styles.input}
-              placeholder={t.namePlaceholder}
+              placeholder={t.namePlaceholder || undefined}
               autoComplete="name"
               value={name}
               onChange={(e) => setName(e.target.value)}
               {...errorProps("name")}
             />
             {errorText("name")}
+          </div>
+
+          <div className={styles.field}>
+            <label className={styles.label} htmlFor={field("email")}>
+              {t.email}
+            </label>
+            <input
+              id={field("email")}
+              type="email"
+              className={styles.input}
+              placeholder={t.emailPlaceholder || undefined}
+              autoComplete="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              {...errorProps("email")}
+            />
+            {errorText("email")}
           </div>
 
           <div className={styles.field}>
@@ -239,24 +284,7 @@ export default function ReservationForm({ lang, t }: ReservationFormProps) {
             </select>
           </div>
 
-          <div className={styles.field}>
-            <label className={styles.label} htmlFor={field("email")}>
-              {t.email}
-            </label>
-            <input
-              id={field("email")}
-              type="email"
-              className={styles.input}
-              placeholder={t.emailPlaceholder}
-              autoComplete="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              {...errorProps("email")}
-            />
-            {errorText("email")}
-          </div>
-
-          <div className={styles.field}>
+          <div className={`${styles.field} ${styles.full}`}>
             <label className={styles.label} htmlFor={field("phone")}>
               {t.phone}
             </label>
@@ -277,7 +305,7 @@ export default function ReservationForm({ lang, t }: ReservationFormProps) {
                 id={field("phone")}
                 type="tel"
                 className={styles.input}
-                placeholder={t.phonePlaceholder}
+                placeholder={t.phonePlaceholder || undefined}
                 autoComplete="tel-national"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
@@ -289,13 +317,13 @@ export default function ReservationForm({ lang, t }: ReservationFormProps) {
 
           <div className={`${styles.field} ${styles.full}`}>
             <label className={styles.label} htmlFor={field("message")}>
-              {t.message}
+              {t.message} <span className={styles.optional}>{t.optional}</span>
             </label>
             <textarea
               id={field("message")}
               className={styles.textarea}
               placeholder={t.messagePlaceholder}
-              rows={2}
+              rows={3}
               value={message}
               onChange={(e) => setMessage(e.target.value)}
             />
@@ -308,10 +336,7 @@ export default function ReservationForm({ lang, t }: ReservationFormProps) {
           {t.submit}
           <ArrowRight size={16} strokeWidth={1.5} aria-hidden="true" />
         </button>
-        <p className={styles.note}>
-          <Icon name="candado" size={22} className={styles.noteIcon} />
-          {t.note}
-        </p>
+        <p className={styles.note}>{t.note}</p>
       </div>
 
       {sent && (
