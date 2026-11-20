@@ -22,7 +22,7 @@ export default async function HomeOriginal() {
 
   return (
     <>
-      <Opening t={t.opening} image={heroImage} />
+      <Opening image={heroImage} />
       <Navbar lang={lang} t={t.nav} />
       <main>
         <Hero

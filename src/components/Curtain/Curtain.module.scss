@@ -1,0 +1,18 @@
+@use "abstracts" as *;
+
+.curtain {
+  position: relative;
+  overflow: clip; // recorta el contenido que baja, sin crear un contenedor de scroll
+}
+
+.inner {
+  will-change: transform;
+}
+
+.veil {
+  position: absolute;
+  inset: 0;
+  background-color: #000;
+  opacity: 0;
+  pointer-events: none;
+}

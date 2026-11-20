@@ -1,0 +1,18 @@
+@use "abstracts" as *;
+
+.section {
+  position: relative;
+}
+
+// Tamaño fijo (casi una pantalla, como en la referencia): no se agranda ni se mueve
+.frame {
+  position: relative;
+  height: 92svh;
+  min-height: 440px;
+  overflow: hidden;
+}
+
+.image {
+  object-fit: cover;
+  object-position: center 60%;
+}

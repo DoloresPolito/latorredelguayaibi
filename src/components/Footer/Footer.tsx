@@ -2,7 +2,7 @@ import Link from "next/link";
 import { localizePath, type Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries/es";
 import { NAV_LINKS } from "@/config/navigation";
-import { SITE, whatsappUrl } from "@/config/site";
+import { SITE, mapsUrl, phoneUrl, socialLinks, whatsappUrl } from "@/config/site";
 import CurrentYear from "./CurrentYear";
 import FooterReveal from "./FooterReveal";
 import styles from "./Footer.module.scss";
@@ -49,11 +49,13 @@ export default function Footer({ lang, t, nav }: FooterProps) {
           <div className={styles.column}>
             <Label n={2}>{t.socials}</Label>
             <ul className={styles.list}>
-              <li>
-                <a href={SITE.instagram} className={styles.link} target="_blank" rel="noopener noreferrer">
-                  {t.instagram}
-                </a>
-              </li>
+              {socialLinks.map(({ key, url }) => (
+                <li key={key}>
+                  <a href={url} className={styles.link} target="_blank" rel="noopener noreferrer">
+                    {t[key]}
+                  </a>
+                </li>
+              ))}
               <li>
                 <a href={whatsappUrl()} className={styles.link} target="_blank" rel="noopener noreferrer">
                   {t.whatsapp}
@@ -71,8 +73,21 @@ export default function Footer({ lang, t, nav }: FooterProps) {
                 </a>
               </li>
               <li>
-                <a href={whatsappUrl()} className={styles.link} target="_blank" rel="noopener noreferrer">
-                  +{SITE.whatsapp}
+                <a href={phoneUrl} className={styles.link}>
+                  {SITE.phone}
+                </a>
+              </li>
+              <li>
+                <a
+                  href={mapsUrl}
+                  className={styles.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`${t.address}, ${t.city}. ${t.mapsLabel}`}
+                >
+                  {t.address}
+                  <br />
+                  {t.city}
                 </a>
               </li>
             </ul>

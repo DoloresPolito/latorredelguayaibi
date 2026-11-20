@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import Image from "next/image";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import Navbar from "@/components/Navbar/Navbar";
 import ReservationForm from "@/components/ReservationForm/ReservationForm";
 import Reveal from "@/components/Reveal/Reveal";
-import ThemeV2 from "@/components/ThemeV2/ThemeV2";
+import ThemeV2, { italianaTitleClass } from "@/components/ThemeV2/ThemeV2";
+import Footer from "@/components/Footer/Footer";
 import { SITE, whatsappUrl } from "@/config/site";
 import { getDictionary, getLocale, type Dictionary } from "@/i18n/getDictionary";
 import { emphasis } from "@/lib/emphasis";
@@ -20,7 +21,7 @@ const BENEFITS: (keyof Dictionary["reservas"]["benefits"])[] = ["rooms", "breakf
 
 /**
  * Consultas de disponibilidad:
- * 1. Bloque terracota: lo esencial de la estadía (4 puntos) y contacto directo.
+ * 1. Bloque verde: lo esencial de la estadía (4 puntos) y contacto directo.
  * 2. Foto fija a la izquierda con el título; a la derecha, el formulario que
  *    se scrollea (en mobile: foto arriba y formulario debajo).
  */
@@ -33,11 +34,8 @@ export default async function ReservasPage() {
       <Navbar lang={lang} t={t.nav} />
       <main>
         <section className={styles.essentials} data-nav-theme="dark" aria-labelledby="esencial-title">
-          <p className={styles.kicker}>
-            <span className={styles.rule} aria-hidden="true" />
-            {r.eyebrow}
-          </p>
-          <h2 id="esencial-title" className={styles.essentialsTitle}>
+          <p className={styles.kicker}>{r.eyebrow}</p>
+          <h2 id="esencial-title" className={`${styles.essentialsTitle} ${italianaTitleClass}`}>
             {emphasis(r.benefitsTitle)}
           </h2>
 
@@ -47,7 +45,7 @@ export default async function ReservasPage() {
                 <span className={styles.benefitNumber} aria-hidden="true">
                   {String(i + 1).padStart(2, "0")}
                 </span>
-                <h3 className={styles.benefitTitle}>{r.benefits[key].title}</h3>
+                <h3 className={`${styles.benefitTitle} ${italianaTitleClass}`}>{r.benefits[key].title}</h3>
                 <p className={styles.benefitText}>{r.benefits[key].text}</p>
               </li>
             ))}
@@ -55,17 +53,17 @@ export default async function ReservasPage() {
 
           <Reveal className={styles.contact} threshold={0.3}>
             <div>
-              <h2 className={styles.contactTitle}>{r.contactTitle}</h2>
+              <h2 className={`${styles.contactTitle} ${italianaTitleClass}`}>{r.contactTitle}</h2>
               <p className={styles.contactText}>{r.contactText}</p>
             </div>
             <div className={styles.contactLinks}>
               <a href={whatsappUrl(r.whatsappGreeting)} target="_blank" rel="noopener noreferrer">
                 {r.whatsappButton}
-                <ArrowUpRight size={16} strokeWidth={1.25} aria-hidden="true" />
+                <ArrowRight size={16} strokeWidth={1.5} aria-hidden="true" />
               </a>
               <a href={`mailto:${SITE.email}`}>
                 {r.emailButton}
-                <ArrowUpRight size={16} strokeWidth={1.25} aria-hidden="true" />
+                <ArrowRight size={16} strokeWidth={1.5} aria-hidden="true" />
               </a>
             </div>
           </Reveal>
@@ -84,7 +82,7 @@ export default async function ReservasPage() {
               />
             </div>
             <div className={styles.mediaText}>
-              <h1 className={styles.title}>
+              <h1 className={`${styles.title} ${italianaTitleClass}`}>
                 <span className={styles.line}>{r.titleLine1}</span>{" "}
                 <span className={styles.line}>{emphasis(r.titleLine2)}</span>
               </h1>
@@ -92,7 +90,7 @@ export default async function ReservasPage() {
           </div>
 
           <section className={styles.formCol} aria-label={r.formTitle}>
-            <p className={styles.intro}>{emphasis(r.intro)}</p>
+            <p className={`${styles.intro} ${italianaTitleClass}`}>{emphasis(r.intro)}</p>
 
             {/* Suspense: el formulario usa la fecha actual, que se calcula en cada visita */}
             <Suspense fallback={<div className={styles.formFallback} aria-hidden="true" />}>
@@ -101,6 +99,7 @@ export default async function ReservasPage() {
           </section>
         </div>
       </main>
+      <Footer lang={lang} t={t.footer} nav={t.nav} />
     </ThemeV2>
   );
 }

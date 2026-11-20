@@ -231,15 +231,16 @@ $bg: $forest; // el verde oscuro del manifiesto
   margin-top: $space-4;
 }
 
+// Con la clase de Italiana (desde la página) el nombre va como en el home
 .name {
-  font-family: $font-ui;
+  font-family: $font-heading;
   font-weight: $weight-regular;
-  font-size: 20px;
-  line-height: 1.2;
+  font-size: 26px;
+  line-height: 1.15;
   color: $butter;
 
   @include mq(lg) {
-    font-size: 22px;
+    font-size: 30px;
   }
 }
 

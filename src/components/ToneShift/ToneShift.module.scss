@@ -1,0 +1,35 @@
+@use "abstracts" as *;
+
+// Registradas como colores para que se puedan animar: todo lo que las use
+// (fondos, textos, bordes, botones) cambia junto, con la misma transición.
+@property --tone-bg {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #{$cream};
+}
+
+@property --tone-fg {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #{$forest};
+}
+
+.shift {
+  --tone-bg: #{$cream};
+  --tone-fg: #{$forest};
+
+  background-color: var(--tone-bg);
+  color: var(--tone-fg);
+  transition:
+    --tone-bg 1100ms ease,
+    --tone-fg 1100ms ease;
+
+  &[data-tone="dark"] {
+    --tone-bg: #{$forest};
+    --tone-fg: #{$butter};
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
+}

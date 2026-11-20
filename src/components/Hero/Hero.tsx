@@ -110,8 +110,13 @@ export default function Hero({
         <div className={styles.heading}>
           {!isName && <p className={styles.kicker}>{t.kicker}</p>}
           <h1 className={[styles.title, isName && styles.nameTitle, titleClassName].filter(Boolean).join(" ")}>
-            <span className={styles.line}>{line1}</span>{" "}
-            <span className={styles.line}>{line2}</span>
+            {/* El span interno es la máscara de la animación de bienvenida */}
+            <span className={styles.line}>
+              <span className={styles.lineInner}>{line1}</span>
+            </span>{" "}
+            <span className={styles.line}>
+              <span className={styles.lineInner}>{line2}</span>
+            </span>
           </h1>
         </div>
         <div className={styles.actions}>

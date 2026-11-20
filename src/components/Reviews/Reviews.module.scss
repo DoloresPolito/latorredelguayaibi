@@ -1,0 +1,158 @@
+@use "abstracts" as *;
+
+// Colores a través de --tone-bg / --tone-fg (de <ToneShift>, que al llegar
+// acá vuelve a claro con una transición). Sin <ToneShift>, verde sobre crema.
+$bg: var(--tone-bg, #{$cream});
+$fg: var(--tone-fg, #{$forest});
+
+@function ink($alpha) {
+  @return color-mix(in srgb, #{$fg} #{$alpha * 100%}, transparent);
+}
+
+.section {
+  background-color: $bg;
+  color: $fg;
+}
+
+.inner {
+  @include container;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding-block: $space-24;
+
+  @include mq(lg) {
+    padding-block: $space-32;
+  }
+}
+
+.eyebrow {
+  @include eyebrow;
+  color: ink(0.7);
+}
+
+// Todas en la misma celda: el alto es el de la reseña más larga
+.slides {
+  position: relative;
+  display: grid;
+  width: 100%;
+  max-width: 860px;
+  margin-top: $space-10;
+}
+
+.slide {
+  grid-area: 1 / 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  opacity: 0;
+  translate: 0 14px;
+  visibility: hidden;
+  transition:
+    opacity 900ms ease,
+    translate 1100ms $ease-out,
+    visibility 0s linear 900ms;
+
+  &[data-active="true"] {
+    opacity: 1;
+    translate: none;
+    visibility: visible;
+    transition-delay: 250ms, 250ms, 0s; // entra cuando la anterior ya se fue
+  }
+
+  // Mobile: la más larga es muy alta y dejaba huecos enormes en las cortas.
+  // Solo la activa ocupa lugar; las demás quedan encima, sin alto propio.
+  @include mq-down(md) {
+    &:not([data-active="true"]) {
+      position: absolute;
+      inset: 0 0 auto;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    translate: none;
+    transition: none;
+  }
+}
+
+.quote {
+  margin: 0;
+  font-family: $font-heading;
+  font-weight: $weight-regular;
+  font-size: clamp(19px, 5vw, 22px);
+  line-height: 1.5;
+  color: $fg;
+
+  @include mq(lg) {
+    font-size: clamp(22px, 1.75vw, 28px);
+  }
+}
+
+.author {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $space-1;
+  margin-top: $space-8;
+}
+
+.name {
+  @include eyebrow;
+  color: $fg;
+}
+
+.detail {
+  font-family: $font-ui;
+  font-size: 14px;
+  color: ink(0.6);
+}
+
+// ─────────────────────────────────────────────
+// Flechas y contador
+// ─────────────────────────────────────────────
+.controls {
+  display: flex;
+  align-items: center;
+  gap: $space-6;
+  margin-top: $space-12;
+}
+
+.arrow {
+  @include flex-center;
+  width: 48px;
+  height: 48px;
+  border: $border-width solid ink(0.35);
+  border-radius: $radius-full;
+  background: none;
+  color: $fg;
+  cursor: pointer;
+  transition:
+    background-color $transition-default,
+    border-color $transition-default;
+
+  @include hover {
+    background-color: ink(0.1);
+    border-color: $fg;
+  }
+
+  &:focus-visible {
+    outline: $border-width solid $fg;
+    outline-offset: 3px;
+  }
+}
+
+.counter {
+  min-width: 5.5em;
+  font-family: $font-ui;
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  font-variant-numeric: tabular-nums;
+  color: ink(0.8);
+}
+
+.counterSep {
+  color: ink(0.4);
+}

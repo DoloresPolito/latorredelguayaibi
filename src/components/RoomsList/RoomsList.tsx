@@ -17,6 +17,8 @@ type RoomsListProps = {
   t: Dictionary["habitaciones"]["list"];
   rooms: Dictionary["habitaciones"]["rooms"];
   id?: string;
+  /** Clase extra para el nombre de cada suite (p. ej. Italiana) */
+  titleClassName?: string;
 };
 
 type Room = (typeof ROOMS)[number];
@@ -28,7 +30,7 @@ type Room = (typeof ROOMS)[number];
  * mueve dentro de su marco y, al pasar el mouse, una etiqueta lo sigue.
  * Las tarjetas aparecen con un fundido suave, como en el home.
  */
-export default function RoomsList({ lang, intro, t, rooms, id = "suites" }: RoomsListProps) {
+export default function RoomsList({ lang, intro, t, rooms, id = "suites", titleClassName }: RoomsListProps) {
   const left = ROOMS.filter((_, i) => i % 2 === 0);
   const right = ROOMS.filter((_, i) => i % 2 === 1);
 
@@ -55,7 +57,7 @@ export default function RoomsList({ lang, intro, t, rooms, id = "suites" }: Room
         </Link>
 
         <div className={styles.caption}>
-          <h3 className={styles.name}>{copy.name}</h3>
+          <h3 className={[styles.name, titleClassName].filter(Boolean).join(" ")}>{copy.name}</h3>
           <ul className={styles.pills}>
             <li>
               {room.beds === "twoDoubles" ? (

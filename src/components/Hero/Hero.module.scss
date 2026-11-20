@@ -308,13 +308,91 @@ $content-left-desktop: $navbar-inset + $space-10; // alinea con el logo de la na
 }
 
 :global(html[data-intro="play"]) .kicker,
-:global(html[data-intro="play"]) .line,
 :global(html[data-intro="play"]) .tagline,
 :global(html[data-intro="play"]) .rule,
 :global(html[data-intro="play"]) .cta,
 :global(html[data-intro="play"]) .scroll,
 :global(html[data-intro="play"]) .down {
   animation-play-state: paused;
+}
+
+// El título del hero ES el nombre de la bienvenida: durante la animación se
+// levanta por encima del velo de <Opening> (z-index), sube línea por línea
+// desde una máscara y, cuando la foto se abre, ya está en su lugar. No se va
+// ni se reemplaza: al terminar, simplemente baja de capa.
+:global(html[data-intro="play"]) .hero,
+:global(html[data-intro="reveal"]) .hero {
+  isolation: auto; // si no, el z-index del título queda atrapado en el hero
+}
+
+:global(html[data-intro="play"]) .media,
+:global(html[data-intro="reveal"]) .media {
+  z-index: 0;
+}
+
+:global(html[data-intro="play"]) .heading,
+:global(html[data-intro="reveal"]) .heading {
+  position: relative;
+  z-index: $z-overlay + 11; // encima de <Opening> ($z-overlay + 10)
+}
+
+// [data-intro] (también "done"): si no, al terminar se reiniciaría la entrada
+:global(html[data-intro]) .line {
+  overflow: hidden;
+  padding-bottom: 0.1em; // que no se corten los descendentes
+  margin-bottom: -0.1em;
+  animation: none;
+}
+
+:global(html[data-intro]) .lineInner {
+  display: block;
+  animation: intro-rise 1400ms $ease-out 350ms both;
+}
+
+:global(html[data-intro]) .line:nth-child(2) .lineInner {
+  animation-delay: 500ms;
+}
+
+// Isotipo sobre el nombre, solo mientras dura la bienvenida
+// (solo en "play": si se saltea la animación, desaparece en el acto)
+:global(html[data-intro="play"]) .heading::before {
+  content: "";
+  position: absolute;
+  bottom: calc(100% + #{$space-6});
+  left: 50%;
+  height: 36px;
+  aspect-ratio: 670 / 421;
+  background-color: $butter;
+  mask: url("/logos/logo-negro.svg") center / contain no-repeat;
+  transform: translateX(-50%);
+  animation:
+    intro-fade-in 1400ms ease 200ms both,
+    intro-fade-out 900ms $ease-out 3150ms forwards;
+
+  @include mq(lg) {
+    height: 48px;
+  }
+}
+
+@keyframes intro-rise {
+  from {
+    transform: translateY(105%);
+  }
+  to {
+    transform: none;
+  }
+}
+
+@keyframes intro-fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes intro-fade-out {
+  to {
+    opacity: 0;
+  }
 }
 
 // ─────────────────────────────────────────────
@@ -367,6 +445,8 @@ $content-left-desktop: $navbar-inset + $space-10; // alinea con el logo de la na
   .title {
     color: $butter;
     text-shadow: 0 2px 24px rgba(#000, 0.2);
+    // Mobile: que "del Guayaibí" entre en un renglón (si no, "del" queda solo)
+    font-size: clamp(40px, 12.5vw, 64px);
 
     // Desktop: el nombre en una sola línea, como en la referencia
     @include mq(lg) {
@@ -374,7 +454,7 @@ $content-left-desktop: $navbar-inset + $space-10; // alinea con el logo de la na
       line-height: 1;
 
       .line {
-        display: inline;
+        display: inline-block; // inline-block: la máscara de la bienvenida necesita caja
       }
     }
   }

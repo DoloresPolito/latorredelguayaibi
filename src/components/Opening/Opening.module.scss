@@ -4,8 +4,11 @@
 // Línea de tiempo (ms desde que carga la página)
 //   200   aparece el isotipo
 //   350   suben "La Torre" / "del Guayaibí"
+//         (isotipo y nombre son del hero: su <h1> se levanta por encima
+//         de este velo; ver Hero.module.scss)
 //   1500  la ventana-torre crece desde abajo
-//   2850  la ventana se expande a pantalla completa (el nombre se va)
+//   2850  la ventana se expande a pantalla completa (el nombre queda)
+//   3150  se va el isotipo
 //   4500  fin → data-intro="reveal": el velo se funde y entra el hero
 // ─────────────────────────────────────────────
 $window-delay: 1500ms;
@@ -73,71 +76,11 @@ $bg: $forest; // oliva muy oscuro
   }
 }
 
-// Oscurece un poco la foto mientras el nombre está encima
+// Mismo velo que el hero "centered": al fundirse, la foto no cambia de tono
 .scrim {
   position: absolute;
   inset: 0;
-  background-color: rgba(#000, 0.28);
-  animation: scrim-out $window-duration $window-delay both;
-}
-
-// ─────────────────────────────────────────────
-// Nombre
-// ─────────────────────────────────────────────
-.brand {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: $space-6;
-  padding-inline: $space-5;
-  text-align: center;
-  color: $butter;
-  pointer-events: none;
-  animation: brand-out 900ms $ease-out 3150ms both;
-}
-
-.mark {
-  display: block;
-  height: 36px;
-  aspect-ratio: 670 / 421;
-  background-color: currentColor;
-  mask: url("/logos/logo-negro.svg") center / contain no-repeat;
-  animation: fade-in 1400ms ease 200ms both;
-
-  @include mq(lg) {
-    height: 48px;
-  }
-}
-
-.title {
-  font-family: $font-heading;
-  font-weight: $weight-light;
-  font-size: clamp(48px, 10vw, 76px);
-  line-height: 0.95;
-  letter-spacing: -0.03em;
-
-  @include mq(lg) {
-    font-size: clamp(76px, min(8.5vw, 15svh), 136px);
-  }
-}
-
-// Cada línea sube desde una máscara
-.line {
-  display: block;
-  overflow: hidden;
-  padding-bottom: 0.1em; // que no se corten los descendentes
-}
-
-.lineInner {
-  display: block;
-  animation: rise 1400ms $ease-out 350ms both;
-
-  .line:nth-child(2) & {
-    animation-delay: 500ms;
-  }
+  background-color: rgba(#000, 0.26);
 }
 
 // ─────────────────────────────────────────────
@@ -175,44 +118,6 @@ $bg: $forest; // oliva muy oscuro
   }
   100% {
     transform: scale(1);
-  }
-}
-
-@keyframes scrim-out {
-  0%,
-  55% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-  }
-}
-
-@keyframes rise {
-  from {
-    transform: translateY(105%);
-  }
-  to {
-    transform: none;
-  }
-}
-
-@keyframes brand-out {
-  from {
-    opacity: 1;
-  }
-  to {
-    opacity: 0;
-    transform: translateY(-16px);
-  }
-}
-
-@keyframes fade-in {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
   }
 }
 

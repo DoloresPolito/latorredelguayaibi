@@ -35,6 +35,9 @@ export const es = {
     socials: "Redes",
     contact: "Contacto",
     instagram: "Instagram",
+    facebook: "Facebook",
+    tripadvisor: "TripAdvisor",
+    flickr: "Flickr",
     whatsapp: "WhatsApp",
   },
 
@@ -74,6 +77,19 @@ export const es = {
     imageAlt: "Atardecer dorado sobre la pileta, con reposeras y eucaliptos recortados contra el cielo",
   },
 
+  // Home "telón": panel de color que sube sobre el hero y foto a todo el ancho
+  welcomePanel: {
+    title: "Es un lugar diferente. Con personalidad propia.",
+    text: "Solo se necesita estar allí para darse cuenta. Un lugar de otra época, cuando el hombre sabía cómo vivir. La piedra, basalto del corazón de la Tierra, la madera, en abundancia y de la buena, los libros, de esos que son imprescindibles, a montones, en conjunto dan al lugar una magia muy especial.",
+    cta: "Conocer nuestra historia",
+    imageAlt: "Atardecer dorado sobre la pileta, con reposeras y eucaliptos recortados contra el cielo y el campo abierto",
+  },
+
+  quietText: {
+    lead: "Los espacios de La Torre guardan una elegancia serena y cálida.",
+    text: "La piedra, la madera y los muebles de familia conviven con la luz del campo y una hospitalidad atenta y sin apuro. Un lujo sencillo, hecho de tiempo, silencio y naturaleza, que invita a quedarse.",
+  },
+
   habitaciones: {
     intro: {
       text: "Espacios amplios y luminosos",
@@ -82,6 +98,7 @@ export const es = {
       title: "Habitaciones",
       countLabel: "Suites",
       cardCta: "Consultar",
+      roomCta: "Consultar esta suite",
       beds: {
         twoDoubles: "2 camas dobles",
         threeSingles: "3 camas simples",
@@ -89,12 +106,20 @@ export const es = {
       guests: "Hasta {n} huéspedes",
       extraBed: "Cama extra opcional",
     },
+    // description: una frase sobre cada suite (vacía = no se muestra).
+    // TODO: completar con lo que hace especial a cada una.
     rooms: {
-      piedra: { name: "Suite de piedra", imageAlt: "Suite de piedra" },
-      espejos: { name: "Suite de los espejos", imageAlt: "Suite de los espejos" },
-      triple: { name: "Suite triple", imageAlt: "Suite triple" },
-      azul: { name: "Suite azul petróleo", imageAlt: "Suite azul petróleo" },
-      verde: { name: "Suite verde", imageAlt: "Suite verde" },
+      piedra: { name: "Suite de piedra", imageAlt: "Suite de piedra", description: "" },
+      espejos: { name: "Suite de los espejos", imageAlt: "Suite de los espejos", description: "" },
+      triple: { name: "Suite triple", imageAlt: "Suite triple", description: "" },
+      azul: { name: "Suite azul petróleo", imageAlt: "Suite azul petróleo", description: "" },
+      verde: { name: "Suite verde", imageAlt: "Suite verde", description: "" },
+    },
+    // Cierre de la página, antes del footer
+    closing: {
+      title: "El desayuno, incluido en todas las suites.",
+      text: "Almuerzos y cenas, con aviso previo. Contanos cuándo querés venir y te ayudamos a organizar tu estadía.",
+      cta: "Consultar disponibilidad",
     },
   },
 
@@ -175,7 +200,13 @@ export const es = {
     socials: "Redes",
     contact: "Contacto",
     instagram: "Instagram",
+    facebook: "Facebook",
+    tripadvisor: "TripAdvisor",
+    flickr: "Flickr",
     whatsapp: "WhatsApp",
+    address: "Ruta Nacional 123, km 128",
+    city: "Mercedes, Corrientes",
+    mapsLabel: "Ver la ubicación en Google Maps",
     rights: "Todos los derechos reservados.",
     backToTop: "Volver arriba",
   },
@@ -189,6 +220,33 @@ export const es = {
     quoteCta: "Ver más sobre las habitaciones",
     imageAlt:
       "Habitación con camas con dosel y cortinas blancas, paredes de piedra y un ventanal hacia el parque",
+  },
+
+  // Home: resumen de habitaciones (RoomsShowcase)
+  roomsShowcase: {
+    eyebrow: "Habitaciones",
+    title: "Donde el verdadero lujo es la tranquilidad.",
+    text: "Suites amplias y luminosas, cada una con su propia personalidad: piedra, madera, telas de campo y la luz de la tarde entrando por las ventanas.",
+    cta: "Ver habitaciones",
+    bigImageAlt: "Suite de piedra con camas con dosel, cortinas blancas y paredes de piedra",
+    smallImageAlt: "Suite azul petróleo con cama con dosel y piso de madera",
+  },
+
+  // Home: gastronomía (Dining). images: texto alternativo de cada foto, en orden
+  dining: {
+    eyebrow: "Gastronomía",
+    title: "El desayuno, siempre incluido.",
+    text: "Cada mañana te espera un desayuno casero, incluido en tu estadía. Y si querés quedarte a almorzar o a cenar, lo preparamos para vos con aviso previo.",
+    details: [
+      { label: "Desayuno", value: "Incluido" },
+      { label: "Almuerzos y cenas", value: "Con aviso previo" },
+    ],
+    images: [
+      "Mesa de madera puesta para el desayuno, con tazas, copas e individuales de mimbre, en el salón de piedra",
+      "Parrilla a leña encendida bajo una galería de piedra",
+      "Mesa de desayuno con mantel a cuadros rojos: frutas, budines, panes, quesos y fiambres",
+      "Mesa puesta con copas, servilletas de lino y velas encendidas",
+    ],
   },
 
   expandImage: {
@@ -208,8 +266,58 @@ export const es = {
     imageAlt2: "Muelle sobre la laguna al atardecer con cortinas de lino blanco movidas por el viento",
   },
 
+  // Home: eventos con el estilo nuevo (EventsShowcase). Las propuestas de
+  // la lista salen de eventos.services; las fotos, de eventsTeaser.
+  eventsShowcase: {
+    eyebrow: "Eventos",
+    title: "Encuentros a cielo abierto.",
+    text: "Celebraciones íntimas, reuniones de trabajo y encuentros que encuentran en La Torre un escenario único, lejos del ritmo de todos los días.",
+    cta: "Descubrir eventos",
+  },
+
+  // Home: reseñas del libro de visitas (Reviews), debajo de eventos.
+  // Se pueden agregar o quitar items; detail es opcional.
+  reviews: {
+    eyebrow: "Reseñas",
+    items: [
+      {
+        quote: "Me sentí como en casa en este “Casco Guayaibí” con esperanza de encontrar un refugio en el nuevo mundo! Con infinito agradecimiento!",
+        name: "Katja Alemann",
+        detail: "Libro de visitas",
+      },
+      {
+        quote: "Querida Marisa y Enrique: Quedo eternamente agradecido por vuestra generosa hospitalidad en este lugar tan mágico, lleno de amor, poesía, historias y trabajo, mucho trabajo. Mis mejores deseos para esta linda familia que es la Torre del Guayaibí.",
+        name: "Carlos Portaluppi",
+        detail: "Libro de visitas",
+      },
+      {
+        quote: "Hubo una vez un sueño, que tras muchos años de trabajo se plasmó en este romántico estar de piedra, linos y madera. Sigan soñando. Guarden un fuego en sus corazones.",
+        name: "Francis Mallmann",
+        detail: "Libro de visitas",
+      },
+      {
+        quote: "Qué castillo inolvidable!!! Cortos fueron los momentos pero intensos y hermosos. Buena gente, buen gusto, buena madera. Gracias por hacerme sonreír. Lo necesitaba.",
+        name: "Fabiana Cantilo",
+        detail: "Libro de visitas",
+      },
+      {
+        quote: "¡Qué difícil reseñar la fascinación que despierta la Torre del Guayaibí! Qué mencionar primero: el espectáculo del sol cayendo sobre la piscina, el frescor de las galerías en la tarde, acunado por las cigarras… la belleza y la elegancia de sus habitaciones, los atardeceres largos de rojo… la exquisitez de las comidas… ¡la biblioteca de Alejandría en lo alto!… Tal vez aquello que perdure más tiempo en la memoria de quien pase por aquí es la calidez de sus dueños: Marisa y Enrique y sus hijos, entrañables. Gracias por tanto, hasta muy pronto.",
+        name: "Esther Goris",
+        detail: "Libro de visitas",
+      },
+      {
+        quote: "No sé por dónde empezar. Al despertar pensaba que todo fue un sueño. No sé decir otra cosa que gracias: por la generosidad, la belleza, el cariño, el tiempo y el espacio del que nos hicisteis partícipes. Sólo me atrevo a añadir nuestra voluntad de poder corresponderos. Jamás olvidaremos vuestra casa ni a vosotros. ¡Gracias!",
+        name: "José Sacristán",
+        detail: "Libro de visitas",
+      },
+    ],
+    prev: "Reseña anterior",
+    next: "Reseña siguiente",
+    slideLabel: "Reseña {n} de {total}",
+  },
+
   reservas: {
-    // Bloque terracota de arriba. Entre *asteriscos*: palabras en itálica.
+    // Bloque verde de arriba. Entre *asteriscos*: palabras destacadas (en Italiana van rectas).
     benefitsTitle: "Una estadía con *todo lo esencial.*",
     benefits: {
       rooms: {

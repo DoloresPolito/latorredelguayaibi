@@ -17,13 +17,13 @@
 .content {
   display: flex;
   flex-direction: column;
-  min-height: 100svh;
-  padding: $space-24 $space-5 $space-6;
+  min-height: 72svh;
+  padding: $space-16 $space-5 $space-6;
   transform: translateY(calc((1 - var(--reveal)) * -20%));
   will-change: transform;
 
   @include mq(lg) {
-    padding: $space-32 clamp(#{$space-6}, 5.5vw, #{$navbar-inset + $space-10}) $space-8;
+    padding: $space-20 clamp(#{$space-6}, 5.5vw, #{$navbar-inset + $space-10}) $space-6;
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -45,7 +45,7 @@
 // ─────────────────────────────────────────────
 .columns {
   display: grid;
-  gap: $space-12;
+  gap: $space-10;
 
   @include mq(md) {
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -66,32 +66,32 @@
 .label {
   display: flex;
   gap: 4px;
-  margin-bottom: $space-6;
+  margin-bottom: $space-4;
 }
 
 .chip {
   display: inline-flex;
   align-items: center;
-  height: 22px;
-  padding-inline: 8px;
+  height: 20px;
+  padding-inline: 7px;
   border-radius: 3px;
   background-color: rgba($butter, 0.12);
   font-family: $font-ui;
-  font-size: 12px;
+  font-size: 11px;
   color: rgba($butter, 0.75);
 }
 
 .list {
   display: flex;
   flex-direction: column;
-  gap: $space-2;
+  gap: $space-1;
 }
 
 .link {
   font-family: $font-ui;
   font-weight: $weight-light;
-  font-size: clamp(20px, 1.8vw, 26px);
-  line-height: 1.25;
+  font-size: clamp(16px, 1.2vw, 18px);
+  line-height: 1.45;
   letter-spacing: -0.01em;
   color: rgba($butter, 0.8);
   transition: color $transition-default;
@@ -112,7 +112,7 @@
 .marquee {
   margin-block: auto; // ocupa el centro del espacio libre
   margin-inline: calc(-1 * #{$space-5});
-  padding-block: $space-12;
+  padding-block: $space-8;
   overflow: hidden;
   // se aclara a medida que el footer entra
   opacity: calc(0.35 + var(--reveal) * 0.65);
@@ -141,7 +141,7 @@
   // trazo con un borde del mismo color, igual que en el hero.
   font-family: var(--font-italiana, var(--font-lay, var(--font-heading))), var(--font-sans-test, Georgia), serif;
   font-weight: $weight-regular;
-  font-size: clamp(96px, 14vw, 240px);
+  font-size: clamp(64px, 9vw, 150px);
   line-height: 0.9;
   letter-spacing: 0;
   -webkit-text-stroke: 0.02em currentColor;
@@ -165,8 +165,8 @@
   justify-content: space-between;
   gap: $space-3 $space-8;
   font-family: $font-ui;
-  font-size: 13px;
-  color: rgba($butter, 0.75);
+  font-size: 12px;
+  color: rgba($butter, 0.7);
 }
 
 .toTop {

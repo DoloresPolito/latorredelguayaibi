@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import { useEffect, useRef } from "react";
-import type { Dictionary } from "@/i18n/dictionaries/es";
 import styles from "./Opening.module.scss";
 
 const STORAGE_KEY = "lt-opening-seen";
@@ -27,18 +26,20 @@ function InlineScript({ html }: { html: string }) {
 }
 
 type OpeningProps = {
-  t: Dictionary["opening"];
   /** Misma foto que el hero, para que el final de la animación empalme con él */
   image: string;
 };
 
 /**
  * Animación de bienvenida del home (una vez por sesión):
- * fondo oscuro → aparece el nombre → una ventana con forma de torre crece
+ * fondo oscuro → sube el nombre → una ventana con forma de torre crece
  * desde abajo → se expande hasta la foto del hero → se funde y arrancan
- * los textos del hero. Click o cualquier tecla la saltea.
+ * los demás textos del hero. Click o cualquier tecla la saltea.
+ *
+ * El nombre no está acá: es el mismo <h1> del hero, que durante la animación
+ * se levanta por encima de este velo (ver Hero.module.scss) y queda fijo.
  */
-export default function Opening({ t, image }: OpeningProps) {
+export default function Opening({ image }: OpeningProps) {
   const rootRef = useRef<HTMLDivElement>(null);
   const windowRef = useRef<HTMLDivElement>(null);
 
@@ -89,7 +90,7 @@ export default function Opening({ t, image }: OpeningProps) {
   return (
     <>
       <InlineScript html={bootScript} />
-      {/* Decorativa: el mismo contenido está en el hero */}
+      {/* Decorativa: solo el fondo y la foto; el nombre es el del hero */}
       <div ref={rootRef} className={styles.opening} aria-hidden="true">
         <div ref={windowRef} className={styles.window}>
           <Image
@@ -103,17 +104,6 @@ export default function Opening({ t, image }: OpeningProps) {
           <span className={styles.scrim} />
         </div>
 
-        <div className={styles.brand}>
-          <span className={styles.mark} />
-          <p className={styles.title}>
-            <span className={styles.line}>
-              <span className={styles.lineInner}>{t.titleLine1}</span>
-            </span>
-            <span className={styles.line}>
-              <span className={styles.lineInner}>{t.titleLine2}</span>
-            </span>
-          </p>
-        </div>
       </div>
     </>
   );

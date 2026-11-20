@@ -13,7 +13,7 @@ import {
 } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries/es";
 import { CTA_HREF, NAV_LINKS } from "@/config/navigation";
-import { SITE, whatsappUrl } from "@/config/site";
+import { SITE, phoneUrl, socialLinks, whatsappUrl } from "@/config/site";
 import styles from "./Navbar.module.scss";
 
 
@@ -27,6 +27,19 @@ type NavbarProps = {
    */
   variant?: "top" | "bottom";
 };
+
+/**
+ * Rect de una sección, recortado por su <Curtain> si tiene uno: el telón
+ * corre la sección hacia abajo (transform) mientras sale, pero solo se ve
+ * la parte que queda dentro del envoltorio.
+ */
+function visibleRect(section: Element) {
+  const r = section.getBoundingClientRect();
+  const clip = section.closest("[data-curtain]");
+  if (!clip) return r;
+  const c = clip.getBoundingClientRect();
+  return { top: Math.max(r.top, c.top), bottom: Math.min(r.bottom, c.bottom) };
+}
 
 export default function Navbar({ lang, t, variant = "top" }: NavbarProps) {
   const ref = useRef<HTMLElement>(null);
@@ -60,7 +73,7 @@ export default function Navbar({ lang, t, variant = "top" }: NavbarProps) {
       const y = rect.top + rect.height / 2;
       setIsOnDark(
         Array.from(document.querySelectorAll('[data-nav-theme="dark"]')).some((section) => {
-          const r = section.getBoundingClientRect();
+          const r = visibleRect(section);
           return r.top <= y && r.bottom >= y;
         }),
       );
@@ -68,7 +81,7 @@ export default function Navbar({ lang, t, variant = "top" }: NavbarProps) {
       // en vez de la verde oscura
       setIsOnGlass(
         Array.from(document.querySelectorAll("[data-nav-glass]")).some((section) => {
-          const r = section.getBoundingClientRect();
+          const r = visibleRect(section);
           return r.top <= y && r.bottom >= y;
         }),
       );
@@ -79,7 +92,7 @@ export default function Navbar({ lang, t, variant = "top" }: NavbarProps) {
       // link / el isotipo toma el color según el lado del corte en que queda.
       const split = Array.from(document.querySelectorAll<HTMLElement>("[data-nav-split]")).find(
         (section) => {
-          const r = section.getBoundingClientRect();
+          const r = visibleRect(section);
           return r.top <= y && r.bottom >= y;
         },
       );
@@ -263,11 +276,13 @@ export default function Navbar({ lang, t, variant = "top" }: NavbarProps) {
             <div>
               <p className={styles.chip}>{t.socials}</p>
               <ul className={styles.infoList}>
-                <li>
-                  <a href={SITE.instagram} target="_blank" rel="noopener noreferrer">
-                    {t.instagram}
-                  </a>
-                </li>
+                {socialLinks.map(({ key, url }) => (
+                  <li key={key}>
+                    <a href={url} target="_blank" rel="noopener noreferrer">
+                      {t[key]}
+                    </a>
+                  </li>
+                ))}
                 <li>
                   <a href={whatsappUrl()} target="_blank" rel="noopener noreferrer">
                     {t.whatsapp}
@@ -282,9 +297,7 @@ export default function Navbar({ lang, t, variant = "top" }: NavbarProps) {
                   <a href={`mailto:${SITE.email}`}>{SITE.email}</a>
                 </li>
                 <li>
-                  <a href={whatsappUrl()} target="_blank" rel="noopener noreferrer">
-                    +{SITE.whatsapp}
-                  </a>
+                  <a href={phoneUrl}>{SITE.phone}</a>
                 </li>
               </ul>
             </div>
