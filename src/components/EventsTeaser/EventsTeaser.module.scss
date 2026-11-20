@@ -1,7 +1,7 @@
 @use "abstracts" as *;
 
 $dark: $forest; // mismo verde que el manifiesto
-$light: $butter;
+$light: $color-background; // fondo claro de la sección
 $ink: $dark; // textos sobre el verde claro
 
 // En desktop el corte vertical cae por debajo de la segunda foto;

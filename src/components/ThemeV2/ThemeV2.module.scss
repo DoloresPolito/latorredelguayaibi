@@ -13,3 +13,16 @@
 .theme .layTitle { // .theme: para ganarle al font-family del componente
   font-family: var(--font-lay), var(--font-sans-test), Helvetica, Arial, sans-serif;
 }
+
+// Prueba: títulos en Italiana. Solo tiene peso 400, así que se fuerza
+// (sin falso bold del navegador) y se engrosa el trazo con un borde del
+// mismo color del texto. Subir/bajar --title-stroke para más/menos grosor
+// (0 = la fuente original).
+.theme .italianaTitle {
+  --title-stroke: 0.025em;
+  font-family: var(--font-italiana), Georgia, serif;
+  font-weight: 400;
+  letter-spacing: 0.01em; // compensa el borde, que junta las letras
+  -webkit-text-stroke: var(--title-stroke) currentColor;
+  paint-order: stroke fill;
+}

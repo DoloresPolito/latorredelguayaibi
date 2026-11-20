@@ -325,6 +325,96 @@ $content-left-desktop: $navbar-inset + $space-10; // alinea con el logo de la na
 }
 
 // ─────────────────────────────────────────────
+// Layout "centered" (prueba en el home): la foto queda oscurecida con un
+// velo parejo y título, frase y botón van centrados encima, en claro.
+// ─────────────────────────────────────────────
+.centered {
+  // Mismo espacio título → frase que frase → botón
+  --stack-gap: clamp(#{$space-8}, 5svh, #{$space-12});
+
+  .overlay {
+    background: rgba(#000, 0.26);
+  }
+
+  .content {
+    align-items: center;
+    justify-content: center;
+    max-width: none;
+    margin-inline: auto;
+    padding:
+      calc(#{$navbar-height-mobile + $navbar-sticky-top-mobile} + #{$space-6})
+      $space-6
+      clamp(#{$space-20}, 13svh, #{$space-24});
+    text-align: center;
+
+    @include mq(lg) {
+      padding:
+        calc(#{$navbar-height + $navbar-sticky-top} + #{$space-6})
+        $space-12
+        clamp(#{$space-16}, 12svh, #{$space-32});
+    }
+  }
+
+  .heading,
+  .actions {
+    align-items: center;
+  }
+
+  .actions {
+    margin-top: var(--stack-gap);
+  }
+
+  .title {
+    color: $butter;
+    text-shadow: 0 2px 24px rgba(#000, 0.2);
+
+    // Desktop: el nombre en una sola línea, como en la referencia
+    @include mq(lg) {
+      font-size: clamp(56px, min(6.4vw, 12svh), 120px);
+      line-height: 1;
+
+      .line {
+        display: inline;
+      }
+    }
+  }
+
+  .tagline {
+    margin-top: 0;
+    color: rgba($butter, 0.9);
+    text-shadow: none;
+  }
+
+  .rule {
+    display: none;
+  }
+
+  // Botón sutil: solo un borde fino claro, sin relleno; se insinúa al pasar
+  .cta {
+    margin-top: var(--stack-gap);
+    height: 40px;
+    padding-inline: $space-5;
+    border: $border-width solid rgba($butter, 0.55);
+    background-color: transparent;
+    color: $butter;
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+
+    @include hover {
+      background-color: rgba($butter, 0.12);
+      border-color: $butter;
+      color: $butter;
+    }
+
+    &:focus-visible {
+      outline: $border-width solid $butter;
+      outline-offset: 3px;
+    }
+  }
+}
+
+// ─────────────────────────────────────────────
 // Tono "light" (p. ej. eventos): foto oscura a la izquierda, así que los
 // textos van siempre en crema, sobre un velo
 // ─────────────────────────────────────────────

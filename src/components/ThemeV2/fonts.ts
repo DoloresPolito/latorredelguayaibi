@@ -1,4 +1,4 @@
-import { Inter_Tight } from "next/font/google";
+import { Inter_Tight, Italiana } from "next/font/google";
 import localFont from "next/font/local";
 
 // Tipografías del diseño nuevo (home y reservas).
@@ -9,6 +9,14 @@ export const sansTest = Inter_Tight({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600"], // 500: la í del título del hero
   style: ["normal", "italic"],
+});
+
+// Prueba: título del hero del home en Italiana (Google Fonts, solo 400).
+// (Antes se probó Poiret One.)
+export const italiana = Italiana({
+  variable: "--font-italiana",
+  subsets: ["latin"],
+  weight: "400",
 });
 
 // Lay Grotesk (archivos TRIAL, "Personal Use Only": solo para probar en local;

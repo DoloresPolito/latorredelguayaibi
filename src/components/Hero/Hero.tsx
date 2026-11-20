@@ -29,6 +29,11 @@ type HeroProps = {
   ctaHref?: string;
   /** "light": textos claros también en desktop (fotos oscuras a la izquierda) */
   tone?: "dark" | "light";
+  /**
+   * "centered" (prueba): foto oscurecida con un velo parejo y todo centrado
+   * encima, en claro: título, frase y botón. Por defecto: textos a la izquierda.
+   */
+  layout?: "split" | "centered";
 };
 
 /** Foto distinta para desktop y mobile ("art direction") con <picture> */
@@ -65,15 +70,22 @@ export default function Hero({
   titleClassName,
   ctaHref = "/la-torre",
   tone = "dark",
+  layout = "split",
 }: HeroProps) {
   const isName = variant === "name" && name;
   const line1 = isName ? name.line1 : t.titleLine1;
   const line2 = isName ? name.line2 : t.titleLine2;
+  const centered = layout === "centered";
+  // Textos claros sobre la foto: la navbar también tiene que ir en claro
+  const onDark = tone === "light" || centered;
 
   return (
     <section
-      className={`${styles.hero} ${tone === "light" ? styles.light : ""}`}
-      data-nav-theme={tone === "light" ? "dark" : undefined}
+      className={[styles.hero, tone === "light" && styles.light, centered && styles.centered]
+        .filter(Boolean)
+        .join(" ")}
+      data-nav-theme={onDark ? "dark" : undefined}
+      data-nav-glass={centered || undefined}
     >
       <div className={styles.media}>
         {image && mobileImage ? (

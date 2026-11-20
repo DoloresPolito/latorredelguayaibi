@@ -678,6 +678,13 @@ $drawer-duration: 650ms;
     color: $butter;
   }
 
+  // Sobre una foto oscurecida (data-nav-glass, p. ej. el hero centrado del
+  // home): vidrio claro y desenfocado en vez de la pastilla verde oscura
+  :global(.theme-v2) .onGlass .links {
+    background-color: rgba($butter, 0.26);
+    backdrop-filter: blur(24px) saturate(140%);
+  }
+
   // Sobre una sección partida en oscuro | claro (data-nav-split, p. ej. la
   // de eventos del home): vidrio casi transparente para que se vea el fondo
   // desenfocado, y cada link en crema o marrón según el lado del corte

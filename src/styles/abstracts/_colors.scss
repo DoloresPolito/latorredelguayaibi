@@ -6,7 +6,8 @@
 // ─────────────────────────────────────────────
 
 // Claros
-$butter: #fef1ca; // fondo del sitio, textos y botones claros sobre fondos oscuros
+$cream: #f9f0d7; // fondo del sitio (secciones claras)
+$butter: #fef1ca; // textos y botones claros sobre fondos oscuros
 $butter-hover: color.mix($butter, #493328, 90%); // hover de botones crema (derivado)
 
 // Verdes
@@ -31,8 +32,8 @@ $icon-color: #626a58; // íconos
 // ─────────────────────────────────────────────
 // Alias semánticos (usar estos en los componentes)
 // ─────────────────────────────────────────────
-$color-background: $butter;
-$color-surface: $butter;
+$color-background: $cream;
+$color-surface: $cream;
 $color-dark: $forest;
 $color-on-dark: $butter;
 $color-primary: $deep-olive;

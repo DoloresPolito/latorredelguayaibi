@@ -244,7 +244,7 @@
 // Variante "quote" (home nuevo): panel verde claro, frase centrada en verde
 // oscuro y un link subrayado en mayúsculas en vez del botón sólido.
 // ─────────────────────────────────────────────
-$quote-bg: $butter;
+$quote-bg: $color-background;
 $quote-ink: $deep-olive; // verde de los botones, como en el diseño
 
 .quote .panel {

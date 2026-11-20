@@ -7,7 +7,7 @@ import EventsTeaser from "@/components/EventsTeaser/EventsTeaser";
 import Navbar from "@/components/Navbar/Navbar";
 import Opening from "@/components/Opening/Opening";
 import { getDictionary, getLocale } from "@/i18n/getDictionary";
-import ThemeV2, { layTitleClass } from "@/components/ThemeV2/ThemeV2";
+import ThemeV2, { italianaTitleClass } from "@/components/ThemeV2/ThemeV2";
 
 // Home nuevo (diseño "theme-v2"). La versión anterior quedó en /[lang]/original.
 
@@ -33,7 +33,8 @@ export default async function Home() {
           nextSectionId="manifiesto"
           variant="name"
           name={{ line1: t.opening.titleLine1, line2: t.opening.titleLine2 }}
-          titleClassName={layTitleClass}
+          titleClassName={italianaTitleClass}
+          layout="centered" // prueba: sacar esta línea para volver al hero anterior
         />
         <Manifesto t={t.manifesto} />
         <RoomsTeaser lang={lang} t={t.roomsTeaser} variant="quote" />

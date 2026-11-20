@@ -36,6 +36,7 @@ export default function Navbar({ lang, t, variant = "top" }: NavbarProps) {
   const [isStuck, setIsStuck] = useState(false);
   const [isOnDark, setIsOnDark] = useState(false);
   const [isOnSplit, setIsOnSplit] = useState(false);
+  const [isOnGlass, setIsOnGlass] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
 
@@ -59,6 +60,14 @@ export default function Navbar({ lang, t, variant = "top" }: NavbarProps) {
       const y = rect.top + rect.height / 2;
       setIsOnDark(
         Array.from(document.querySelectorAll('[data-nav-theme="dark"]')).some((section) => {
+          const r = section.getBoundingClientRect();
+          return r.top <= y && r.bottom >= y;
+        }),
+      );
+      // ¿Sobre una foto oscurecida (data-nav-glass)? Pastilla de vidrio claro
+      // en vez de la verde oscura
+      setIsOnGlass(
+        Array.from(document.querySelectorAll("[data-nav-glass]")).some((section) => {
           const r = section.getBoundingClientRect();
           return r.top <= y && r.bottom >= y;
         }),
@@ -157,7 +166,7 @@ export default function Navbar({ lang, t, variant = "top" }: NavbarProps) {
   return (
     <header
       ref={ref}
-      className={[styles.header, styles[variant], isStuck && styles.stuck, isOnDark && styles.onDark, isOnSplit && styles.onSplit]
+      className={[styles.header, styles[variant], isStuck && styles.stuck, isOnDark && styles.onDark, isOnSplit && styles.onSplit, isOnGlass && styles.onGlass]
         .filter(Boolean)
         .join(" ")}
     >

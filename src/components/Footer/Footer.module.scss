@@ -136,12 +136,16 @@
 // empezar, así el loop no tiene corte
 .word {
   padding-right: 0.35em;
-  // Lay Grotesk Regular (la í sale de Inter Tight, ver mixin display-lay)
-  font-family: var(--font-lay, var(--font-heading)), var(--font-sans-test, Georgia), sans-serif;
+  // Italiana, como el título del hero del home (la carga <ThemeV2>; sin
+  // ella cae en Lay Grotesk). Solo tiene peso 400: se engrosa apenas el
+  // trazo con un borde del mismo color, igual que en el hero.
+  font-family: var(--font-italiana, var(--font-lay, var(--font-heading))), var(--font-sans-test, Georgia), serif;
   font-weight: $weight-regular;
   font-size: clamp(96px, 14vw, 240px);
   line-height: 0.9;
-  letter-spacing: -0.02em;
+  letter-spacing: 0;
+  -webkit-text-stroke: 0.02em currentColor;
+  paint-order: stroke fill;
   white-space: nowrap;
   color: $butter;
 }
