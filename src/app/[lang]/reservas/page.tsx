@@ -74,7 +74,7 @@ export default async function ReservasPage() {
           <div className={styles.media}>
             <div className={styles.imageLayer}>
               <Image
-                src="/images/consultas1.jpg"
+                src="/images/atardecer.png"
                 alt={r.imageAlt}
                 fill
                 sizes="(min-width: 1024px) 42vw, 100vw"

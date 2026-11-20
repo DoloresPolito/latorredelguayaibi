@@ -67,7 +67,7 @@ export default async function Home() {
             <Curtain shade={0.12}>
               <WelcomePanel lang={lang} t={t.welcomePanel} titleClassName={italianaTitleClass} />
             </Curtain>
-            <FullBleedImage src="/images/imagen.png" alt={t.welcomePanel.imageAlt} />
+            <FullBleedImage src="/images/laguna.jpg" alt={t.welcomePanel.imageAlt} />
             <QuietText t={t.quietText} textClassName={italianaTitleClass} />
           </>
         ) : (
@@ -95,7 +95,6 @@ export default async function Home() {
               lang={lang}
               t={t.eventsShowcase}
               images={t.eventsTeaser}
-              services={t.eventos.services.items}
               titleClassName={italianaTitleClass}
             />
             <Reviews t={t.reviews} quoteClassName={italianaTitleClass} />

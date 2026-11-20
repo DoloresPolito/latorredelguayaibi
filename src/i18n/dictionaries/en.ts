@@ -77,7 +77,7 @@ export const en: Dictionary = {
     title: "It’s a different place. With a personality of its own.",
     text: "You only need to be there to realize it. A place from another era, when people knew how to live. The stone, basalt from the heart of the Earth; the wood, plentiful and of the finest; the books, the essential kind, by the dozen: together they give the place a very special magic.",
     cta: "Discover our story",
-    imageAlt: "Golden sunset over the pool, with sun loungers and eucalyptus trees silhouetted against the sky and the open countryside",
+    imageAlt: "Pink sunset over the lagoon: a family paddles a canoe while others dine on the wooden pier",
   },
 
   quietText: {
@@ -324,7 +324,7 @@ export const en: Dictionary = {
     eyebrow: "Enquiries",
     titleLine1: "Your next",
     titleLine2: "stay *awaits.*",
-    imageAlt: "A lagoon at sunset under a pink sky, with tall grasses on the bank and water hyacinths",
+    imageAlt: "Golden sunset over the pool, with eucalyptus trees silhouetted against the sun, sun loungers and the open countryside",
     formTitle: "Enquiry form",
     intro: "Tell us when you'd like to come and we'll get in touch shortly to help you *plan your stay.*",
   },

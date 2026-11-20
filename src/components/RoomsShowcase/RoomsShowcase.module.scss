@@ -121,7 +121,6 @@
 
 .cta {
   @include btn-v2;
-  align-self: flex-end; // debajo del texto, sobre la derecha
   margin-top: $space-8;
 }
 

@@ -22,7 +22,7 @@ const BIG = ROOMS[0];
 /**
  * Resumen de habitaciones en el home: una foto grande (se mueve con el
  * scroll y se descubre de abajo hacia arriba al entrar), el título, un
- * texto corto y, debajo y sobre la derecha, el botón a /habitaciones.
+ * texto corto y, debajo y alineado a la izquierda, el botón a /habitaciones.
  */
 export default function RoomsShowcase({ lang, t, id = "habitaciones", titleClassName }: RoomsShowcaseProps) {
   return (

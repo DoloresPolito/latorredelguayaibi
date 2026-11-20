@@ -82,7 +82,7 @@ export const es = {
     title: "Es un lugar diferente. Con personalidad propia.",
     text: "Solo se necesita estar allí para darse cuenta. Un lugar de otra época, cuando el hombre sabía cómo vivir. La piedra, basalto del corazón de la Tierra, la madera, en abundancia y de la buena, los libros, de esos que son imprescindibles, a montones, en conjunto dan al lugar una magia muy especial.",
     cta: "Conocer nuestra historia",
-    imageAlt: "Atardecer dorado sobre la pileta, con reposeras y eucaliptos recortados contra el cielo y el campo abierto",
+    imageAlt: "Atardecer rosado sobre la laguna: una familia rema en canoa mientras otros cenan en el muelle de madera",
   },
 
   quietText: {
@@ -344,7 +344,7 @@ export const es = {
     eyebrow: "Consultas",
     titleLine1: "Tu próxima",
     titleLine2: "estadía *te espera.*",
-    imageAlt: "Laguna al atardecer con cielo rosado, pastizales en la orilla y camalotes en el agua",
+    imageAlt: "Atardecer dorado sobre la pileta, con eucaliptos recortados contra el sol, reposeras y el campo abierto",
     formTitle: "Formulario de consulta",
     intro: "Contanos cuándo querés venir y nos pondremos en contacto a la brevedad para ayudarte a *organizar tu estadía.*",
   },

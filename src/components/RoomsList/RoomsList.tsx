@@ -87,12 +87,8 @@ export default function RoomsList({ lang, intro, t, rooms, id = "suites", titleC
     <section id={id} className={styles.section} data-nav-theme="dark" aria-labelledby={`${id}-title`}>
       <Reveal className={styles.header} threshold={0.4}>
         <div className={styles.intro}>
-          <p className={styles.introText}>
+          <p className={[styles.introText, titleClassName].filter(Boolean).join(" ")}>
             {intro.text}
-          </p>
-          <p className={styles.count}>
-            <span>{ROOMS.length}</span>
-            <span>{t.countLabel}</span>
           </p>
         </div>
         <h1 id={`${id}-title`} className="visually-hidden">

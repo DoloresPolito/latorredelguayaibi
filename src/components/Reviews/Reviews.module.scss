@@ -95,13 +95,22 @@ $fg: var(--tone-fg, #{$forest});
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: $space-1;
-  margin-top: $space-8;
+  gap: $space-2;
+  margin-top: $space-10;
 }
 
+// Quien firma es conocido: el nombre se destaca en bordó y más grande,
+// con la tipografía de textos
 .name {
-  @include eyebrow;
-  color: $fg;
+  font-family: $font-ui;
+  font-weight: $weight-regular;
+  font-size: clamp(26px, 6vw, 32px);
+  line-height: 1.15;
+  color: $bordo;
+
+  @include mq(lg) {
+    font-size: clamp(30px, 2.4vw, 40px);
+  }
 }
 
 .detail {
