@@ -229,7 +229,6 @@ export const es = {
     text: "Suites amplias y luminosas, cada una con su propia personalidad: piedra, madera, telas de campo y la luz de la tarde entrando por las ventanas.",
     cta: "Ver habitaciones",
     bigImageAlt: "Suite de piedra con camas con dosel, cortinas blancas y paredes de piedra",
-    smallImageAlt: "Suite azul petróleo con cama con dosel y piso de madera",
   },
 
   // Home: gastronomía (Dining). images: texto alternativo de cada foto, en orden
@@ -237,15 +236,14 @@ export const es = {
     eyebrow: "Gastronomía",
     title: "El desayuno, siempre incluido.",
     text: "Cada mañana te espera un desayuno casero, incluido en tu estadía. Y si querés quedarte a almorzar o a cenar, lo preparamos para vos con aviso previo.",
-    details: [
-      { label: "Desayuno", value: "Incluido" },
-      { label: "Almuerzos y cenas", value: "Con aviso previo" },
-    ],
     images: [
-      "Mesa de madera puesta para el desayuno, con tazas, copas e individuales de mimbre, en el salón de piedra",
-      "Parrilla a leña encendida bajo una galería de piedra",
-      "Mesa de desayuno con mantel a cuadros rojos: frutas, budines, panes, quesos y fiambres",
-      "Mesa puesta con copas, servilletas de lino y velas encendidas",
+      "Un ñandú en el pasto frente a la casa, bajo un cielo de atardecer",
+      "Un árbol seco recortado contra el cielo naranja, reflejado en una laguna",
+      "Ovejas apretadas unas contra otras, vistas de cerca",
+      "Una laguna con plantas acuáticas bajo un cielo rosado",
+      "Una vaca Hereford mirando a cámara en el campo",
+      "El atardecer reflejado en una laguna con hojas flotando",
+      "Dos bandurrias caminando por el campo al atardecer",
     ],
   },
 
@@ -278,7 +276,7 @@ export const es = {
   // Home: reseñas del libro de visitas (Reviews), debajo de eventos.
   // Se pueden agregar o quitar items; detail es opcional.
   reviews: {
-    eyebrow: "Reseñas",
+    eyebrow: "Lo que dicen nuestros huéspedes",
     items: [
       {
         quote: "Me sentí como en casa en este “Casco Guayaibí” con esperanza de encontrar un refugio en el nuevo mundo! Con infinito agradecimiento!",

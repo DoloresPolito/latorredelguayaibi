@@ -1,24 +1,30 @@
 @use "abstracts" as *;
 
+// Una pantalla de alto con el texto en el medio (mismo aire arriba y
+// abajo). El margen negativo se come el padding de arriba de la sección
+// siguiente (habitaciones), así la pantalla termina justo donde empieza su
+// foto.
 .section {
   background-color: $color-background;
+  margin-bottom: -$space-24;
+
+  @include mq(lg) {
+    margin-bottom: -$space-32;
+  }
 }
 
 .inner {
   @include container;
-  @include reveal-children;
   display: flex;
+  align-items: center;
   justify-content: center;
-  padding-block: $space-24;
-
-  @include mq(lg) {
-    padding-block: $space-32 + $space-16;
-  }
+  min-height: 100svh;
+  padding-block: $space-16;
 }
 
 // Misma tipografía y tamaño que las reseñas (Italiana, desde la página)
 .text {
-  max-width: 40em;
+  max-width: 32em;
   font-family: $font-heading;
   font-weight: $weight-regular;
   font-size: clamp(19px, 5vw, 22px);
@@ -29,9 +35,4 @@
   @include mq(lg) {
     font-size: clamp(22px, 1.75vw, 28px);
   }
-}
-
-// La primera frase va sola en su renglón
-.lead {
-  display: block;
 }

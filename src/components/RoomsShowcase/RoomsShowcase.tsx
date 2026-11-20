@@ -16,15 +16,13 @@ type RoomsShowcaseProps = {
   titleClassName?: string;
 };
 
-// Fotos del resumen: la suite de piedra grande y la azul petróleo chica
+// Foto del resumen: la suite de piedra
 const BIG = ROOMS[0];
-const SMALL = ROOMS[2];
 
 /**
- * Resumen de habitaciones en el home: dos fotos superpuestas (una grande y
- * una chica que se mueven a distinto ritmo con el scroll y se descubren de
- * abajo hacia arriba al entrar), el título, un texto corto y, debajo y
- * sobre la derecha, el botón a /habitaciones.
+ * Resumen de habitaciones en el home: una foto grande (se mueve con el
+ * scroll y se descubre de abajo hacia arriba al entrar), el título, un
+ * texto corto y, debajo y sobre la derecha, el botón a /habitaciones.
  */
 export default function RoomsShowcase({ lang, t, id = "habitaciones", titleClassName }: RoomsShowcaseProps) {
   return (
@@ -51,18 +49,6 @@ export default function RoomsShowcase({ lang, t, id = "habitaciones", titleClass
               alt={t.bigImageAlt}
               fill
               sizes="(min-width: 1024px) 55vw, 100vw"
-              className={styles.image}
-            />
-          </div>
-        </Parallax>
-
-        <Parallax className={[styles.photo, styles.small].join(" ")}>
-          <div className={styles.layer}>
-            <Image
-              src={SMALL.image}
-              alt={t.smallImageAlt}
-              fill
-              sizes="(min-width: 1024px) 24vw, 55vw"
               className={styles.image}
             />
           </div>

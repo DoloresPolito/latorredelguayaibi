@@ -59,14 +59,6 @@ $bg: $forest; // el verde oscuro del manifiesto
   }
 }
 
-.rule {
-  flex-shrink: 0;
-  display: block;
-  width: 48px;
-  height: 1px;
-  background-color: rgba($butter, 0.7);
-}
-
 .count {
   display: flex;
   gap: 4px;

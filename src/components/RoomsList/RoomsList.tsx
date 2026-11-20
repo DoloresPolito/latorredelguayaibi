@@ -88,7 +88,6 @@ export default function RoomsList({ lang, intro, t, rooms, id = "suites", titleC
       <Reveal className={styles.header} threshold={0.4}>
         <div className={styles.intro}>
           <p className={styles.introText}>
-            <span className={styles.rule} aria-hidden="true" />
             {intro.text}
           </p>
           <p className={styles.count}>

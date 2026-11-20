@@ -65,53 +65,23 @@ $fg: var(--tone-fg, #{$forest});
   }
 }
 
-// Dos datos: "Desayuno · Incluido" / "Almuerzos y cenas · Con aviso previo"
-.details {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: $space-6 $space-16;
-  margin: $space-10 0 0;
-  padding-top: $space-8;
-  border-top: $border-width solid ink(0.18);
-}
-
-.detail {
-  display: flex;
-  flex-direction: column;
-  gap: $space-2;
-}
-
-.detailLabel {
-  @include eyebrow;
-  color: ink(0.6);
-}
-
-.detailValue {
-  margin: 0;
-  font-family: $font-heading;
-  font-size: 22px;
-  color: $fg;
-}
-
 // ─────────────────────────────────────────────
-// Cuatro columnas de fotos. --parallax: 1 entrando por abajo → 0 centradas
-// → -1 saliendo. Cada columna (--i: 0 a 3) se corre más que la anterior,
-// así entran escalonadas, se alinean en el centro y se vuelven a separar
-// al salir.
+// Siete fotos finas y largas (1:3) a todo el ancho. --parallax: 1 entrando
+// por abajo → 0 alineadas → -1 saliendo. Cada columna (--i: 0 a 6) se corre
+// un poco más que la anterior, así entran escalonadas, se alinean en el
+// centro y se vuelven a separar al salir.
 // ─────────────────────────────────────────────
 .columns {
-  --step: 5svh;
+  --step: 1.5svh;
 
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: $space-6 $space-2;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: $space-1;
   margin-top: $space-16;
   padding-inline: $space-2;
 
   @include mq(lg) {
-    --step: 7svh;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    --step: 3svh;
     gap: $space-3;
     margin-top: $space-24;
     padding-inline: $space-3;
@@ -120,20 +90,12 @@ $fg: var(--tone-fg, #{$forest});
 
 .column {
   position: relative;
-  aspect-ratio: 3 / 4;
+  aspect-ratio: 1 / 3;
   overflow: hidden;
   border-radius: 2px;
   background-color: ink(0.08);
-  // Mobile (2x2): se escalona por columna, así la segunda fila no pisa la
-  // primera. Desktop (una fila de 4): por posición.
-  transform: translate3d(0, calc(var(--parallax, 0) * var(--col) * var(--step)), 0);
+  transform: translate3d(0, calc(var(--parallax, 0) * var(--i) * var(--step)), 0);
   will-change: transform;
-
-  @include mq(lg) {
-    aspect-ratio: auto;
-    height: clamp(380px, 68svh, 760px);
-    transform: translate3d(0, calc(var(--parallax, 0) * var(--i) * var(--step)), 0);
-  }
 
   @media (prefers-reduced-motion: reduce) {
     transform: none;

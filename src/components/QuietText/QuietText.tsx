@@ -1,5 +1,5 @@
 import type { Dictionary } from "@/i18n/dictionaries/es";
-import Reveal from "@/components/Reveal/Reveal";
+import ScrollText from "@/components/ScrollText/ScrollText";
 import styles from "./QuietText.module.scss";
 
 type QuietTextProps = {
@@ -10,17 +10,18 @@ type QuietTextProps = {
 
 /**
  * Texto centrado sobre fondo claro, con mucho aire (como en vesuvio.it):
- * una primera frase en su propio renglón y el resto debajo. Aparece suave
- * al entrar en pantalla.
+ * una primera frase en su propio renglón y el resto debajo. Las letras se
+ * van "encendiendo" con el scroll (<ScrollText>).
  */
 export default function QuietText({ t, textClassName }: QuietTextProps) {
   return (
     <section className={styles.section}>
-      <Reveal className={styles.inner}>
-        <p className={[styles.text, textClassName].filter(Boolean).join(" ")}>
-          <span className={styles.lead}>{t.lead}</span> {t.text}
-        </p>
-      </Reveal>
+      <div className={styles.inner}>
+        <ScrollText
+          text={`${t.lead}\n${t.text}`}
+          className={[styles.text, textClassName].filter(Boolean).join(" ")}
+        />
+      </div>
     </section>
   );
 }

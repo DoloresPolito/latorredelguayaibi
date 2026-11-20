@@ -4,23 +4,29 @@ import { useEffect, useRef, type CSSProperties } from "react";
 import styles from "./ScrollText.module.scss";
 
 type ScrollTextProps = {
-  /** Texto completo. Lo que va entre *asteriscos* se muestra en itálica. */
+  /**
+   * Texto completo. Lo que va entre *asteriscos* se muestra en itálica y
+   * cada salto de línea (\n) empieza un renglón nuevo.
+   */
   text: string;
   className?: string;
 };
 
-type Word = { chars: string[]; em: boolean };
+type Word = { chars: string[]; em: boolean; breakAfter?: boolean };
 
 /** Separa el texto en palabras (respetando los tramos en *itálica*) */
 function parse(text: string): Word[] {
   const words: Word[] = [];
-  text.split(/(\*[^*]+\*)/).forEach((chunk) => {
-    const em = chunk.startsWith("*") && chunk.endsWith("*");
-    const clean = em ? chunk.slice(1, -1) : chunk;
-    clean
-      .split(/\s+/)
-      .filter(Boolean)
-      .forEach((w) => words.push({ chars: Array.from(w), em }));
+  text.split("\n").forEach((line, l, lines) => {
+    line.split(/(\*[^*]+\*)/).forEach((chunk) => {
+      const em = chunk.startsWith("*") && chunk.endsWith("*");
+      const clean = em ? chunk.slice(1, -1) : chunk;
+      clean
+        .split(/\s+/)
+        .filter(Boolean)
+        .forEach((w) => words.push({ chars: Array.from(w), em }));
+    });
+    if (l < lines.length - 1 && words.length) words[words.length - 1].breakAfter = true;
   });
   return words;
 }
@@ -35,7 +41,7 @@ export default function ScrollText({ text, className }: ScrollTextProps) {
   const ref = useRef<HTMLParagraphElement>(null);
   const words = parse(text);
   const total = words.reduce((n, w) => n + w.chars.length, 0);
-  const plain = text.replace(/\*/g, "");
+  const plain = text.replace(/\*/g, "").replace(/\n/g, " ");
 
   useEffect(() => {
     const el = ref.current;
@@ -93,7 +99,8 @@ export default function ScrollText({ text, className }: ScrollTextProps) {
           ));
           return (
             <span key={w}>
-              <span className={styles.word}>{word.em ? <em>{letters}</em> : letters}</span>{" "}
+              <span className={styles.word}>{word.em ? <em>{letters}</em> : letters}</span>
+              {word.breakAfter ? <br /> : " "}
             </span>
           );
         })}

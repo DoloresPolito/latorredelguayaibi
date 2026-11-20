@@ -216,22 +216,20 @@ export const en: Dictionary = {
     text: "Spacious, light-filled suites, each with its own personality: stone, wood, country fabrics and the afternoon light coming through the windows.",
     cta: "See the rooms",
     bigImageAlt: "Stone suite with canopy beds, white curtains and stone walls",
-    smallImageAlt: "Petrol blue suite with a canopy bed and wooden floors",
   },
 
   dining: {
     eyebrow: "Dining",
     title: "Breakfast, always included.",
     text: "Every morning a homemade breakfast awaits you, included in your stay. And if you'd like to stay for lunch or dinner, we'll prepare it for you with advance notice.",
-    details: [
-      { label: "Breakfast", value: "Included" },
-      { label: "Lunch and dinner", value: "With advance notice" },
-    ],
     images: [
-      "Wooden table set for breakfast, with cups, glasses and wicker placemats, in the stone dining room",
-      "Wood-fired grill burning under a stone gallery",
-      "Breakfast table with a red gingham tablecloth: fruit, cakes, bread, cheeses and cold cuts",
-      "Table set with glasses, linen napkins and lit candles",
+      "A rhea on the grass in front of the house, under a sunset sky",
+      "A bare tree silhouetted against an orange sky, reflected in a lagoon",
+      "Sheep pressed close together, seen up close",
+      "A lagoon with water plants under a pink sky",
+      "A Hereford cow looking at the camera in the field",
+      "The sunset reflected in a lagoon with floating leaves",
+      "Two buff-necked ibises walking through the field at sunset",
     ],
   },
 
@@ -260,7 +258,7 @@ export const en: Dictionary = {
   },
 
   reviews: {
-    eyebrow: "Reviews",
+    eyebrow: "What our guests say",
     items: [
       {
         quote: "I felt at home at ‘Guayaibi House’, hoping to find a new haven in the new world! Immensely grateful.",
