@@ -12,7 +12,8 @@ type FooterRevealProps = {
  * <footer> que escribe --reveal (0 a 1): 0 cuando su borde de arriba recién
  * asoma por abajo de la pantalla, 1 cuando ya se ve entero. El CSS lo usa
  * para que el contenido "emerja" por debajo de la sección anterior y se
- * aclare el velo oscuro.
+ * aclare el velo oscuro. Donde el navegador soporta animation-timeline, lo
+ * hace el CSS (sincronizado con el scroll) y este JS no corre.
  */
 export default function FooterReveal({ children, className, ...rest }: FooterRevealProps) {
   const ref = useRef<HTMLElement>(null);
@@ -24,6 +25,7 @@ export default function FooterReveal({ children, className, ...rest }: FooterRev
       el.style.setProperty("--reveal", "1");
       return;
     }
+    if (CSS.supports("animation-timeline: view()")) return; // lo hace el CSS
 
     let frame = 0;
     let active = false;

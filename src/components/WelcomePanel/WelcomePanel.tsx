@@ -18,13 +18,13 @@ type WelcomePanelProps = {
  * Panel claro que sube por encima del hero (envuelto en <Curtain>):
  * título grande a la izquierda, párrafo chico y botón a "Nuestra historia"
  * abajo a la derecha. Título y párrafo suben a distinto ritmo que el panel
- * (--parallax de <Parallax>), como en vesuvio.it. Al entrar en pantalla
+ * (--parallax de <Parallax>, o CSS ligado al scroll), como en vesuvio.it. Al entrar en pantalla
  * aparecen en cascada (<Reveal>).
  */
 export default function WelcomePanel({ lang, t, id = "bienvenida", titleClassName }: WelcomePanelProps) {
   return (
     <section id={id} className={styles.section} aria-labelledby={`${id}-title`}>
-      <Parallax>
+      <Parallax cssFallback>
         <Reveal className={styles.inner} threshold={0.2}>
           <h2 id={`${id}-title`} className={[styles.title, titleClassName].filter(Boolean).join(" ")}>
             {t.title}

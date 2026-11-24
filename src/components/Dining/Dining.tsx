@@ -40,7 +40,7 @@ export default function Dining({ t, id = "gastronomia", titleClassName }: Dining
         <p className={styles.text}>{t.text}</p>
       </Reveal>
 
-      <Parallax className={styles.columns}>
+      <Parallax cssFallback className={styles.columns}>
         {IMAGES.map((src, i) => (
           <div key={src} className={styles.column} style={{ "--i": i } as CSSProperties}>
             <div className={styles.layer}>
@@ -57,7 +57,7 @@ export default function Dining({ t, id = "gastronomia", titleClassName }: Dining
       </Parallax>
 
       <Reveal className={styles.rows} threshold={0.15}>
-        <Parallax className={styles.rowsInner}>
+        <Parallax cssFallback className={styles.rowsInner}>
           {MOBILE_IMAGES.map((src, i) => (
             <div key={src} className={styles.row}>
               <div className={styles.layer}>

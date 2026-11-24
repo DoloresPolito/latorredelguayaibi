@@ -16,3 +16,53 @@
   opacity: 0;
   pointer-events: none;
 }
+
+// ─────────────────────────────────────────────
+// Animación ligada al scroll (scroll-driven animations). Corre en el mismo
+// hilo que el scroll, así que va pegada al dedo en mobile. Si el navegador
+// no la soporta, <Curtain> lo hace con JS.
+// Rango "exit-crossing": 0% con el borde de arriba en el tope de la
+// pantalla → 100% cuando la sección ya salió entera (igual que el JS).
+// ─────────────────────────────────────────────
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .curtain {
+      view-timeline: --curtain block;
+    }
+
+    .inner,
+    .veil {
+      animation-timing-function: linear;
+      // Sin "backwards": en reposo no hay transform (ver Curtain.tsx)
+      animation-fill-mode: forwards;
+      animation-timeline: --curtain;
+      animation-range: exit-crossing 0% exit-crossing 100%;
+    }
+
+    .inner {
+      animation-name: curtain-drop;
+    }
+
+    .veil {
+      animation-name: curtain-shade;
+    }
+  }
+}
+
+@keyframes curtain-drop {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(0, calc(var(--curtain-lag, 0.5) * 100%), 0);
+  }
+}
+
+@keyframes curtain-shade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: var(--curtain-shade, 0.4);
+  }
+}

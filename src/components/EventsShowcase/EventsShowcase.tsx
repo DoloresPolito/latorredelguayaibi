@@ -45,7 +45,7 @@ export default function EventsShowcase({
           </Link>
         </div>
 
-        <Parallax className={styles.photo}>
+        <Parallax cssFallback className={styles.photo}>
           <div className={styles.layer}>
             <Image
               src="/images/eventoshome1.png"

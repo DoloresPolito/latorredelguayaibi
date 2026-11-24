@@ -49,7 +49,7 @@ export default function RoomsRows({ lang, t, id = "suites", titleClassName }: Ro
           return (
             <li key={room.key}>
               <Reveal className={[styles.row, i % 2 === 1 && styles.reverse].filter(Boolean).join(" ")} threshold={0.2}>
-                <Parallax className={styles.photo}>
+                <Parallax cssFallback className={styles.photo}>
                   <div className={styles.layer}>
                     <Image
                       src={room.image}

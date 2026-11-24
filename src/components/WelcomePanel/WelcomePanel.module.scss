@@ -87,6 +87,36 @@ $panel-fg: $forest;
   }
 }
 
+// Donde se puede, el parallax lo hace el CSS ligado al scroll (va sincronizado
+// con el scroll nativo; con JS, en celulares temblaba). Mismo recorrido que
+// --parallax: "cover" 0% = entrando por abajo (1) → 100% = salió por arriba (-1).
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .section {
+      view-timeline: --welcome block;
+    }
+
+    .title,
+    .aside {
+      animation: welcome-drift linear both;
+      animation-timeline: --welcome;
+      animation-range: cover 0% cover 100%;
+    }
+
+    .title { --drift: 60px; }
+    .aside { --drift: 120px; }
+  }
+}
+
+@keyframes welcome-drift {
+  from {
+    transform: translate3d(0, var(--drift), 0);
+  }
+  to {
+    transform: translate3d(0, calc(var(--drift) * -1), 0);
+  }
+}
+
 // ─────────────────────────────────────────────
 // Entrada al aparecer en pantalla (<Reveal>): título, párrafo y botón en
 // cascada, con fundido y una subida corta. Usa "translate" (no "transform")

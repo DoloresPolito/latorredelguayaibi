@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, type ReactNode } from "react";
+import { useEffect, useRef, type CSSProperties, type ReactNode } from "react";
 import styles from "./Curtain.module.scss";
 
 type CurtainProps = {
@@ -20,6 +20,11 @@ type CurtainProps = {
  * El transform se escribe solo cuando hay desplazamiento: en reposo no crea
  * un contexto de apilamiento (la bienvenida del Hero necesita levantar el
  * título por encima de todo con z-index).
+ *
+ * Donde el navegador soporta animaciones ligadas al scroll (animation-timeline)
+ * el movimiento lo hace el CSS, sincronizado con el scroll nativo: con JS, en
+ * celulares el contenido llegaba un frame tarde y "temblaba". El JS queda
+ * solo como respaldo para navegadores viejos.
  */
 export default function Curtain({ children, lag = 0.5, shade = 0.4 }: CurtainProps) {
   const ref = useRef<HTMLDivElement>(null);
@@ -32,6 +37,7 @@ export default function Curtain({ children, lag = 0.5, shade = 0.4 }: CurtainPro
     const veil = veilRef.current;
     if (!el || !inner || !veil) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (CSS.supports("animation-timeline: view()")) return; // lo hace el CSS
 
     let frame = 0;
     let active = false;
@@ -65,7 +71,12 @@ export default function Curtain({ children, lag = 0.5, shade = 0.4 }: CurtainPro
   }, [lag, shade]);
 
   return (
-    <div ref={ref} className={styles.curtain} data-curtain>
+    <div
+      ref={ref}
+      className={styles.curtain}
+      style={{ "--curtain-lag": lag, "--curtain-shade": shade } as CSSProperties}
+      data-curtain
+    >
       <div ref={innerRef} className={styles.inner}>
         {children}
       </div>

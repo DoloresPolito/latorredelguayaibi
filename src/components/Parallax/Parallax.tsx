@@ -1,10 +1,17 @@
 "use client";
 
 import { useEffect, useRef, type ReactNode } from "react";
+import styles from "./Parallax.module.scss";
 
 type ParallaxProps = {
   children: ReactNode;
   className?: string;
+  /**
+   * El CSS del componente ya hace el movimiento con animation-timeline (va
+   * sincronizado con el scroll nativo): el JS solo corre como respaldo en
+   * navegadores que no lo soportan.
+   */
+  cssFallback?: boolean;
 };
 
 /**
@@ -13,12 +20,13 @@ type ParallaxProps = {
  * El movimiento lo define el CSS (ver mixin drift-layer). Solo calcula
  * mientras está visible, y no hace nada si se pidió reducir animaciones.
  */
-export default function Parallax({ children, className }: ParallaxProps) {
+export default function Parallax({ children, className, cssFallback = false }: ParallaxProps) {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const el = ref.current;
     if (!el || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (cssFallback && CSS.supports("animation-timeline: view()")) return;
 
     let frame = 0;
     let active = false;
@@ -48,10 +56,10 @@ export default function Parallax({ children, className }: ParallaxProps) {
       window.removeEventListener("resize", request);
       cancelAnimationFrame(frame);
     };
-  }, []);
+  }, [cssFallback]);
 
   return (
-    <div ref={ref} className={className}>
+    <div ref={ref} className={[styles.timeline, className].filter(Boolean).join(" ")}>
       {children}
     </div>
   );

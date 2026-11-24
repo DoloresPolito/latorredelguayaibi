@@ -1,0 +1,6 @@
+// Línea de tiempo de scroll para el CSS de los hijos (mixin parallax-timeline)
+@supports (animation-timeline: view()) {
+  .timeline {
+    view-timeline: --parallax block;
+  }
+}

@@ -37,7 +37,7 @@ export default function EventServices({ t, id = "propuestas", titleClassName }: 
           const number = String(i + 1).padStart(2, "0");
           return (
             <li key={item.key} className={`${styles.item} ${i % 2 ? styles.left : styles.right}`}>
-              <Parallax className={styles.row}>
+              <Parallax cssFallback className={styles.row}>
                 <Reveal className={styles.media} threshold={0.2}>
                   <div className={styles.photo}>
                     <div className={styles.layer}>

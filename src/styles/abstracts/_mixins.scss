@@ -379,6 +379,45 @@ $enter-duration: 1400ms;
   @media (prefers-reduced-motion: reduce) {
     transform: none;
   }
+
+  // Sin seguimiento del mouse, el desplazamiento lo puede hacer el CSS ligado
+  // al scroll (va sincronizado con el scroll nativo; con JS, en celulares
+  // temblaba). Usa la línea de tiempo --parallax de <Parallax>: requiere
+  // <Parallax cssFallback> en el contenedor.
+  @if $depth == 0 or $depth == 0px {
+    @include parallax-timeline {
+      --drift-shift: #{$shift};
+      animation-name: drift-layer;
+    }
+
+    @keyframes drift-layer {
+      from {
+        transform: translate3d(0, var(--drift-shift), 0);
+      }
+      to {
+        transform: translate3d(0, calc(var(--drift-shift) * -1), 0);
+      }
+    }
+  }
+}
+
+// ─────────────────────────────────────────────
+// Animación ligada a la línea de tiempo --parallax (la declara <Parallax>):
+// mismo recorrido que la variable --parallax, de 1 (entrando por abajo) a -1
+// (saliendo por arriba). Solo agrega timeline/rango: el @content pone
+// animation-name y lo que necesite.
+// ─────────────────────────────────────────────
+@mixin parallax-timeline {
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      animation-duration: auto;
+      animation-timing-function: linear;
+      animation-fill-mode: both;
+      animation-timeline: --parallax;
+      animation-range: cover 0% cover 100%;
+      @content;
+    }
+  }
 }
 
 // ─────────────────────────────────────────────

@@ -101,6 +101,19 @@ $fg: var(--tone-fg, #{$forest});
   @media (prefers-reduced-motion: reduce) {
     transform: none;
   }
+
+  @include parallax-timeline {
+    animation-name: column-stagger;
+  }
+}
+
+@keyframes column-stagger {
+  from {
+    transform: translate3d(0, calc(var(--i) * var(--step)), 0);
+  }
+  to {
+    transform: translate3d(0, calc(var(--i) * var(--step) * -1), 0);
+  }
 }
 
 // ─────────────────────────────────────────────

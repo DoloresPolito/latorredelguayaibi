@@ -42,7 +42,7 @@ export default function RoomsShowcase({ lang, t, id = "habitaciones", titleClass
           </Link>
         </div>
 
-        <Parallax className={[styles.photo, styles.big].join(" ")}>
+        <Parallax cssFallback className={[styles.photo, styles.big].join(" ")}>
           <div className={styles.layer}>
             <Image
               src={BIG.image}

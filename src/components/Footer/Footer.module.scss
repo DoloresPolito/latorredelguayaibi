@@ -181,3 +181,46 @@
     outline-offset: 3px;
   }
 }
+
+// ─────────────────────────────────────────────
+// Donde se puede, la entrada la hace el CSS ligado al scroll (va sincronizada
+// con el scroll nativo; con JS, en celulares el contenido temblaba). Rango
+// "entry": 0% con el borde de arriba asomando por abajo → 100% cuando ya se
+// ve entero (o llena la pantalla), igual que --reveal en FooterReveal.tsx.
+// ─────────────────────────────────────────────
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .footer {
+      view-timeline: --footer block;
+    }
+
+    .content,
+    .veil,
+    .marquee {
+      animation-duration: auto;
+      animation-timing-function: linear;
+      animation-fill-mode: both;
+      animation-timeline: --footer;
+      animation-range: entry 0% entry 100%;
+    }
+
+    .content { animation-name: footer-content; }
+    .veil { animation-name: footer-veil; }
+    .marquee { animation-name: footer-marquee; }
+  }
+}
+
+@keyframes footer-content {
+  from { transform: translateY(-20%); }
+  to { transform: none; }
+}
+
+@keyframes footer-veil {
+  from { opacity: 0.55; }
+  to { opacity: 0; }
+}
+
+@keyframes footer-marquee {
+  from { opacity: 0.35; }
+  to { opacity: 1; }
+}
