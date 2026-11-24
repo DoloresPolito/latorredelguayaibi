@@ -127,14 +127,16 @@ export const en: Dictionary = {
       next: "Go to the next section",
       imageAlt: "The stone tower lit up at night, under a starry sky with the Milky Way",
     },
-    intro: {
-      pageTitle: "Events",
-      kicker: "Events at La Torre",
-      tagsLabel: "What we offer",
-      tags: ["Food & drinks", "Meetings", "Exclusive use", "Chamamé"],
-      imageAlt: "A fire pit burning in front of a curved stone bench, with the fields and cattle at sunset",
-      title: "A place to come together",
-      text: "Far from the everyday rush, *close to what matters.* Some gatherings deserve to step outside the routine. La Torre offers a different setting to meet, talk and enjoy without hurry.",
+    quietText: {
+      lead: "Some gatherings deserve to step outside the everyday.",
+      text: "Long lunches under the trees, unhurried meetings and nights of live music. La Torre offers a different setting to celebrate, talk and share, far from the daily rush and close to what matters.",
+    },
+    cta: {
+      eyebrow: "Book your event",
+      title: "Tell us what you have in mind.",
+      text: "Write to us and we'll put together a tailor-made proposal: date, number of guests, food and everything needed to make it an unforgettable gathering.",
+      button: "Book on WhatsApp",
+      whatsapp: "Hi! I'd like to book an event at La Torre. Could you send me availability and options?",
     },
     services: {
       ariaLabel: "Event options",
@@ -230,6 +232,12 @@ export const en: Dictionary = {
       "A Hereford cow looking at the camera in the field",
       "The sunset reflected in a lagoon with floating leaves",
       "Two buff-necked ibises walking through the field at sunset",
+    ],
+    mobileImages: [
+      "Hereford cattle in golden grassland at sunset",
+      "A lagoon with reeds and water hyacinths under an orange and pink sky",
+      "A flock of sheep packed together, lit by the afternoon sun",
+      "A blazing sunset reflected in a lagoon, with birds on the water",
     ],
   },
 

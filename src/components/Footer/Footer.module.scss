@@ -141,7 +141,7 @@
   // trazo con un borde del mismo color, igual que en el hero.
   font-family: var(--font-italiana, var(--font-lay, var(--font-heading))), var(--font-sans-test, Georgia), serif;
   font-weight: $weight-regular;
-  font-size: clamp(64px, 9vw, 150px);
+  font-size: clamp(44px, 6vw, 100px);
   line-height: 0.9;
   letter-spacing: 0;
   -webkit-text-stroke: 0.02em currentColor;

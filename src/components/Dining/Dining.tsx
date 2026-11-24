@@ -9,6 +9,10 @@ import styles from "./Dining.module.scss";
 // está en el diccionario (dining.images), en el mismo orden.
 const IMAGES = [0, 1, 2, 3, 4, 5, 6].map((n) => `/images/home/${n}.png`);
 
+// En celulares, en lugar de las siete columnas: cuatro fotos apaisadas
+// (3:1), una debajo de la otra. Textos alternativos en dining.mobileImages.
+const MOBILE_IMAGES = [1, 2, 3, 4].map((n) => `/images/h${n}.png`);
+
 type DiningProps = {
   t: Dictionary["dining"];
   id?: string;
@@ -22,6 +26,8 @@ type DiningProps = {
  * vesuvio.it, las columnas entran escalonadas (cada una a su ritmo, con
  * --parallax de <Parallax>), se alinean al centro de la pantalla y, por
  * dentro, cada foto se desliza apenas.
+ * En celulares, cuatro fotos apaisadas apiladas que aparecen una tras
+ * otra al entrar (solo la imagen se desliza apenas por dentro).
  */
 export default function Dining({ t, id = "gastronomia", titleClassName }: DiningProps) {
   return (
@@ -49,6 +55,18 @@ export default function Dining({ t, id = "gastronomia", titleClassName }: Dining
           </div>
         ))}
       </Parallax>
+
+      <Reveal className={styles.rows} threshold={0.15}>
+        <Parallax className={styles.rowsInner}>
+          {MOBILE_IMAGES.map((src, i) => (
+            <div key={src} className={styles.row}>
+              <div className={styles.layer}>
+                <Image src={src} alt={t.mobileImages[i]} fill sizes="100vw" className={styles.image} />
+              </div>
+            </div>
+          ))}
+        </Parallax>
+      </Reveal>
     </section>
   );
 }

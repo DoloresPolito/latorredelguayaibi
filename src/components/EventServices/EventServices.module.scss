@@ -1,280 +1,161 @@
 @use "abstracts" as *;
 
-// Colores de los bloques detrás de cada foto:
-// alternan terracota (el del footer) y el verde oscuro del sitio
-.terracotta { --tone: #{$terracotta}; }
-.green { --tone: #{$forest}; }
-
-$line-x-mobile: 6px; // posición de la línea en mobile (desde el borde del contenido)
-$row-pad-mobile: $space-8;
-
 .section {
   background-color: $color-background;
-  overflow: hidden; // los bloques de color sobresalen de las fotos
-}
-
-.inner {
-  @include container;
-  position: relative;
-  padding-block: $space-24;
-
-  @include mq(lg) {
-    padding-block: $space-32 clamp(#{$space-32}, 16vw, 220px);
-  }
+  color: $forest;
+  overflow: clip;
 }
 
 // ─────────────────────────────────────────────
-// Línea central: un riel tenue y, encima, el trazo que se dibuja con el
-// scroll (--progress de <ScrollProgress>)
+// Zigzag. Mobile: una propuesta debajo de la otra, a todo el ancho.
+// Desktop: cada una ocupa la mitad del ancho, alternando derecha /
+// izquierda, con bastante aire entre una y otra.
 // ─────────────────────────────────────────────
-.line {
-  position: absolute;
-  top: $space-16;
-  bottom: $space-16;
-  left: calc(#{$space-5} + #{$line-x-mobile});
-  width: 1px;
-  background-color: rgba($color-heading, 0.12);
-
-  &::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background-color: rgba($color-heading, 0.55);
-    transform: scaleY(var(--progress, 0));
-    transform-origin: top center;
-  }
-
-  @include mq(lg) {
-    left: 50%;
-  }
-}
-
 .list {
-  display: grid;
+  @include container;
+  display: flex;
+  flex-direction: column;
   gap: $space-24;
+  padding-block: 0 $space-24;
+  list-style: none;
 
   @include mq(lg) {
-    gap: clamp(#{$space-32}, 14vw, 220px);
+    gap: $space-32 + $space-16;
+    padding-block: 0 $space-32;
+  }
+}
+
+.item {
+  @include mq(lg) {
+    width: calc(50% - #{$space-3});
+  }
+}
+
+.right {
+  @include mq(lg) {
+    margin-left: auto;
   }
 }
 
 // ─────────────────────────────────────────────
-// Fila: texto + foto. En desktop, a cada lado de la línea (alternando)
+// Foto. Al entrar (<Reveal>): fundido subiendo apenas, y la imagen se
+// acomoda desde un zoom suave. Con el scroll (<Parallax> en .row): la
+// imagen se mueve dentro del marco.
 // ─────────────────────────────────────────────
-.row {
-  --gap: clamp(#{$space-16}, 9vw, 160px);
-
+.photo {
   position: relative;
-  display: grid;
-  gap: $space-16;
-  padding-left: $row-pad-mobile;
+  overflow: hidden;
+  aspect-ratio: 774 / 338;
+  border-radius: 3px;
+  background-color: rgba($forest, 0.08);
+  opacity: 0;
+  translate: 0 40px;
+  transition:
+    opacity 1800ms ease,
+    translate 2200ms $ease-out;
 
-  @include mq(lg) {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    align-items: center;
-    column-gap: var(--gap);
-    padding-left: 0;
+  [data-visible="true"] > & {
+    opacity: 1;
+    translate: none;
+  }
+}
+
+.layer {
+  // Mismo movimiento que las fotos del home
+  @include drift-layer(6%, 0px);
+  inset: -8% 0;
+}
+
+.image {
+  object-fit: cover;
+  scale: 1.12;
+  transition: scale 2800ms $ease-out;
+
+  [data-visible="true"] & {
+    scale: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .photo,
+  .image {
+    opacity: 1;
+    translate: none;
+    scale: 1;
+    transition: none;
   }
 }
 
 // ─────────────────────────────────────────────
 // Texto
 // ─────────────────────────────────────────────
-.text {
-  max-width: 24rem;
-
-  @include reveal-children;
-
-  &[data-visible] > * {
-    transition-duration: 1800ms, 1800ms, 200ms, 200ms, 200ms;
-  }
-
-  @include mq(lg) {
-    justify-self: center;
-    width: 100%;
-  }
+.copy {
+  max-width: 28em;
+  margin-top: $space-8;
 }
 
 .number {
-  font-family: $font-ui;
-  font-weight: $weight-semibold;
-  font-size: 12px;
-  letter-spacing: 0.08em;
-  color: $color-heading;
+  @include eyebrow;
+  color: rgba($forest, 0.6);
 }
 
 .title {
-  @include display-lay;
-  margin-top: $space-3;
-  font-weight: 500;
-  font-size: clamp(30px, 8vw, 36px);
-  line-height: 1.02;
-  letter-spacing: -0.01em;
-  color: $color-heading;
+  margin-top: $space-4;
+  font-family: $font-heading;
+  font-weight: $weight-regular;
+  font-size: clamp(32px, 8vw, 40px);
+  line-height: 1.1;
+  color: $forest;
 
   @include mq(lg) {
-    font-size: clamp(32px, 2.7vw, 42px);
+    font-size: clamp(36px, 2.8vw, 48px);
   }
 }
 
-// Cada línea del título en su propio renglón
-.titleLine {
-  display: block;
-}
-
 .subtitle {
-  margin-top: $space-3;
+  margin-top: $space-4;
   font-family: $font-ui;
   font-weight: $weight-semibold;
   font-size: 15px;
-  line-height: 1.35;
-  color: $color-heading;
+  line-height: 1.5;
+  color: $forest;
 }
 
 .body {
   margin-top: $space-3;
   font-family: $font-ui;
-  font-size: 14px;
-  line-height: 1.6;
-  color: $color-body;
-
-  & + & {
-    margin-top: $space-2;
-  }
-}
-
-// ─────────────────────────────────────────────
-// Foto + bloque de color
-// ─────────────────────────────────────────────
-.media {
-  position: relative;
-  width: calc(100% - #{$space-6});
-  max-width: 460px;
+  font-size: 15px;
+  line-height: 1.7;
+  color: rgba($forest, 0.8);
 
   @include mq(lg) {
-    width: 100%;
-    max-width: 440px;
-    // La foto cruza apenas la línea central
-    margin-left: calc(var(--gap) / -2 - #{$space-8});
+    font-size: 16px;
   }
 }
 
-.reverse .media {
-  @include mq(lg) {
-    order: -1;
-    justify-self: end;
-    margin-left: 0;
-    margin-right: calc(var(--gap) / -2 - #{$space-8});
-  }
-}
-
-// Bloque de color: sobresale de la foto hacia afuera. Se mueve más que la
-// foto con el scroll (--parallax de <Parallax>, de 1 a -1): profundidad.
-.block {
-  position: absolute;
-  top: -12%;
-  right: -$space-6;
-  bottom: -16%;
-  left: 42%;
-  background-color: var(--tone);
-  transform: translate3d(0, calc(var(--parallax, 0) * 36px), 0);
-
-  @include mq(lg) {
-    top: -22%;
-    right: -20%;
-    bottom: -28%;
-    left: 40%;
-    transform: translate3d(0, calc(var(--parallax, 0) * 64px), 0);
-  }
-}
-
-.reverse .block {
-  @include mq(lg) {
-    top: -20%;
-    right: 44%;
-    bottom: -36%;
-    left: -16%;
-  }
-}
-
-.photo {
-  position: relative;
-  z-index: 1;
-  aspect-ratio: 4 / 3;
-  overflow: hidden;
-  border-radius: 2px;
-  box-shadow: 0 24px 48px -28px rgba($forest, 0.55);
-  transform: translate3d(0, calc(var(--parallax, 0) * -14px), 0);
-}
-
-// Capa interna: la imagen se desliza dentro del marco (tercer plano)
-.photoInner {
-  position: absolute;
-  inset: 0;
-  transform: translate3d(0, calc(var(--parallax, 0) * 4%), 0);
-}
-
-.image {
-  object-fit: cover;
-  transform: scale(1.12);
-  transition: transform 1400ms $ease-out;
-
-  .media:hover & {
-    transform: scale(1.16);
-  }
-}
-
-// ─────────────────────────────────────────────
-// Aparición (como el resto del sitio): bloque y foto llegan con un fundido
-// suave subiendo apenas, uno después del otro; la imagen se asienta desde un
-// zoom mínimo. Sin recortes. El texto llega en cascada.
-// El translate de aparición va en `translate` para no pisar el parallax
-// (que usa `transform`).
-// ─────────────────────────────────────────────
-.media[data-visible] .block,
-.media[data-visible] .photo {
+// Entrada de los textos en cascada (<Reveal>)
+.copy > * {
   opacity: 0;
-  translate: 0 24px;
+  translate: 0 20px;
   transition:
-    opacity 1800ms ease,
-    translate 1800ms $ease-out;
-}
+    opacity 1200ms ease,
+    translate 1400ms $ease-out;
 
-.media[data-visible] .photo {
-  transition-delay: 200ms;
-}
-
-.media[data-visible="true"] .block,
-.media[data-visible="true"] .photo {
-  opacity: 1;
-  translate: none;
-}
-
-.media[data-visible="true"] .image {
-  animation: settle 2400ms $ease-out 200ms backwards;
-}
-
-@keyframes settle {
-  from {
-    transform: scale(1.2);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .media[data-visible] .block,
-  .media[data-visible] .photo {
+  @media (prefers-reduced-motion: reduce) {
     opacity: 1;
     translate: none;
     transition: none;
   }
-
-  .media[data-visible="true"] .image {
-    animation: none;
-  }
-
-  .block,
-  .photo,
-  .photoInner {
-    transform: none;
-  }
 }
+
+// .copy es el propio <Reveal>
+.copy[data-visible="true"] > * {
+  opacity: 1;
+  translate: none;
+}
+
+.copy > :nth-child(1) { transition-delay: 150ms; }
+.copy > :nth-child(2) { transition-delay: 250ms; }
+.copy > :nth-child(3) { transition-delay: 400ms; }
+.copy > :nth-child(4) { transition-delay: 550ms; }
+.copy > :nth-child(5) { transition-delay: 700ms; }

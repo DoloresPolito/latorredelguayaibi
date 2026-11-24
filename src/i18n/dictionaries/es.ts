@@ -135,17 +135,18 @@ export const es = {
       next: "Ir a la siguiente sección",
       imageAlt: "La torre de piedra iluminada de noche, bajo un cielo estrellado con la Vía Láctea",
     },
-    // Primera sección: antetítulo con línea, las propuestas en chips y,
-    // más abajo, el texto que se "enciende" letra por letra al scrollear.
-    // Entre *asteriscos*: palabras en itálica.
-    intro: {
-      pageTitle: "Eventos",
-      kicker: "Eventos en La Torre",
-      tagsLabel: "Propuestas",
-      tags: ["Gastronomía", "Reuniones", "Exclusividad", "Chamamé"],
-      imageAlt: "Fogón encendido frente a un banco de piedra curvo, con el campo y el ganado al atardecer",
-      title: "Un lugar para encontrarse",
-      text: "Lejos del ritmo de todos los días, *cerca de lo que importa.* Hay reuniones que merecen salir de lo cotidiano. La Torre ofrece un entorno diferente para reunirse, conversar y disfrutar sin apuro.",
+    // Franja de texto debajo del hero (se "enciende" al scrollear, como en el home)
+    quietText: {
+      lead: "Hay encuentros que merecen salir de lo cotidiano.",
+      text: "Almuerzos largos bajo los árboles, reuniones sin apuro y noches de música en vivo. La Torre ofrece un escenario diferente para celebrar, conversar y compartir, lejos del ritmo de todos los días y cerca de lo que importa.",
+    },
+    // Cierre de la página: frase y botón a WhatsApp para reservar un evento
+    cta: {
+      eyebrow: "Reservá tu evento",
+      title: "Contanos qué estás imaginando.",
+      text: "Escribinos y armamos juntos una propuesta a medida: fecha, cantidad de personas, gastronomía y todo lo que haga falta para que sea un encuentro inolvidable.",
+      button: "Reservar por WhatsApp",
+      whatsapp: "¡Hola! Quisiera reservar un evento en La Torre. ¿Me pasan disponibilidad y opciones?",
     },
     services: {
       ariaLabel: "Propuestas para eventos",
@@ -244,6 +245,13 @@ export const es = {
       "Una vaca Hereford mirando a cámara en el campo",
       "El atardecer reflejado en una laguna con hojas flotando",
       "Dos bandurrias caminando por el campo al atardecer",
+    ],
+    // Solo en celulares: cuatro fotos apaisadas, una debajo de la otra
+    mobileImages: [
+      "Vacas Hereford en un pastizal dorado al atardecer",
+      "Una laguna con juncos y camalotes bajo un cielo naranja y rosado",
+      "Un rebaño de ovejas apretadas, iluminadas por el sol de la tarde",
+      "El atardecer encendido reflejado en una laguna, con aves en el agua",
     ],
   },
 

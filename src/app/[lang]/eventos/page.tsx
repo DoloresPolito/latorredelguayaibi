@@ -1,9 +1,12 @@
 import type { Metadata } from "next";
-import EventIntro from "@/components/EventIntro/EventIntro";
+import Hero from "@/components/Hero/Hero";
+import QuietText from "@/components/QuietText/QuietText";
 import EventServices from "@/components/EventServices/EventServices";
+import EventsCta from "@/components/EventsCta/EventsCta";
 import Navbar from "@/components/Navbar/Navbar";
 import Footer from "@/components/Footer/Footer";
-import ThemeV2 from "@/components/ThemeV2/ThemeV2";
+import ThemeV2, { italianaTitleClass } from "@/components/ThemeV2/ThemeV2";
+import { whatsappUrl } from "@/config/site";
 import { getDictionary, getLocale } from "@/i18n/getDictionary";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -11,15 +14,33 @@ export async function generateMetadata(): Promise<Metadata> {
   return { title: t.meta.eventosTitle, description: t.meta.eventosDescription };
 }
 
+/**
+ * Eventos: hero como el del home (foto con título y bajada), una franja de
+ * texto que se enciende al scrollear, las propuestas en zigzag y, al final,
+ * una frase con el botón para reservar un evento por WhatsApp.
+ */
 export default async function EventosPage() {
   const [lang, t] = await Promise.all([getLocale(), getDictionary()]);
+  const hero = t.eventos.hero;
 
   return (
     <ThemeV2>
       <Navbar lang={lang} t={t.nav} />
       <main id="top">
-        <EventIntro t={t.eventos.intro} id="eventos-intro" />
-        <EventServices t={t.eventos.services} />
+        <Hero
+          lang={lang}
+          t={hero}
+          image={{ src: "/images/eventos/noche.png", width: 1536, height: 1024, alt: hero.imageAlt }}
+          nextSectionId="eventos-texto"
+          variant="name"
+          name={{ line1: hero.titleLine1, line2: hero.titleLine2 }}
+          titleClassName={italianaTitleClass}
+          ctaHref={whatsappUrl(hero.whatsapp)}
+          layout="centered"
+        />
+        <QuietText id="eventos-texto" t={t.eventos.quietText} textClassName={italianaTitleClass} compact />
+        <EventServices t={t.eventos.services} titleClassName={italianaTitleClass} />
+        <EventsCta t={t.eventos.cta} titleClassName={italianaTitleClass} />
       </main>
       <Footer lang={lang} t={t.footer} nav={t.nav} />
     </ThemeV2>

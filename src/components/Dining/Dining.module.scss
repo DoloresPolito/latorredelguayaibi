@@ -74,7 +74,7 @@ $fg: var(--tone-fg, #{$forest});
 .columns {
   --step: 1.5svh;
 
-  display: grid;
+  display: none;
   grid-template-columns: repeat(7, minmax(0, 1fr));
   gap: $space-1;
   margin-top: $space-16;
@@ -82,6 +82,7 @@ $fg: var(--tone-fg, #{$forest});
 
   @include mq(lg) {
     --step: 3svh;
+    display: grid;
     gap: $space-3;
     margin-top: $space-24;
     padding-inline: $space-3;
@@ -99,6 +100,57 @@ $fg: var(--tone-fg, #{$forest});
 
   @media (prefers-reduced-motion: reduce) {
     transform: none;
+  }
+}
+
+// ─────────────────────────────────────────────
+// Celulares: cuatro fotos apaisadas (3:1) apiladas, en lugar de las
+// columnas. Al entrar (<Reveal>) aparecen una tras otra con un fundido
+// subiendo apenas; después quedan quietas y solo la imagen se desliza
+// dentro de su marco.
+// ─────────────────────────────────────────────
+.rows {
+  margin-top: $space-16;
+  padding-inline: $space-2;
+
+  @include mq(lg) {
+    display: none;
+  }
+}
+
+.rowsInner {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+}
+
+.row {
+  position: relative;
+  aspect-ratio: 3 / 1;
+  overflow: hidden;
+  border-radius: 2px;
+  background-color: ink(0.08);
+  opacity: 0;
+  translate: 0 24px;
+  transition:
+    opacity 1200ms ease,
+    translate 1400ms $ease-out;
+
+  .rows[data-visible="true"] & {
+    opacity: 1;
+    translate: none;
+  }
+
+  @for $i from 2 through 4 {
+    &:nth-child(#{$i}) {
+      transition-delay: ($i - 1) * 150ms;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    opacity: 1;
+    translate: none;
+    transition: none;
   }
 }
 
