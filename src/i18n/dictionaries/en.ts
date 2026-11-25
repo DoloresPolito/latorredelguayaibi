@@ -13,6 +13,9 @@ export const en: Dictionary = {
     eventosTitle: "Events — La Torre del Guayaibí",
     eventosDescription:
       "Events with food and drinks, work meetings and La Torre all to yourselves, in the heart of the Corrientes countryside.",
+    entornoTitle: "Surroundings — La Torre del Guayaibí",
+    entornoDescription:
+      "Open fields, still water and vast skies: the landscape around La Torre, close to the Iberá Wetlands.",
   },
 
   nav: {
@@ -335,6 +338,54 @@ export const en: Dictionary = {
     imageAlt: "Golden sunset over the pool, with eucalyptus trees silhouetted against the sun, sun loungers and the open countryside",
     formTitle: "Enquiry form",
     intro: "Tell us when you'd like to come and we'll get in touch shortly to help you *plan your stay.*",
+  },
+
+  entorno: {
+    depth: {
+      eyebrow: "Surroundings",
+      titleLine1: "Where the countryside",
+      titleLine2: "becomes horizon.",
+      scroll: "Scroll",
+      focusEyebrow: "As the sun goes down",
+      focusTitle: "The water holds on to *the last colours* of the day.",
+    },
+    quietText: {
+      lead: "Around La Torre, the landscape sets the pace.",
+      text: "Vast skies, still water, grass that changes colour with the hours and animals in no hurry at all. In the heart of the Corrientes countryside, close to the Iberá Wetlands, everything invites you to look slowly.",
+    },
+    columns: {
+      eyebrow: "Landscapes",
+      title: "Every hour, *a different light.*",
+    },
+    cta: {
+      eyebrow: "Come and see it",
+      title: "The landscape is best enjoyed in person.",
+      text: "Write to us and we'll help you plan your stay so you can enjoy the countryside at your own pace: sunrises, walks, sunsets over the water and nights under open skies.",
+      button: "Ask on WhatsApp",
+      whatsapp: "Hi! I'd like to check availability at La Torre del Guayaibí.",
+    },
+    images: {
+      atardecer: "Eucalyptus trees backlit at sunset, with the low sun over the fields",
+      vacas: "Hereford cows grazing in the golden fields at sunset",
+      juncos: "Reeds and water hyacinths on the water under a pink sky",
+      ovejas: "A flock of sheep huddled together, their wool lit by the sun",
+      espejo: "An orange sunset reflected in still water, with birds in the distance",
+      casaPileta: "The stone house and tower among eucalyptus trees, reflected in the pool",
+      torre: "The stone tower and the house among trees, seen from the pool",
+      piedra: "The tower's stone wall against a pale blue sky",
+      esteros: "Wetland plants on the water, under a pink sunset sky",
+      laguna: "Pink sunset over the lagoon: a family paddles a canoe next to the wooden pier",
+      canoa: "A canoe with three people on still water as the sun goes down",
+      nandu: "A rhea on the grass in front of the house, under a cloudy sky",
+      arbol: "A bare tree reflected in the water at sunset",
+      hereford: "A Hereford cow looking straight ahead, in the grass at sunset",
+      reflejo: "The sunset sky reflected in the water, among water hyacinths",
+      aves: "Two birds in the open field, against a pale blue sky",
+      galeria: "The house's stone gallery at sunset, with trees and the fields behind",
+      eucaliptos: "Golden sunset over the pool, with sun loungers and eucalyptus trees silhouetted against the sun",
+      fogon: "A fire burning in a stone circle, with open fields behind",
+      noche: "The stone tower lit up at night, under a starry sky with the Milky Way",
+    },
   },
 
   form: {

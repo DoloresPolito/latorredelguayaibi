@@ -1,0 +1,143 @@
+@use "abstracts" as *;
+
+// Fondo verde oscuro: las fotos cálidas resaltan y la sección contrasta con
+// el crema del resto de la página. Las columnas que suben pasan por debajo
+// del encabezado (que tiene el mismo fondo) y el borde inferior las recorta.
+.section {
+  position: relative;
+  overflow: clip;
+  background-color: $forest;
+  color: $butter;
+  padding-bottom: $space-24;
+
+  @include mq(lg) {
+    padding-bottom: $space-32;
+  }
+}
+
+// ─────────────────────────────────────────────
+// Encabezado
+// ─────────────────────────────────────────────
+.header {
+  @include container;
+  @include reveal-children(150ms, 2);
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-block: $space-24 $space-16;
+  background-color: $forest;
+  text-align: center;
+  // Borde inferior difuso: las fotos aparecen de a poco al salir de abajo
+  box-shadow: 0 $space-10 $space-10 (-$space-2) $forest;
+
+  @include mq(lg) {
+    padding-block: $space-32 $space-20;
+  }
+}
+
+.eyebrow {
+  @include eyebrow;
+  display: flex;
+  align-items: center;
+  gap: $space-4;
+  color: rgba($butter, 0.75);
+}
+
+.rule {
+  display: block;
+  width: $space-10;
+  height: 1px;
+  background-color: rgba($butter, 0.45);
+}
+
+.title {
+  margin-top: $space-5;
+  font-family: $font-heading;
+  font-weight: $weight-regular;
+  font-size: clamp(34px, 9vw, 44px);
+  line-height: 1.1;
+  color: $butter;
+
+  @include mq(lg) {
+    font-size: clamp(44px, 4.4vw, 72px);
+  }
+
+  em {
+    font-style: normal;
+  }
+}
+
+// ─────────────────────────────────────────────
+// Columnas
+// ─────────────────────────────────────────────
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  align-items: start;
+  gap: $space-3;
+  padding-inline: $space-3;
+
+  @include mq(md) {
+    grid-template-columns: repeat(4, 1fr);
+    gap: $space-4;
+    padding-inline: $space-4;
+  }
+
+  @include mq(xl) {
+    gap: $space-5;
+    padding-inline: $space-5;
+  }
+}
+
+// --parallax (de <Parallax>): 1 entrando por abajo → -1 saliendo por arriba.
+// Con --shift positivo la columna sube más rápido que el scroll; con
+// negativo, más lento (parece que baja).
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: inherit;
+  transform: translate3d(0, calc(var(--parallax, 0) * var(--shift)), 0);
+  will-change: transform;
+
+  @include parallax-timeline {
+    animation-name: column-shift;
+  }
+
+  @include mq-down(md) {
+    &:nth-child(n + 3) {
+      display: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transform: none;
+  }
+}
+
+@keyframes column-shift {
+  from {
+    transform: translate3d(0, var(--shift), 0);
+  }
+  to {
+    transform: translate3d(0, calc(var(--shift) * -1), 0);
+  }
+}
+
+.item {
+  aspect-ratio: var(--ratio);
+  overflow: hidden;
+  border-radius: 2px;
+  background-color: rgba($butter, 0.06);
+}
+
+.image {
+  @include cover-image;
+  display: block;
+  transition: transform 1600ms $ease-out;
+
+  @include hover {
+    transform: scale(1.04);
+  }
+}

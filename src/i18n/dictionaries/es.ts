@@ -14,6 +14,9 @@ export const es = {
     eventosTitle: "Eventos — La Torre del Guayaibí",
     eventosDescription:
       "Eventos con gastronomía, reuniones de trabajo y La Torre en exclusiva, en el corazón del campo correntino.",
+    entornoTitle: "Entorno — La Torre del Guayaibí",
+    entornoDescription:
+      "Campo abierto, agua quieta y cielos enormes: el paisaje que rodea La Torre, cerca de los Esteros del Iberá.",
   },
 
   nav: {
@@ -355,6 +358,57 @@ export const es = {
     imageAlt: "Atardecer dorado sobre la pileta, con eucaliptos recortados contra el sol, reposeras y el campo abierto",
     formTitle: "Formulario de consulta",
     intro: "Contanos cuándo querés venir y nos pondremos en contacto a la brevedad para ayudarte a *organizar tu estadía.*",
+  },
+
+  // Página Entorno: viaje entre fotos (EnvironmentDepth), texto, columnas de
+  // fotos que se deslizan (EnvironmentColumns) y cierre con WhatsApp.
+  entorno: {
+    depth: {
+      eyebrow: "Entorno",
+      titleLine1: "Donde el campo",
+      titleLine2: "se vuelve horizonte.",
+      scroll: "Scroll",
+      // Texto sobre la foto que se agranda al final del recorrido
+      focusEyebrow: "Al caer el sol",
+      focusTitle: "El agua guarda *los últimos colores* del día.",
+    },
+    quietText: {
+      lead: "Alrededor de La Torre, el paisaje marca el ritmo.",
+      text: "Cielos enormes, agua quieta, el pasto que cambia de color con las horas y animales que andan sin apuro. En el corazón del campo correntino, cerca de los Esteros del Iberá, todo invita a mirar despacio.",
+    },
+    columns: {
+      eyebrow: "Paisajes",
+      title: "Cada hora, *otra luz.*",
+    },
+    cta: {
+      eyebrow: "Vení a verlo",
+      title: "El paisaje se disfruta mejor en persona.",
+      text: "Escribinos y te ayudamos a organizar tu estadía para vivir el campo a tu ritmo: amaneceres, caminatas, atardeceres sobre el agua y noches de cielo abierto.",
+      button: "Consultar por WhatsApp",
+      whatsapp: "¡Hola! Quisiera consultar disponibilidad en La Torre del Guayaibí.",
+    },
+    images: {
+      atardecer: "Eucaliptos a contraluz al atardecer, con el sol bajo sobre el campo",
+      vacas: "Vacas Hereford pastando en el campo dorado al atardecer",
+      juncos: "Juncos y camalotes sobre el agua bajo un cielo rosado",
+      ovejas: "Un rebaño de ovejas muy juntas, con la lana iluminada por el sol",
+      espejo: "Atardecer naranja reflejado en el agua quieta, con aves a lo lejos",
+      casaPileta: "La casa de piedra y la torre entre eucaliptos, reflejadas en la pileta",
+      torre: "La torre de piedra y la casa entre árboles, vistas desde la pileta",
+      piedra: "Muro de piedra de la torre contra el cielo celeste",
+      esteros: "Vegetación de los esteros sobre el agua, con el cielo rosado del atardecer",
+      laguna: "Atardecer rosado sobre la laguna: una familia rema en canoa junto al muelle de madera",
+      canoa: "Una canoa con tres personas sobre el agua quieta, al caer el sol",
+      nandu: "Un ñandú en el pasto frente a la casa, bajo un cielo con nubes",
+      arbol: "Un árbol sin hojas reflejado en el agua al atardecer",
+      hereford: "Una vaca Hereford mirando de frente, en el pasto al atardecer",
+      reflejo: "El cielo del atardecer reflejado en el agua, entre camalotes",
+      aves: "Dos aves en el campo abierto, con el cielo celeste de fondo",
+      galeria: "La galería de piedra de la casa al atardecer, con árboles y el campo de fondo",
+      eucaliptos: "Atardecer dorado sobre la pileta, con reposeras y eucaliptos recortados contra el sol",
+      fogon: "Un fogón encendido en un círculo de piedra, con el campo abierto detrás",
+      noche: "La torre de piedra iluminada de noche, bajo un cielo estrellado con la Vía Láctea",
+    },
   },
 
   form: {

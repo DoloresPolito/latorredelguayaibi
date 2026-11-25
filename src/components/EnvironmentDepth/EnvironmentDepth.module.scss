@@ -1,0 +1,289 @@
+@use "abstracts" as *;
+
+@include enter-keyframes;
+
+// Variables:
+// --t (ScrollStage, en .track): 0 → 1 mientras la pantalla queda fija.
+// Cada foto: --x / --y (corrimiento desde el centro, vw / vh), --w (ancho en
+// vw), --z (profundidad inicial, sin unidad: px) y --ratio.
+//
+// La cámara avanza $travel px en todo el recorrido: cada foto está en
+// --zn = --z + --t * $travel. Con perspective de 1000px, cuando --zn se
+// acerca a 1000 la foto pasa "al lado" de la cámara y se desvanece.
+
+$travel: 4400;
+
+.section {
+  background-color: $color-background;
+}
+
+// Alto = cuánto scroll dura el viaje
+.track {
+  --t: 0;
+
+  position: relative;
+  height: 520svh;
+
+  @include mq-down(md) {
+    height: 420svh;
+  }
+}
+
+.sticky {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  overflow: hidden;
+}
+
+// ─────────────────────────────────────────────
+// Espacio 3D con las fotos
+// ─────────────────────────────────────────────
+.space {
+  position: absolute;
+  inset: 0;
+  perspective: 1000px;
+  perspective-origin: 50% 50%;
+}
+
+.photo {
+  --zn: calc(var(--z) + var(--t) * #{$travel});
+  // Aparece desde el fondo (entre -1700 y -1100: las lejanas recién entran
+  // cuando el título ya se fue) y se va al pasar la cámara (350 → 700)
+  --fade-in: clamp(0, (var(--zn) + 1700) / 600, 1);
+  --fade-out: clamp(0, (700 - var(--zn)) / 350, 1);
+
+  position: absolute;
+  top: calc(50% + var(--y) * 1vh);
+  left: calc(50% + var(--x) * 1vw);
+  width: calc(var(--w) * 1vw);
+  aspect-ratio: var(--ratio);
+  overflow: hidden;
+  border-radius: 2px;
+  opacity: calc(var(--fade-in) * var(--fade-out));
+  transform: translate(-50%, -50%) translateZ(calc(var(--zn) * 1px));
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+
+  @include mq-down(md) {
+    top: calc(50% + var(--y) * 0.9svh);
+    left: calc(50% + var(--x) * 0.75vw);
+    width: calc(var(--w) * 2.1vw);
+  }
+}
+
+// Al cargar, las fotos aparecen de a una y se asientan desde un zoom mínimo
+.photoImage {
+  @include cover-image;
+  @include enter-image(1.1, 2.6s);
+  display: block;
+  animation-delay: calc(400ms + var(--i) * 90ms);
+}
+
+// ─────────────────────────────────────────────
+// Título del principio (se desvanece en el primer tramo)
+// ─────────────────────────────────────────────
+.intro {
+  --a: clamp(0, var(--t) / 0.14, 1);
+
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-inline: $space-5;
+  text-align: center;
+  pointer-events: none;
+  opacity: calc(1 - var(--a));
+  transform: scale(calc(1 + var(--a) * 0.25));
+}
+
+.eyebrow {
+  @include eyebrow;
+  @include enter(200ms);
+  color: rgba($forest, 0.75);
+}
+
+.title {
+  margin-top: $space-5;
+  font-family: $font-heading;
+  font-weight: $weight-regular;
+  font-size: clamp(40px, 11vw, 56px);
+  line-height: 1.02;
+  letter-spacing: -0.01em;
+  color: $forest;
+
+  @include mq(lg) {
+    font-size: clamp(56px, min(6.4vw, 12svh), 112px);
+  }
+}
+
+.line {
+  display: block;
+  @include enter(350ms);
+
+  & + & {
+    animation-delay: 500ms;
+  }
+}
+
+// "Scroll" con una línea que baja, abajo al centro
+.hint {
+  --a: clamp(0, var(--t) / 0.06, 1);
+
+  position: absolute;
+  bottom: $space-8;
+  left: 50%;
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $space-3;
+  translate: -50% 0;
+  @include nav-link;
+  color: rgba($forest, 0.7);
+  opacity: calc(1 - var(--a));
+}
+
+.hintLine {
+  width: 1px;
+  height: $space-10;
+  background-color: rgba($forest, 0.35);
+  transform-origin: top;
+  animation: hint-line 2.4s $ease-out infinite;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+}
+
+@keyframes hint-line {
+  0% { transform: scaleY(0); transform-origin: top; }
+  50% { transform: scaleY(1); transform-origin: top; }
+  51% { transform: scaleY(1); transform-origin: bottom; }
+  100% { transform: scaleY(0); transform-origin: bottom; }
+}
+
+// ─────────────────────────────────────────────
+// Foto final: asoma chica en el centro y se abre hasta cubrir la pantalla.
+// Queda debajo de las fotos que siguen pasando por delante.
+// ─────────────────────────────────────────────
+.focus {
+  --in: clamp(0, (var(--t) - 0.36) / 0.12, 1); // aparece
+  --p: clamp(0, (var(--t) - 0.46) / 0.36, 1); // se abre
+  --open: calc(1 - var(--p) * (2 - var(--p))); // 1 → 0 con frenado al final
+
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+  opacity: var(--in);
+  clip-path: inset(
+    calc(var(--open) * 35%) calc(var(--open) * 41%)
+    round calc(var(--open) * 4px)
+  );
+  will-change: clip-path;
+
+  @include mq-down(md) {
+    clip-path: inset(
+      calc(var(--open) * 34%) calc(var(--open) * 30%)
+      round calc(var(--open) * 4px)
+    );
+  }
+}
+
+.focusImage {
+  object-fit: cover;
+  transform: scale(calc(1 + var(--open) * 0.2));
+}
+
+.shade {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(0deg, rgba(#000, 0.55) 0%, rgba(#000, 0.18) 45%, rgba(#000, 0) 70%),
+    linear-gradient(90deg, rgba(#000, 0.25) 0%, rgba(#000, 0) 55%);
+  opacity: clamp(0, (var(--t) - 0.8) / 0.1, 1);
+}
+
+// Frase sobre la foto (t 0.86 → 1)
+.focusContent {
+  --a: clamp(0, (var(--t) - 0.86) / 0.1, 1);
+
+  position: absolute;
+  inset: auto 0 0;
+  padding: 0 $space-5 $space-16;
+  color: $butter;
+  opacity: var(--a);
+  transform: translateY(calc((1 - var(--a)) * 24px));
+
+  @include mq(lg) {
+    padding: 0 clamp(#{$space-6}, 5.5vw, #{$navbar-inset + $space-10}) $space-20;
+  }
+}
+
+.focusEyebrow {
+  @include eyebrow;
+  display: flex;
+  align-items: center;
+  gap: $space-4;
+  color: rgba($butter, 0.85);
+}
+
+.rule {
+  display: block;
+  width: $space-10;
+  height: 1px;
+  background-color: rgba($butter, 0.6);
+}
+
+.focusTitle {
+  max-width: 13em;
+  margin-top: $space-5;
+  font-family: $font-heading;
+  font-weight: $weight-regular;
+  font-size: clamp(34px, 9vw, 44px);
+  line-height: 1.1;
+  color: $butter;
+  text-shadow: 0 2px 24px rgba(#000, 0.2);
+
+  @include mq(lg) {
+    font-size: clamp(44px, 4.4vw, 72px);
+  }
+
+  em {
+    font-style: normal;
+  }
+}
+
+// ─────────────────────────────────────────────
+// Reducir animaciones: sin viaje; el título sobre la foto final
+// ─────────────────────────────────────────────
+@media (prefers-reduced-motion: reduce) {
+  .track {
+    height: 100svh;
+  }
+
+  .space,
+  .hint,
+  .focusContent {
+    display: none;
+  }
+
+  .intro {
+    opacity: 1;
+    transform: none;
+  }
+
+  .eyebrow,
+  .title {
+    color: $butter;
+  }
+
+  .shade {
+    opacity: 1;
+    background: rgba(#000, 0.35);
+  }
+}
