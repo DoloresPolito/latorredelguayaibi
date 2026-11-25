@@ -7,6 +7,9 @@ import CurrentYear from "./CurrentYear";
 import FooterReveal from "./FooterReveal";
 import styles from "./Footer.module.scss";
 
+// Veces que se repite el nombre en cada mitad de la cinta del footer
+const MARQUEE_REPEAT = 4;
+
 type FooterProps = {
   lang: Locale;
   t: Dictionary["footer"];
@@ -97,8 +100,19 @@ export default function Footer({ lang, t, nav }: FooterProps) {
         {/* Decorativo: el nombre ya está en el resto de la página */}
         <div className={styles.marquee} aria-hidden="true">
           <div className={styles.track}>
-            <span className={styles.word}>{SITE.name}</span>
-            <span className={styles.word}>{SITE.name}</span>
+            {/* Dos mitades iguales (la animación corre una y vuelve a
+                empezar), cada una con el nombre varias veces para que
+                siempre tape todo el ancho, aun en pantallas muy anchas */}
+            {[0, 1].map((half) => (
+              <div key={half} className={styles.group}>
+                {Array.from({ length: MARQUEE_REPEAT }, (_, i) => (
+                  <span key={i} className={styles.word}>
+                    {SITE.name}
+                    <span className={styles.dot}>·</span>
+                  </span>
+                ))}
+              </div>
+            ))}
           </div>
         </div>
 

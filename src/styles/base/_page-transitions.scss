@@ -27,6 +27,12 @@ $page-enter: 550ms;
   animation: page-fade-in $page-enter cubic-bezier(0.33, 0, 0.2, 1) both;
 }
 
+// Desde el menú mobile: la nueva aparece de golpe, tapada por el menú, que
+// es el que hace de transición al irse (ver Navbar)
+html[data-menu-nav]::view-transition-new(.page-enter) {
+  animation: none;
+}
+
 @keyframes page-fade-in {
   from {
     opacity: 0;

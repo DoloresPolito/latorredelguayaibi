@@ -125,17 +125,22 @@
 .track {
   display: flex;
   width: max-content;
-  animation: marquee 38s linear infinite;
+  // La velocidad es la de antes: 38s por nombre (4 nombres por mitad)
+  animation: marquee 152s linear infinite;
 
   @media (prefers-reduced-motion: reduce) {
     animation: none;
   }
 }
 
-// Dos copias iguales: la animación corre exactamente una copia y vuelve a
+// Dos mitades iguales: la animación corre exactamente una y vuelve a
 // empezar, así el loop no tiene corte
+.group {
+  display: flex;
+  flex-shrink: 0;
+}
+
 .word {
-  padding-right: 0.35em;
   // Italiana, como el título del hero del home. Solo tiene peso 400: se engrosa apenas el
   // trazo con un borde del mismo color, igual que en el hero.
   font-family: $font-title;
@@ -147,6 +152,12 @@
   paint-order: stroke fill;
   white-space: nowrap;
   color: $butter;
+}
+
+// Punto medio entre nombre y nombre, con el mismo aire a cada lado
+.dot {
+  display: inline-block;
+  padding-inline: 0.5em;
 }
 
 @keyframes marquee {

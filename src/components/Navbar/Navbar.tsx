@@ -46,8 +46,14 @@ export default function Navbar({ lang, t }: NavbarProps) {
   const [isOnDark, setIsOnDark] = useState(false);
   const [isOnSplit, setIsOnSplit] = useState(false);
   const [isOnGlass, setIsOnGlass] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
+  // El menú guarda en qué página se abrió: al llegar a otra queda cerrado
+  // solo. Así, al elegir una sección, el menú tapa la página vieja hasta que
+  // la nueva ya está y recién ahí se va (si se cerraba al tocar el link, se
+  // veía un momento la página anterior antes de cambiar).
+  const [openOn, setOpenOn] = useState<string | null>(null);
+  const isOpen = openOn === pathname;
+  const setIsOpen = (open: boolean) => setOpenOn(open ? pathname : null);
 
   // En cada scroll: cuánto se achica el logo y sobre qué fondo está la barra
   // (oscuro, foto, sección partida)
@@ -103,8 +109,8 @@ export default function Navbar({ lang, t }: NavbarProps) {
     if (!isOpen) return;
 
     const desktop = window.matchMedia("(min-width: 1200px)");
-    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setIsOpen(false);
-    const onResize = () => desktop.matches && setIsOpen(false);
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpenOn(null);
+    const onResize = () => desktop.matches && setOpenOn(null);
 
     document.documentElement.style.overflow = "hidden";
     window.addEventListener("keydown", onKey);
@@ -124,6 +130,24 @@ export default function Navbar({ lang, t }: NavbarProps) {
   }, [isOpen]);
 
   const close = () => setIsOpen(false);
+  // Para los links del menú: si van a otra página no se cierra acá (se
+  // cierra al llegar, ver openOn); si es la misma, se cierra ya.
+  // Al ir a otra página desde el menú, la nueva aparece de golpe debajo del
+  // menú (sin el fundido de _page-transitions.scss): con el fundido, mientras
+  // el menú se iba se veía la página vieja.
+  const closeIfHere = (to: string) => () => {
+    if (to.split("#")[0] === pathname) close();
+    else document.documentElement.dataset.menuNav = "";
+  };
+
+  // Se quita la marca cuando terminó la transición a la página nueva (si se
+  // quitara antes, el fundido arrancaría a mitad de camino)
+  useEffect(() => {
+    const html = document.documentElement;
+    if (!("menuNav" in html.dataset)) return;
+    const timer = setTimeout(() => delete html.dataset.menuNav, 1000);
+    return () => clearTimeout(timer);
+  }, [pathname]);
 
   const langSwitch = (className?: string) => (
     <div className={[styles.lang, className].filter(Boolean).join(" ")} role="group" aria-label={t.language}>
@@ -137,7 +161,7 @@ export default function Navbar({ lang, t }: NavbarProps) {
             hrefLang={code}
             lang={code}
             scroll={false}
-            onClick={close}
+            onClick={closeIfHere(switchLocalePath(pathname, code))}
           >
             {code.toUpperCase()}
           </Link>
@@ -164,7 +188,7 @@ export default function Navbar({ lang, t }: NavbarProps) {
       style={{ viewTransitionName: "site-header" }}
     >
       <nav className={styles.bar} aria-label={t.ariaLabel}>
-        <Link href={href("/")} className={styles.brand} aria-label={t.home} onClick={close} data-split-target>
+        <Link href={href("/")} className={styles.brand} aria-label={t.home} onClick={closeIfHere(href("/"))} data-split-target>
           <Logo className={styles.logoMark} />
         </Link>
 
@@ -239,7 +263,7 @@ export default function Navbar({ lang, t }: NavbarProps) {
             <li key={link.href} style={{ "--i": i } as CSSProperties}>
               <Link
                 href={href(link.href)}
-                onClick={close}
+                onClick={closeIfHere(href(link.href))}
                 aria-current={isCurrent(link) ? "page" : undefined}
               >
                 {t.links[link.key]}
@@ -282,7 +306,7 @@ export default function Navbar({ lang, t }: NavbarProps) {
           </div>
 
           {langSwitch(styles.langDrawer)}
-          <Link href={href(CTA_HREF)} className={styles.drawerCta} onClick={close}>
+          <Link href={href(CTA_HREF)} className={styles.drawerCta} onClick={closeIfHere(href(CTA_HREF))}>
             {t.cta}
             <ArrowRight size={16} strokeWidth={1.5} aria-hidden="true" />
           </Link>
