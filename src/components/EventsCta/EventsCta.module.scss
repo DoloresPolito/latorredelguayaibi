@@ -61,32 +61,24 @@
 }
 
 .cta {
-  @include btn-v2;
+  @include btn-solid;
   margin-top: $space-10;
 }
 
 // ─────────────────────────────────────────────
 // Entrada en cascada (<Reveal>); .inner es el propio <Reveal>
 // ─────────────────────────────────────────────
-.inner > * {
-  opacity: 0;
-  translate: 0 20px;
-  transition:
-    opacity 1200ms ease,
-    translate 1400ms $ease-out,
-    background-color 300ms ease;
-
-  @media (prefers-reduced-motion: reduce) {
-    opacity: 1;
-    translate: none;
-    transition: none;
-  }
+// (el botón también anima su fondo al pasar el mouse; el primer hijo, la
+// línea, entra sin demora)
+.inner {
+  @include reveal-cascade(
+    (null, 200ms, 350ms, 500ms),
+    $extra-transition: background-color 300ms ease
+  );
 }
 
-.inner[data-visible="true"] > * {
-  opacity: 1;
-  translate: none;
-}
+// El botón: la demora es para el fundido y la subida, no para el hover
+.inner > :nth-child(5) { transition-delay: 700ms, 700ms, 0s; }
 
 // La línea se dibuja de arriba hacia abajo
 .rule {
@@ -106,7 +98,9 @@
   }
 }
 
-.inner > :nth-child(2) { transition-delay: 200ms; }
-.inner > :nth-child(3) { transition-delay: 350ms; }
-.inner > :nth-child(4) { transition-delay: 500ms; }
-.inner > :nth-child(5) { transition-delay: 700ms, 700ms, 0s; }
+
+// Títulos en Italiana, la tipografía de títulos de la web. Va al final para
+// ganarle a la tipografía, el peso y el espaciado definidos arriba.
+.title {
+  @include title-italiana;
+}

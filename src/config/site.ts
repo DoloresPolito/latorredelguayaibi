@@ -27,8 +27,15 @@ export const SITE = {
   },
 };
 
+/**
+ * PRUEBAS: mientras tenga un número, todos los links de WhatsApp van acá en
+ * vez de al del hotel (el teléfono para llamar sigue siendo el del hotel).
+ * Dejarlo en "" antes de publicar.
+ */
+const WHATSAPP_TEST = "5493446584076";
+
 export const whatsappUrl = (text?: string) =>
-  `https://wa.me/${SITE.whatsapp}${text ? `?text=${encodeURIComponent(text)}` : ""}`;
+  `https://wa.me/${WHATSAPP_TEST || SITE.whatsapp}${text ? `?text=${encodeURIComponent(text)}` : ""}`;
 
 export const phoneUrl = `tel:+${SITE.whatsapp}`;
 

@@ -12,8 +12,6 @@ type RoomsShowcaseProps = {
   lang: Locale;
   t: Dictionary["roomsShowcase"];
   id?: string;
-  /** Clase extra para los títulos (p. ej. Italiana) */
-  titleClassName?: string;
 };
 
 // Foto del resumen: la suite de piedra
@@ -24,7 +22,7 @@ const BIG = ROOMS[0];
  * scroll y se descubre de abajo hacia arriba al entrar), el título, un
  * texto corto y, debajo y alineado a la izquierda, el botón a /habitaciones.
  */
-export default function RoomsShowcase({ lang, t, id = "habitaciones", titleClassName }: RoomsShowcaseProps) {
+export default function RoomsShowcase({ lang, t, id = "habitaciones" }: RoomsShowcaseProps) {
   return (
     <section id={id} className={styles.section} aria-labelledby={`${id}-title`}>
       <Reveal className={styles.inner} threshold={0.15}>
@@ -32,7 +30,7 @@ export default function RoomsShowcase({ lang, t, id = "habitaciones", titleClass
           <p className={styles.eyebrow}>
             {t.eyebrow}
           </p>
-          <h2 id={`${id}-title`} className={[styles.title, titleClassName].filter(Boolean).join(" ")}>
+          <h2 id={`${id}-title`} className={styles.title}>
             {t.title}
           </h2>
           <p className={styles.text}>{t.text}</p>
@@ -48,7 +46,8 @@ export default function RoomsShowcase({ lang, t, id = "habitaciones", titleClass
               src={BIG.image}
               alt={t.bigImageAlt}
               fill
-              sizes="(min-width: 1024px) 55vw, 100vw"
+              // Desktop: 6 de las 12 columnas del contenedor (máx. 1320px → 584px)
+              sizes="(min-width: 1320px) 584px, (min-width: 1024px) 43vw, 100vw"
               className={styles.image}
             />
           </div>

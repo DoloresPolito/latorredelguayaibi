@@ -1,22 +1,6 @@
 @use "../abstracts" as *;
 
-// Clases globales para uso rápido en JSX.
-// Para estilos de componente preferir CSS Modules + mixins.
-
-.btn-primary { @include btn-primary; }
-.btn-secondary { @include btn-secondary; }
-
-.eyebrow { @include eyebrow; }
-.text-editorial { @include text-editorial; }
-.text-small { @include text-small; }
-
-.input { @include input; }
-.select { @include select; }
-.textarea { @include textarea; }
-.label { @include label; }
-
-.divider { @include divider; }
-
-.container { @include container; }
+// Clases globales para usar directo en JSX. Para estilos de componente,
+// CSS Modules + mixins.
 
 .visually-hidden { @include visually-hidden; }

@@ -93,22 +93,6 @@
   @include mq(lg) { font-size: 44px; }
 }
 
-@mixin text-editorial {
-  font-family: $font-editorial;
-  font-weight: $weight-regular;
-  font-size: 19px;
-  line-height: 1.3;
-  color: $color-body;
-}
-
-@mixin text-small {
-  font-family: $font-editorial;
-  font-weight: $weight-regular;
-  font-size: 14px;
-  line-height: 1.3;
-  color: $color-body;
-}
-
 // Títulos de sección ("eyebrow")
 @mixin eyebrow {
   font-family: $font-ui;
@@ -127,13 +111,6 @@
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: $color-primary;
-}
-
-@mixin label {
-  font-family: $font-editorial;
-  font-weight: $weight-regular;
-  font-size: 14px;
-  color: $color-body;
 }
 
 // ─────────────────────────────────────────────
@@ -163,88 +140,6 @@
     opacity: 0.5;
     cursor: not-allowed;
   }
-}
-
-@mixin btn-primary {
-  @include btn-base;
-  height: $btn-height;
-  padding-inline: $btn-padding-x;
-  background-color: $color-primary;
-  border: $border-width solid $color-primary;
-  color: $color-on-primary;
-  font-size: 11px;
-  letter-spacing: 0.06em;
-
-  @include hover {
-    background-color: $color-primary-hover;
-    border-color: $color-primary-hover;
-  }
-}
-
-@mixin btn-secondary {
-  @include btn-base;
-  height: $btn-secondary-height;
-  padding-inline: $btn-secondary-padding-x;
-  background-color: transparent;
-  border: $border-width solid $color-border-strong;
-  color: $color-primary;
-  font-size: 10px;
-  letter-spacing: 0.06em;
-
-  @include hover {
-    border-color: $color-primary;
-  }
-}
-
-// ─────────────────────────────────────────────
-// Formularios
-// ─────────────────────────────────────────────
-@mixin input {
-  width: 100%;
-  height: $input-height;
-  padding-inline: $input-padding-x;
-  background-color: $color-surface;
-  border: $border-width solid $color-border;
-  border-radius: $radius-small;
-  font-family: $font-ui;
-  font-weight: $weight-regular;
-  font-size: 13px;
-  color: $color-heading;
-  transition: border-color $transition-default;
-
-  &::placeholder {
-    color: $color-muted;
-  }
-
-  &:focus {
-    outline: none;
-    border-color: $color-primary;
-  }
-}
-
-// Select nativo con flecha propia
-@mixin select {
-  @include input;
-  appearance: none;
-  padding-right: $space-8;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23493328' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right $space-3 center;
-  cursor: pointer;
-}
-
-@mixin textarea {
-  @include input;
-  height: auto;
-  min-height: $textarea-min-height;
-  padding: $input-padding-x;
-  resize: vertical;
-}
-
-@mixin divider {
-  height: 1px;
-  border: 0;
-  background-color: $color-border;
 }
 
 // ─────────────────────────────────────────────
@@ -336,67 +231,33 @@ $enter-duration: 1400ms;
   }
 }
 
-// Línea de título que sube desde una máscara (como el nombre en la bienvenida).
-// Estructura: <span class="line"><span>texto</span></span>; se incluye en .line
-// y se activa cuando un ancestro pasa a data-visible="true" (<Reveal>).
-@mixin mask-line($delay: 0ms, $duration: 1500ms) {
-  display: block;
-  overflow: hidden;
-  padding-bottom: 0.1em; // que no se corten los descendentes
-  margin-bottom: -0.1em;
-
-  > * {
-    display: block;
-    transform: translateY(105%);
-    transition: transform $duration $ease-out $delay;
-  }
-
-  [data-visible="true"] & > * {
-    transform: none;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    > * {
-      transform: none;
-      transition: none;
-    }
-  }
-}
-
-// Capa de foto que se mueve con el scroll (<Parallax>, --parallax de -1 a 1)
-// y con el mouse (<PointerDrift>, --mx / --my de -1 a 1). La imagen de adentro
-// tiene que estar escalada para que no se vean los bordes.
-@mixin drift-layer($shift: 5%, $depth: 8px) {
+// Capa de foto que se mueve con el scroll (--parallax de -1 a 1). La imagen
+// de adentro tiene que estar escalada para que no se vean los bordes.
+// El desplazamiento lo hace el CSS ligado al scroll (va sincronizado con el
+// scroll nativo; con JS, en celulares temblaba), con la línea de tiempo
+// --parallax de <Parallax>: requiere <Parallax cssFallback> en el
+// contenedor. En navegadores sin soporte, <Parallax> escribe --parallax.
+@mixin drift-layer($shift: 5%) {
   position: absolute;
   inset: 0;
-  transform: translate3d(
-    calc(var(--mx, 0) * #{-$depth}),
-    calc(var(--parallax, 0) * #{$shift} + var(--my, 0) * #{-$depth}),
-    0
-  );
+  transform: translate3d(0, calc(var(--parallax, 0) * #{$shift}), 0);
   will-change: transform;
 
   @media (prefers-reduced-motion: reduce) {
     transform: none;
   }
 
-  // Sin seguimiento del mouse, el desplazamiento lo puede hacer el CSS ligado
-  // al scroll (va sincronizado con el scroll nativo; con JS, en celulares
-  // temblaba). Usa la línea de tiempo --parallax de <Parallax>: requiere
-  // <Parallax cssFallback> en el contenedor.
-  @if $depth == 0 or $depth == 0px {
-    @include parallax-timeline {
-      --drift-shift: #{$shift};
-      animation-name: drift-layer;
-    }
+  @include parallax-timeline {
+    --drift-shift: #{$shift};
+    animation-name: drift-layer;
+  }
 
-    @keyframes drift-layer {
-      from {
-        transform: translate3d(0, var(--drift-shift), 0);
-      }
-      to {
-        transform: translate3d(0, calc(var(--drift-shift) * -1), 0);
-      }
+  @keyframes drift-layer {
+    from {
+      transform: translate3d(0, var(--drift-shift), 0);
+    }
+    to {
+      transform: translate3d(0, calc(var(--drift-shift) * -1), 0);
     }
   }
 }
@@ -421,12 +282,12 @@ $enter-duration: 1400ms;
 }
 
 // ─────────────────────────────────────────────
-// Botón del home de prueba (clase global .theme-v2 en src/app/[lang]/page.tsx):
-// sólido, texto en minúscula, sans y flecha en diagonal (↗).
-// Uso: :global(.theme-v2) .cta { @include btn-v2; }
-// La flecha es la misma ArrowRight girada, así no hay que tocar el JSX.
+// Botón de la web: sólido, texto en minúscula, sans y flecha en diagonal (↗).
+// Uso: .cta { @include btn-solid; } (o con otros colores, p. ej. crema sobre
+// fondos oscuros). La flecha es la misma ArrowRight girada, así no hay que
+// tocar el JSX.
 // ─────────────────────────────────────────────
-@mixin btn-v2($bg: $color-primary, $fg: $color-on-primary, $bg-hover: $color-primary-hover) {
+@mixin btn-solid($bg: $color-primary, $fg: $color-on-primary, $bg-hover: $color-primary-hover) {
   display: inline-flex;
   align-items: center;
   gap: 10px;
@@ -459,19 +320,89 @@ $enter-duration: 1400ms;
 }
 
 // ─────────────────────────────────────────────
-// Títulos grandes en Lay Grotesk (home de prueba). --font-lay la carga el
-// home nuevo; los acentos y la ñ (que la versión trial no trae) salen de
-// Inter Tight. Sin esas variables, cae en la tipografía de títulos de siempre.
+// Títulos grandes en Inter Tight
 // ─────────────────────────────────────────────
-@mixin display-lay {
-  font-family: var(--font-lay, var(--font-heading)), var(--font-sans-test, Georgia), sans-serif;
+@mixin display-sans {
+  font-family: $font-sans;
   font-weight: $weight-regular;
   font-size: clamp(32px, 7.5vw, 44px);
   line-height: 1.12;
   letter-spacing: -0.005em;
-  word-spacing: 0.06em; // Lay Grotesk tiene el espacio entre palabras muy justo
 
   @include mq(lg) {
     font-size: clamp(40px, 3.6vw, 60px);
+  }
+}
+
+// ─────────────────────────────────────────────
+// Títulos en Italiana (la tipografía de títulos de la web). Solo tiene peso
+// 400, así que se fuerza (sin falso bold del navegador) y se engrosa el
+// trazo con un borde del mismo color del texto. Subir/bajar --title-stroke
+// para más/menos grosor (0 = la fuente original).
+// Incluirlo al principio de la regla del título.
+// ─────────────────────────────────────────────
+@mixin title-italiana {
+  --title-stroke: 0.025em;
+  font-family: $font-title;
+  font-weight: $weight-regular;
+  letter-spacing: 0.01em; // compensa el borde, que junta las letras
+  -webkit-text-stroke: var(--title-stroke) currentColor;
+  paint-order: stroke fill;
+}
+
+// ─────────────────────────────────────────────
+// Entrada al aparecer en pantalla (<Reveal> marca data-visible="true"):
+// fundido y una subida corta. Usa "translate" (no "transform") para no
+// pisar el movimiento de --parallax. Sin animación si se pidió reducirlas.
+// ─────────────────────────────────────────────
+
+// Estado inicial de un elemento que entra. El estado final es reveal-shown,
+// dentro del selector que corresponda (p. ej. [data-visible="true"] &).
+@mixin reveal-rise($shift: 20px, $extra-transition: null) {
+  opacity: 0;
+  translate: 0 $shift;
+  @if $extra-transition {
+    transition:
+      opacity 1200ms ease,
+      translate 1400ms $ease-out,
+      $extra-transition;
+  } @else {
+    transition:
+      opacity 1200ms ease,
+      translate 1400ms $ease-out;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    opacity: 1;
+    translate: none;
+    transition: none;
+  }
+}
+
+@mixin reveal-shown {
+  opacity: 1;
+  translate: none;
+}
+
+// Los hijos de un contenedor entran en cascada, con las demoras de $delays
+// (una por hijo, en orden; null = sin demora). Sirve tanto si el contenedor
+// es el propio <Reveal> como si está adentro de uno.
+// Uso: .copy { @include reveal-cascade((150ms, 300ms, 450ms)); }
+@mixin reveal-cascade($delays, $shift: 20px, $extra-transition: null) {
+  > * {
+    @include reveal-rise($shift, $extra-transition);
+  }
+
+  &[data-visible="true"] > *,
+  [data-visible="true"] & > * {
+    @include reveal-shown;
+  }
+
+  @for $i from 1 through length($delays) {
+    @if nth($delays, $i) {
+      > :nth-child(#{$i}) {
+        transition-delay: nth($delays, $i);
+      }
+    }
   }
 }

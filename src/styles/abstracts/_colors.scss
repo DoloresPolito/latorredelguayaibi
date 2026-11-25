@@ -8,11 +8,9 @@
 // Claros
 $cream: #f9f0d7; // fondo del sitio (secciones claras)
 $butter: #fef1ca; // textos y botones claros sobre fondos oscuros
-$butter-hover: color.mix($butter, #493328, 90%); // hover de botones crema (derivado)
 
 // Verdes
 $forest: #1c2419; // verde oscuro único: secciones oscuras, botones, navegación y acentos
-$deep-olive: $forest; // botones principales, navegación, acentos (mismo verde oscuro)
 $olive-hover: color.mix($forest, $butter, 85%); // hover de botones principales (derivado)
 $sage: #dde4d5; // rango de fechas del calendario
 $sage-light: #e5e9df; // hover de fechas
@@ -25,19 +23,18 @@ $terracotta: #a85c37; // fondo del footer y acentos cálidos
 $mesa-clay: #794a37; // errores de formularios
 $bordo: #6b2232; // acento para destacar (nombres en las reseñas)
 
-// Líneas e íconos
+// Derivados
+$butter-hover: color.mix($butter, $dark-brown, 90%); // hover de botones crema
+
+// Líneas
 $soft-border: #ddd8cc; // bordes, divisores, inputs
 $strong-border: #cfc9bc; // bordes de botones secundarios
-$icon-color: #626a58; // íconos
 
 // ─────────────────────────────────────────────
 // Alias semánticos (usar estos en los componentes)
 // ─────────────────────────────────────────────
 $color-background: $cream;
-$color-surface: $cream;
-$color-dark: $forest;
-$color-on-dark: $butter;
-$color-primary: $deep-olive;
+$color-primary: $forest;
 $color-primary-hover: $olive-hover;
 $color-on-primary: $butter;
 $color-heading: $dark-brown;
@@ -46,30 +43,7 @@ $color-muted: $muted-gray;
 $color-error: $mesa-clay;
 $color-border: $soft-border;
 $color-border-strong: $strong-border;
-$color-icon: $icon-color;
-$color-date-selected: $deep-olive;
+$color-date-selected: $forest;
 $color-date-selected-text: $butter;
 $color-date-range: $sage;
 $color-date-hover: $sage-light;
-
-// Mapa que se emite como CSS custom properties (--color-*)
-$colors: (
-  "background": $color-background,
-  "surface": $color-surface,
-  "dark": $color-dark,
-  "on-dark": $color-on-dark,
-  "primary": $color-primary,
-  "primary-hover": $color-primary-hover,
-  "on-primary": $color-on-primary,
-  "heading": $color-heading,
-  "body": $color-body,
-  "muted": $color-muted,
-  "error": $color-error,
-  "border": $color-border,
-  "border-strong": $color-border-strong,
-  "icon": $color-icon,
-  "date-selected": $color-date-selected,
-  "date-range": $color-date-range,
-  "date-hover": $color-date-hover,
-  "terracotta": $terracotta,
-);

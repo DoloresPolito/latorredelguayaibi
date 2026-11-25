@@ -1,0 +1,76 @@
+@use "abstracts" as *;
+
+// Colores a través de --tone-bg / --tone-fg (de <ToneShift>): sigue el
+// verde de eventos. Sin <ToneShift>, verde con textos crema.
+$bg: tone-bg(dark);
+$fg: tone-fg(dark);
+
+.section {
+  background-color: $bg;
+  color: $fg;
+}
+
+// Poco aire arriba: eventos ya deja el suyo abajo
+.inner {
+  @include container;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding-top: $space-8;
+  padding-bottom: $space-32;
+
+  @include mq(lg) {
+    padding-top: $space-12;
+    padding-bottom: $space-32;
+  }
+}
+
+.eyebrow {
+  @include eyebrow;
+  color: fade($fg, 0.75);
+}
+
+.title {
+  max-width: 16em;
+  margin-top: $space-6;
+  font-family: $font-heading;
+  font-weight: $weight-regular;
+  font-size: clamp(34px, 9vw, 44px);
+  line-height: 1.1;
+  color: $fg;
+
+  @include mq(lg) {
+    font-size: clamp(40px, 3.4vw, 58px);
+  }
+}
+
+.text {
+  max-width: 30em;
+  margin-top: $space-6;
+  font-family: $font-ui;
+  font-size: 16px;
+  line-height: 1.7;
+  color: fade($fg, 0.8);
+
+  @include mq(lg) {
+    font-size: 17px;
+  }
+}
+
+.cta {
+  // Mismo botón que eventos: sólido del color del texto, se invierte solo
+  @include btn-solid($fg, $bg, color-mix(in srgb, #{$fg} 88%, #{$bg}));
+  margin-top: $space-8;
+}
+
+// Entrada en cascada (<Reveal>)
+.inner {
+  @include reveal-cascade((150ms, 300ms, 450ms, 650ms));
+}
+
+// Títulos en Italiana, la tipografía de títulos de la web. Va al final para
+// ganarle a la tipografía, el peso y el espaciado definidos arriba.
+.title {
+  @include title-italiana;
+}

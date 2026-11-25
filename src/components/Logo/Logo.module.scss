@@ -1,14 +1,5 @@
 @use "abstracts" as *;
 
-.logo {
-  display: inline-flex;
-  align-items: center;
-  gap: $space-4;
-}
-
-.dark { color: $color-heading; }
-.light { color: $butter; }
-
 // El SVG se usa como máscara para poder colorearlo con currentColor
 .mark {
   display: block;
@@ -19,17 +10,5 @@
 
   @include mq(nav) {
     height: 40px;
-  }
-}
-
-.name {
-  font-family: $font-heading;
-  font-size: 18px;
-  line-height: 0.95;
-  letter-spacing: -0.01em;
-  white-space: nowrap;
-
-  @include mq(nav) {
-    font-size: 22px;
   }
 }

@@ -1,12 +1,13 @@
 "use client";
 
-import { useEffect, useRef, useState, type ReactNode, type RefObject } from "react";
+import { useEffect, useRef, useState, type CSSProperties, type ReactNode, type RefObject } from "react";
 
 type RevealProps = {
   children: ReactNode;
   /** Etiqueta a renderizar (por defecto div; p. ej. "ul" para una lista) */
   as?: "div" | "ul" | "section";
   className?: string;
+  style?: CSSProperties;
   /** Porción del elemento que tiene que estar en pantalla para disparar la animación */
   threshold?: number;
 };
@@ -15,7 +16,7 @@ type RevealProps = {
  * Marca su contenido con data-visible="true" la primera vez que entra en
  * pantalla. La animación la define cada componente en su CSS.
  */
-export default function Reveal({ children, as: Tag = "div", className, threshold = 0 }: RevealProps) {
+export default function Reveal({ children, as: Tag = "div", className, style, threshold = 0 }: RevealProps) {
   const ref = useRef<HTMLElement>(null);
   const [visible, setVisible] = useState(false);
 
@@ -37,7 +38,7 @@ export default function Reveal({ children, as: Tag = "div", className, threshold
   }, [threshold]);
 
   return (
-    <Tag ref={ref as RefObject<never>} className={className} data-visible={visible}>
+    <Tag ref={ref as RefObject<never>} className={className} style={style} data-visible={visible}>
       {children}
     </Tag>
   );

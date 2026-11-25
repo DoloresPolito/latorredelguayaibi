@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useRef, type CSSProperties } from "react";
+import { useRef, type CSSProperties } from "react";
+import { prefersReducedMotion, useScrollFrame } from "@/lib/useScrollFrame";
 import styles from "./ScrollText.module.scss";
 
 type ScrollTextProps = {
@@ -43,19 +44,9 @@ export default function ScrollText({ text, className }: ScrollTextProps) {
   const total = words.reduce((n, w) => n + w.chars.length, 0);
   const plain = text.replace(/\*/g, "").replace(/\n/g, " ");
 
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      el.style.setProperty("--p", "1");
-      return;
-    }
-
-    let frame = 0;
-    let active = false;
-
-    const update = () => {
-      frame = 0;
+  useScrollFrame(
+    ref,
+    (el) => {
       const rect = el.getBoundingClientRect();
       const vh = window.innerHeight;
       // Empieza cuando el texto asoma por abajo (85% de la pantalla) y
@@ -64,26 +55,13 @@ export default function ScrollText({ text, className }: ScrollTextProps) {
       const end = vh * 0.45;
       const progress = (start - rect.top) / (start - end + rect.height);
       el.style.setProperty("--p", Math.max(0, Math.min(1, progress)).toFixed(4));
-    };
-    const request = () => {
-      if (active && !frame) frame = requestAnimationFrame(update);
-    };
-
-    const observer = new IntersectionObserver(([entry]) => {
-      active = entry.isIntersecting;
-      request();
-    });
-    observer.observe(el);
-    window.addEventListener("scroll", request, { passive: true });
-    window.addEventListener("resize", request);
-
-    return () => {
-      observer.disconnect();
-      window.removeEventListener("scroll", request);
-      window.removeEventListener("resize", request);
-      cancelAnimationFrame(frame);
-    };
-  }, []);
+    },
+    {
+      whileVisible: true,
+      skip: prefersReducedMotion,
+      onSkip: (el) => el.style.setProperty("--p", "1"),
+    },
+  );
 
   let index = 0;
 

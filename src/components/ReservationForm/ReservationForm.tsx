@@ -1,11 +1,13 @@
 "use client";
 
 import { useId, useState, type FormEvent, type ReactNode } from "react";
-import { ArrowRight, Minus, Plus } from "lucide-react";
+import { useSearchParams } from "next/navigation";
+import { ArrowRight, Minus, Plus, X } from "lucide-react";
 import { differenceInCalendarDays, format, isAfter, startOfDay } from "date-fns";
 import Calendar from "@/components/Calendar/Calendar";
 import { COUNTRIES, DIAL_CODES, countryName } from "@/lib/countries";
 import { whatsappUrl } from "@/config/site";
+import { ROOM_PARAM } from "@/config/navigation";
 import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries/es";
 import styles from "./ReservationForm.module.scss";
@@ -22,6 +24,8 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 type ReservationFormProps = {
   lang: Locale;
   t: Dictionary["form"];
+  /** Nombre de cada suite por su key, para mostrar la que viene en ?habitacion= */
+  roomNames: Record<string, string>;
 };
 
 /** Encabezado de cada paso: número en itálica y título en versalitas */
@@ -36,9 +40,30 @@ function StepTitle({ n, children }: { n: number; children: ReactNode }) {
   );
 }
 
-export default function ReservationForm({ lang, t }: ReservationFormProps) {
+export default function ReservationForm({ lang, t, roomNames }: ReservationFormProps) {
   const id = useId();
   const today = startOfDay(new Date());
+
+  // Suite elegida en /habitaciones (?habitacion=azul). Si la key no existe, nada.
+  // Next guarda la página con su estado al irse (Cache Components): al volver
+  // con otra suite el formulario no se monta de nuevo, así que la suite se
+  // vuelve a tomar de la URL cada vez que cambia el parámetro.
+  const roomParam = useSearchParams().get(ROOM_PARAM);
+  const validRoom = (key: string | null) => (key && roomNames[key] ? key : null);
+  const [room, setRoom] = useState(() => validRoom(roomParam));
+  const [lastParam, setLastParam] = useState(roomParam);
+  if (roomParam !== lastParam) {
+    setLastParam(roomParam);
+    setRoom(validRoom(roomParam));
+  }
+
+  const clearRoom = () => {
+    setRoom(null);
+    // Saca el parámetro de la URL, así al recargar no vuelve a aparecer
+    const url = new URL(window.location.href);
+    url.searchParams.delete(ROOM_PARAM);
+    window.history.replaceState(window.history.state, "", url);
+  };
 
   const [checkIn, setCheckIn] = useState<Date>();
   const [checkOut, setCheckOut] = useState<Date>();
@@ -104,6 +129,7 @@ export default function ReservationForm({ lang, t }: ReservationFormProps) {
     const lines = [
       w.intro,
       "",
+      ...(room ? [`*${w.room}:* ${roomNames[room]}`] : []),
       `*${w.checkIn}:* ${fmt(checkIn!)}`,
       `*${w.checkOut}:* ${fmt(checkOut!)} (${nights} ${nights === 1 ? w.night : w.nights})`,
       `*${w.guests}:* ${guests}`,
@@ -184,6 +210,18 @@ export default function ReservationForm({ lang, t }: ReservationFormProps) {
 
   return (
     <form className={styles.form} onSubmit={handleSubmit} noValidate>
+      {room && (
+        <div className={styles.room}>
+          <p className={styles.roomText}>
+            <span className={styles.roomLabel}>{t.selectedRoom}</span>
+            <span className={styles.roomName}>{roomNames[room]}</span>
+          </p>
+          <button type="button" className={styles.roomRemove} onClick={clearRoom} aria-label={t.removeRoom}>
+            <X size={16} strokeWidth={1.25} aria-hidden="true" />
+          </button>
+        </div>
+      )}
+
       {/* ─── 01. Fechas ─── */}
       <fieldset className={styles.step}>
         <StepTitle n={1}>{t.step1}</StepTitle>

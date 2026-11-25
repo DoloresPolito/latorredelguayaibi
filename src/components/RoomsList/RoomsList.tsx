@@ -1,9 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
+import type { CSSProperties } from "react";
 import { ArrowRight, BedDouble, BedSingle, Plus, Users } from "lucide-react";
 import { localizePath, type Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries/es";
 import { ROOMS } from "@/config/rooms";
+import { roomInquiryPath } from "@/config/navigation";
 import Parallax from "@/components/Parallax/Parallax";
 import Reveal from "@/components/Reveal/Reveal";
 import HoverLabel from "./HoverLabel";
@@ -17,8 +19,6 @@ type RoomsListProps = {
   t: Dictionary["habitaciones"]["list"];
   rooms: Dictionary["habitaciones"]["rooms"];
   id?: string;
-  /** Clase extra para el nombre de cada suite (p. ej. Italiana) */
-  titleClassName?: string;
 };
 
 type Room = (typeof ROOMS)[number];
@@ -30,15 +30,28 @@ type Room = (typeof ROOMS)[number];
  * mueve dentro de su marco y, al pasar el mouse, una etiqueta lo sigue.
  * Las tarjetas aparecen con un fundido suave, como en el home.
  */
-export default function RoomsList({ lang, intro, t, rooms, id = "suites", titleClassName }: RoomsListProps) {
+export default function RoomsList({ lang, intro, t, rooms, id = "suites" }: RoomsListProps) {
   const left = ROOMS.filter((_, i) => i % 2 === 0);
   const right = ROOMS.filter((_, i) => i % 2 === 1);
+
+  // Mobile (una columna): las columnas se apilan (izquierda y después
+  // derecha), salvo la triple, que va última.
+  const LAST_ON_MOBILE = "triple";
+  const mobileOrder = [...left, ...right]
+    .map((room) => room.key)
+    .sort((a, b) => Number(a === LAST_ON_MOBILE) - Number(b === LAST_ON_MOBILE));
 
   const card = (room: Room, tall: boolean) => {
     const copy = rooms[room.key];
     return (
-      <Reveal key={room.key} as="div" className={styles.card} threshold={0.15}>
-        <Link href={localizePath(lang, "/reservas")} className={styles.link} aria-label={`${copy.name} — ${t.cardCta}`}>
+      <Reveal
+        key={room.key}
+        as="div"
+        className={styles.card}
+        style={{ "--mobile-order": mobileOrder.indexOf(room.key) } as CSSProperties}
+        threshold={0.15}
+      >
+        <Link href={localizePath(lang, roomInquiryPath(room.key))} className={styles.link} aria-label={`${copy.name} — ${t.cardCta}`}>
           <HoverLabel className={`${styles.frame} ${tall ? styles.tall : ""}`}>
             <Parallax className={styles.layer}>
               <Image
@@ -57,7 +70,7 @@ export default function RoomsList({ lang, intro, t, rooms, id = "suites", titleC
         </Link>
 
         <div className={styles.caption}>
-          <h3 className={[styles.name, titleClassName].filter(Boolean).join(" ")}>{copy.name}</h3>
+          <h3 className={styles.name}>{copy.name}</h3>
           <ul className={styles.pills}>
             <li>
               {room.beds === "twoDoubles" ? (
@@ -87,7 +100,7 @@ export default function RoomsList({ lang, intro, t, rooms, id = "suites", titleC
     <section id={id} className={styles.section} data-nav-theme="dark" aria-labelledby={`${id}-title`}>
       <Reveal className={styles.header} threshold={0.4}>
         <div className={styles.intro}>
-          <p className={[styles.introText, titleClassName].filter(Boolean).join(" ")}>
+          <p className={styles.introText}>
             {intro.text}
           </p>
         </div>

@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useRef, type ReactNode } from "react";
+import { useRef, type ReactNode } from "react";
+import { prefersReducedMotion, useScrollFrame } from "@/lib/useScrollFrame";
 
 type ScrollShiftProps = {
   children: ReactNode;
@@ -15,26 +16,13 @@ type ScrollShiftProps = {
 export default function ScrollShift({ children, className }: ScrollShiftProps) {
   const ref = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const el = ref.current;
-    if (!el || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
-    let frame = 0;
-    const update = () => {
-      frame = 0;
+  useScrollFrame(
+    ref,
+    (el) => {
       el.style.setProperty("--sy", String(Math.round(window.scrollY)));
-    };
-    const request = () => {
-      if (!frame) frame = requestAnimationFrame(update);
-    };
-
-    update();
-    window.addEventListener("scroll", request, { passive: true });
-    return () => {
-      window.removeEventListener("scroll", request);
-      cancelAnimationFrame(frame);
-    };
-  }, []);
+    },
+    { resize: false, skip: prefersReducedMotion },
+  );
 
   return (
     <div ref={ref} className={className}>

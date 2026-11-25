@@ -1,7 +1,16 @@
 @use "abstracts" as *;
 
-// Registradas como colores para que se puedan animar: todo lo que las use
-// (fondos, textos, bordes, botones) cambia junto, con la misma transición.
+// --tone-p va de 0 (claro) a 1 (oscuro). <ToneShift> lo cambia de una vez
+// al cruzar un punto de la pantalla y la transición lo lleva de un extremo
+// al otro. Los colores se mezclan a partir de ese número: todo lo que los
+// use (fondos, textos, bordes, botones) cambia junto.
+@property --tone-p {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+
+// Registradas como colores para que los hijos hereden el color ya mezclado
 @property --tone-bg {
   syntax: "<color>";
   inherits: true;
@@ -15,18 +24,18 @@
 }
 
 .shift {
-  --tone-bg: #{$cream};
-  --tone-fg: #{$forest};
+  --tone-p: 0;
+  --tone-bg: color-mix(in oklab, #{$forest} calc(var(--tone-p) * 100%), #{$cream});
+  --tone-fg: color-mix(in oklab, #{$butter} calc(var(--tone-p) * 100%), #{$forest});
 
   background-color: var(--tone-bg);
   color: var(--tone-fg);
-  transition:
-    --tone-bg 1100ms ease,
-    --tone-fg 1100ms ease;
+  // Arranca rápido y frena largo: el tono intermedio dura poco y el
+  // final se asienta despacio
+  transition: --tone-p 1600ms cubic-bezier(0.22, 1, 0.36, 1);
 
   &[data-tone="dark"] {
-    --tone-bg: #{$forest};
-    --tone-fg: #{$butter};
+    --tone-p: 1;
   }
 
   @media (prefers-reduced-motion: reduce) {

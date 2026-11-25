@@ -287,3 +287,10 @@ $travel: 4400;
     background: rgba(#000, 0.35);
   }
 }
+
+// Títulos en Italiana, la tipografía de títulos de la web. Va al final para
+// ganarle a la tipografía, el peso y el espaciado definidos arriba.
+.title,
+.focusTitle {
+  @include title-italiana;
+}

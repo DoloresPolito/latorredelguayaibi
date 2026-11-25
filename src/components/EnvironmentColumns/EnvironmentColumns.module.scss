@@ -141,3 +141,9 @@
     transform: scale(1.04);
   }
 }
+
+// Títulos en Italiana, la tipografía de títulos de la web. Va al final para
+// ganarle a la tipografía, el peso y el espaciado definidos arriba.
+.title {
+  @include title-italiana;
+}

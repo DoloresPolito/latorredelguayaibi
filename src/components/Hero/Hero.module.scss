@@ -1,8 +1,11 @@
 @use "abstracts" as *;
 
-$content-left-desktop: $navbar-inset + $space-10; // alinea con el logo de la navbar
-
+// Hero a pantalla completa: foto oscurecida con un velo parejo y todo
+// centrado encima, en crema.
 .hero {
+  // Mismo espacio título → frase que frase → botón
+  --stack-gap: clamp(#{$space-8}, 5svh, #{$space-12});
+
   position: relative;
   display: flex;
   flex-direction: column;
@@ -17,26 +20,20 @@ $content-left-desktop: $navbar-inset + $space-10; // alinea con el logo de la na
 // ─────────────────────────────────────────────
 // Fondo
 // ─────────────────────────────────────────────
+// Fondo verde oscuro mientras baja la foto: al llegar desde otra página, la
+// nueva aparece antes de que termine de cargar, y sin esto se veía un hueco
+// claro (el crema del sitio) arriba de todo
 .media {
   position: absolute;
   inset: 0;
   z-index: -1;
   overflow: hidden;
+  background-color: $forest;
 }
 
 // Entrada de la foto: aparece y se asienta muy lentamente (una vez, al cargar)
 .image {
   @include enter-image;
-}
-
-.fill {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-}
-
-.image {
   object-fit: cover;
   // Mobile: corrido a la derecha para que se vea la torre
   object-position: 66% center;
@@ -46,24 +43,10 @@ $content-left-desktop: $navbar-inset + $space-10; // alinea con el logo de la na
   }
 }
 
-// Fondo provisorio hasta tener la foto
-.placeholder {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(172deg, #c9d0cc 0%, #eedcbf 48%, #c3ac92 76%, #555038 100%);
-}
-
-// Sin velos claros: el título va en marrón sobre el cielo de la foto.
-// Abajo, una sombra suave: en mobile/tablet para la frase y el botón (en
-// crema, sobre la pileta); en desktop solo para los indicadores de "Scroll".
 .overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(0deg, rgba(#000, 0.55) 0%, rgba(#000, 0.3) 30%, rgba(#000, 0) 50%);
-
-  @include mq(lg) {
-    background: linear-gradient(0deg, rgba(#000, 0.25) 0%, rgba(#000, 0) 20%);
-  }
+  background: rgba(#000, 0.26);
 }
 
 // ─────────────────────────────────────────────
@@ -73,27 +56,20 @@ $content-left-desktop: $navbar-inset + $space-10; // alinea con el logo de la na
   display: flex;
   flex: 1;
   flex-direction: column;
-  align-items: flex-start;
-  max-width: 560px;
-  // Mobile/tablet: arriba, sobre el cielo, para que la torre quede libre abajo
+  align-items: center;
+  justify-content: center;
+  margin-inline: auto;
   padding:
-    calc(#{$navbar-height-mobile + $navbar-sticky-top-mobile} + clamp(#{$space-5}, 4svh, #{$space-10}))
+    calc(#{$navbar-height-mobile + $navbar-sticky-top-mobile} + #{$space-6})
     $space-6
     clamp(#{$space-20}, 13svh, #{$space-24}); // deja lugar a la flecha de scroll
-
-  @include mq(md) {
-    padding-inline: $space-12;
-    padding-bottom: $space-32;
-  }
+  text-align: center;
 
   @include mq(lg) {
-    justify-content: center;
-    max-width: 680px;
     padding:
       calc(#{$navbar-height + $navbar-sticky-top} + #{$space-6})
-      0
-      clamp(#{$space-16}, 12svh, #{$space-32})
-      $content-left-desktop;
+      $space-12
+      clamp(#{$space-16}, 12svh, #{$space-32});
   }
 }
 
@@ -101,121 +77,114 @@ $content-left-desktop: $navbar-inset + $space-10; // alinea con el logo de la na
 .actions {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
 }
 
 .actions {
-  margin-top: auto;
+  margin-top: var(--stack-gap);
+}
+
+// Ubicación y frase: chicas, en versalitas espaciadas, un poco gruesas y con
+// una sombra suave para que se lean sobre la foto
+.location,
+.tagline {
+  font-family: $font-ui;
+  font-weight: $weight-medium;
+  text-transform: uppercase;
+  color: $butter;
+  text-shadow: 0 1px 10px rgba(#000, 0.35);
+}
+
+.location {
+  margin-bottom: $space-2;
+  font-size: 11px;
+  letter-spacing: 0.22em;
 
   @include mq(lg) {
-    margin-top: 0;
+    font-size: 12px;
   }
 }
 
-.kicker {
-  font-family: $font-heading;
-  font-size: 22px;
-  line-height: 1.1;
-  letter-spacing: -0.01em;
-  color: $color-heading;
-
-  @include mq(lg) {
-    font-size: clamp(22px, 3.4svh, 28px);
-  }
-}
-
-// Display: más grande que el H1 estándar, como en la referencia
 .title {
-  margin-top: $space-3;
-  font-family: $font-heading;
-  font-weight: $weight-light;
-  font-size: clamp(44px, 7.5svh, 64px);
-  line-height: 0.92;
-  letter-spacing: -0.03em;
-  color: $color-heading;
-
-  @include mq(lg) {
-    font-size: clamp(52px, min(7vw, 12svh), 112px);
-  }
-}
-
-// Variante "name": el nombre del hotel como título, más grande y en negrita
-.nameTitle {
+  @include title-italiana;
   margin-top: 0;
-  font-weight: 500; // Medium
-  font-size: clamp(48px, 8svh, 72px);
+  // Mobile: que "del Guayaibí" entre en un renglón (si no, "del" queda solo)
+  font-size: clamp(40px, 12.5vw, 64px);
   line-height: 0.95;
-  letter-spacing: -0.02em;
+  color: $butter;
+  text-shadow: 0 2px 24px rgba(#000, 0.2);
 
+  // Desktop: el nombre en una sola línea
   @include mq(lg) {
-    font-size: clamp(60px, min(8vw, 14svh), 132px);
+    font-size: clamp(56px, min(6.4vw, 12svh), 120px);
+    line-height: 1;
   }
 }
 
 .tagline {
   max-width: 28em;
-
-  @include mq(lg) {
-    margin-top: clamp(#{$space-4}, 3svh, #{$space-8});
-  }
-  font-family: $font-ui;
   font-size: 11px;
   line-height: 1.9;
   letter-spacing: 0.24em;
-  text-transform: uppercase;
-  color: rgba($butter, 0.95);
-  text-shadow: 0 1px 12px rgba(#000, 0.25);
 
   @include mq(lg) {
     font-size: 13px;
-    color: $color-body;
-    text-shadow: none;
   }
 }
 
-.rule {
-  display: block;
-  width: 72px;
-  height: 1px;
-  margin-block: clamp(#{$space-4}, 3svh, #{$space-6});
-  background-color: rgba($butter, 0.6);
-
-  @include mq(lg) {
-    background-color: rgba($color-heading, 0.45);
-  }
-}
-
+// Botón sutil: solo un borde fino claro, sin relleno; se insinúa al pasar
 .cta {
-  @include btn-base;
-  height: 48px;
-  padding-inline: $space-6;
-  gap: $space-6;
-  border: $border-width solid rgba($butter, 0.75);
-  border-radius: $radius-navbar;
-  background-color: rgba(#000, 0.1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  height: 40px;
+  margin-top: var(--stack-gap);
+  padding: 0 $space-5;
+  border: $border-width solid rgba($butter, 0.55);
+  border-radius: 3px;
+  background-color: transparent;
   color: $butter;
-  font-size: 11px;
-  letter-spacing: 0.16em;
+  font-family: $font-ui;
+  font-weight: $weight-regular;
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    background-color $transition-default,
+    border-color $transition-default,
+    color $transition-default;
 
+  // Flecha en diagonal (↗), como en el resto de los botones
   svg {
-    transition: transform $transition-default;
+    transform: rotate(-45deg);
+    transition: transform 300ms $ease-out;
   }
 
   @include hover {
-    background-color: rgba($butter, 0.15);
+    background-color: rgba($butter, 0.12);
     border-color: $butter;
 
-    svg { transform: translateX(3px); }
+    svg {
+      transform: rotate(-45deg) translateX(3px);
+    }
   }
 
-  @include mq(lg) {
-    border-color: rgba($color-heading, 0.45);
-    background-color: rgba($color-background, 0.1);
-    color: $color-heading;
+  &:focus-visible {
+    outline: $border-width solid $butter;
+    outline-offset: 3px;
+  }
 
-    @include hover {
-      background-color: rgba($color-background, 0.55);
-      border-color: $color-heading;
+  // Si baja a una sección de la página, la flecha apunta hacia abajo
+  &[data-scroll] svg {
+    transform: rotate(90deg);
+  }
+
+  @include hover {
+    &[data-scroll] svg {
+      transform: rotate(90deg) translateX(3px);
     }
   }
 }
@@ -288,13 +257,18 @@ $content-left-desktop: $navbar-inset + $space-10; // alinea con el logo de la na
 
 .line {
   display: block;
+
+  // Desktop: el nombre en una sola línea (inline-block: la máscara de la
+  // bienvenida necesita caja)
+  @include mq(lg) {
+    display: inline-block;
+  }
 }
 
-.kicker { @include enter(500ms); }
+.location { @include enter(500ms); }
 .line:nth-child(1) { @include enter(650ms); }
 .line:nth-child(2) { @include enter(800ms); }
 .tagline { @include enter(1000ms); }
-.rule { @include enter(1100ms); }
 .cta { @include enter(1200ms); }
 .scroll,
 .down { @include enter(1500ms); }
@@ -307,9 +281,8 @@ $content-left-desktop: $navbar-inset + $space-10; // alinea con el logo de la na
   animation: none;
 }
 
-:global(html[data-intro="play"]) .kicker,
+:global(html[data-intro="play"]) .location,
 :global(html[data-intro="play"]) .tagline,
-:global(html[data-intro="play"]) .rule,
 :global(html[data-intro="play"]) .cta,
 :global(html[data-intro="play"]) .scroll,
 :global(html[data-intro="play"]) .down {
@@ -392,138 +365,5 @@ $content-left-desktop: $navbar-inset + $space-10; // alinea con el logo de la na
 @keyframes intro-fade-out {
   to {
     opacity: 0;
-  }
-}
-
-// ─────────────────────────────────────────────
-// Home de prueba (.theme-v2): botón sólido claro sobre la foto
-// ─────────────────────────────────────────────
-:global(.theme-v2) .cta {
-  @include btn-v2($butter, $color-heading, $butter-hover);
-}
-
-// ─────────────────────────────────────────────
-// Layout "centered" (prueba en el home): la foto queda oscurecida con un
-// velo parejo y título, frase y botón van centrados encima, en claro.
-// ─────────────────────────────────────────────
-.centered {
-  // Mismo espacio título → frase que frase → botón
-  --stack-gap: clamp(#{$space-8}, 5svh, #{$space-12});
-
-  .overlay {
-    background: rgba(#000, 0.26);
-  }
-
-  .content {
-    align-items: center;
-    justify-content: center;
-    max-width: none;
-    margin-inline: auto;
-    padding:
-      calc(#{$navbar-height-mobile + $navbar-sticky-top-mobile} + #{$space-6})
-      $space-6
-      clamp(#{$space-20}, 13svh, #{$space-24});
-    text-align: center;
-
-    @include mq(lg) {
-      padding:
-        calc(#{$navbar-height + $navbar-sticky-top} + #{$space-6})
-        $space-12
-        clamp(#{$space-16}, 12svh, #{$space-32});
-    }
-  }
-
-  .heading,
-  .actions {
-    align-items: center;
-  }
-
-  .actions {
-    margin-top: var(--stack-gap);
-  }
-
-  .title {
-    color: $butter;
-    text-shadow: 0 2px 24px rgba(#000, 0.2);
-    // Mobile: que "del Guayaibí" entre en un renglón (si no, "del" queda solo)
-    font-size: clamp(40px, 12.5vw, 64px);
-
-    // Desktop: el nombre en una sola línea, como en la referencia
-    @include mq(lg) {
-      font-size: clamp(56px, min(6.4vw, 12svh), 120px);
-      line-height: 1;
-
-      .line {
-        display: inline-block; // inline-block: la máscara de la bienvenida necesita caja
-      }
-    }
-  }
-
-  .tagline {
-    margin-top: 0;
-    color: rgba($butter, 0.9);
-    text-shadow: none;
-  }
-
-  .rule {
-    display: none;
-  }
-
-  // Botón sutil: solo un borde fino claro, sin relleno; se insinúa al pasar
-  .cta {
-    margin-top: var(--stack-gap);
-    height: 40px;
-    padding-inline: $space-5;
-    border: $border-width solid rgba($butter, 0.55);
-    background-color: transparent;
-    color: $butter;
-    font-size: 12px;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-
-    @include hover {
-      background-color: rgba($butter, 0.12);
-      border-color: $butter;
-      color: $butter;
-    }
-
-    &:focus-visible {
-      outline: $border-width solid $butter;
-      outline-offset: 3px;
-    }
-  }
-}
-
-// ─────────────────────────────────────────────
-// Tono "light" (p. ej. eventos): foto oscura a la izquierda, así que los
-// textos van siempre en crema, sobre un velo
-// ─────────────────────────────────────────────
-.light {
-  // Mobile/tablet: título arriba, sobre el cielo claro → velo también arriba
-  .overlay {
-    background:
-      linear-gradient(180deg, rgba(#000, 0.45) 0%, rgba(#000, 0) 40%),
-      linear-gradient(0deg, rgba(#000, 0.55) 0%, rgba(#000, 0.3) 30%, rgba(#000, 0) 50%);
-  }
-
-  .kicker,
-  .title {
-    color: $butter;
-  }
-
-  @include mq(lg) {
-    .overlay {
-      background:
-        linear-gradient(90deg, rgba(#000, 0.5) 0%, rgba(#000, 0.2) 40%, rgba(#000, 0) 65%),
-        linear-gradient(0deg, rgba(#000, 0.3) 0%, rgba(#000, 0) 25%);
-    }
-
-    .tagline {
-      color: rgba($butter, 0.9);
-    }
-
-    .rule {
-      background-color: rgba($butter, 0.6);
-    }
   }
 }

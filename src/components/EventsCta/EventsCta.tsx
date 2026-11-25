@@ -7,8 +7,6 @@ import styles from "./EventsCta.module.scss";
 type EventsCtaProps = {
   t: Dictionary["eventos"]["cta"];
   id?: string;
-  /** Clase extra para el título (p. ej. Italiana) */
-  titleClassName?: string;
 };
 
 /**
@@ -16,13 +14,13 @@ type EventsCtaProps = {
  * que abre WhatsApp con un mensaje para reservar un evento. Los textos
  * llegan en cascada al entrar.
  */
-export default function EventsCta({ t, id = "reservar-evento", titleClassName }: EventsCtaProps) {
+export default function EventsCta({ t, id = "reservar-evento" }: EventsCtaProps) {
   return (
     <section id={id} className={styles.section} aria-labelledby={`${id}-title`}>
       <Reveal className={styles.inner} threshold={0.3}>
         <span className={styles.rule} aria-hidden="true" />
         <p className={styles.eyebrow}>{t.eyebrow}</p>
-        <h2 id={`${id}-title`} className={[styles.title, titleClassName].filter(Boolean).join(" ")}>
+        <h2 id={`${id}-title`} className={styles.title}>
           {t.title}
         </h2>
         <p className={styles.text}>{t.text}</p>

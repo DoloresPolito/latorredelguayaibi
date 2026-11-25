@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useRef, type ReactNode } from "react";
+import { useRef, type ReactNode } from "react";
+import { prefersReducedMotion, supportsScrollTimeline, useScrollFrame } from "@/lib/useScrollFrame";
 import styles from "./Parallax.module.scss";
 
 type ParallaxProps = {
@@ -23,40 +24,19 @@ type ParallaxProps = {
 export default function Parallax({ children, className, cssFallback = false }: ParallaxProps) {
   const ref = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const el = ref.current;
-    if (!el || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    if (cssFallback && CSS.supports("animation-timeline: view()")) return;
-
-    let frame = 0;
-    let active = false;
-
-    const update = () => {
-      frame = 0;
+  useScrollFrame(
+    ref,
+    (el) => {
       const rect = el.getBoundingClientRect();
       const half = window.innerHeight / 2;
       const progress = (rect.top + rect.height / 2 - half) / (half + rect.height / 2);
       el.style.setProperty("--parallax", Math.max(-1, Math.min(1, progress)).toFixed(4));
-    };
-    const request = () => {
-      if (active && !frame) frame = requestAnimationFrame(update);
-    };
-
-    const observer = new IntersectionObserver(([entry]) => {
-      active = entry.isIntersecting;
-      request();
-    });
-    observer.observe(el);
-    window.addEventListener("scroll", request, { passive: true });
-    window.addEventListener("resize", request);
-
-    return () => {
-      observer.disconnect();
-      window.removeEventListener("scroll", request);
-      window.removeEventListener("resize", request);
-      cancelAnimationFrame(frame);
-    };
-  }, [cssFallback]);
+    },
+    {
+      whileVisible: true,
+      skip: () => prefersReducedMotion() || (cssFallback && supportsScrollTimeline()),
+    },
+  );
 
   return (
     <div ref={ref} className={[styles.timeline, className].filter(Boolean).join(" ")}>

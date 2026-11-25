@@ -5,7 +5,7 @@ import EnvironmentDepth from "@/components/EnvironmentDepth/EnvironmentDepth";
 import EnvironmentColumns from "@/components/EnvironmentColumns/EnvironmentColumns";
 import QuietText from "@/components/QuietText/QuietText";
 import EventsCta from "@/components/EventsCta/EventsCta";
-import ThemeV2, { italianaTitleClass } from "@/components/ThemeV2/ThemeV2";
+import PageTransition from "@/components/PageTransition/PageTransition";
 import { getDictionary, getLocale } from "@/i18n/getDictionary";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -26,15 +26,15 @@ export default async function EntornoPage() {
   const e = t.entorno;
 
   return (
-    <ThemeV2>
+    <PageTransition>
       <Navbar lang={lang} t={t.nav} />
       <main id="top">
-        <EnvironmentDepth t={e.depth} images={e.images} titleClassName={italianaTitleClass} />
-        <QuietText t={e.quietText} textClassName={italianaTitleClass} compact />
-        <EnvironmentColumns t={e.columns} images={e.images} titleClassName={italianaTitleClass} />
-        <EventsCta id="consultar" t={e.cta} titleClassName={italianaTitleClass} />
+        <EnvironmentDepth t={e.depth} images={e.images} />
+        <QuietText t={e.quietText} compact />
+        <EnvironmentColumns t={e.columns} images={e.images} />
+        <EventsCta id="consultar" t={e.cta} />
       </main>
       <Footer lang={lang} t={t.footer} nav={t.nav} />
-    </ThemeV2>
+    </PageTransition>
   );
 }

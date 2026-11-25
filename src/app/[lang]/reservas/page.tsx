@@ -5,9 +5,11 @@ import { ArrowRight } from "lucide-react";
 import Navbar from "@/components/Navbar/Navbar";
 import ReservationForm from "@/components/ReservationForm/ReservationForm";
 import Reveal from "@/components/Reveal/Reveal";
-import ThemeV2, { italianaTitleClass } from "@/components/ThemeV2/ThemeV2";
+import PageTransition from "@/components/PageTransition/PageTransition";
 import Footer from "@/components/Footer/Footer";
 import { SITE, whatsappUrl } from "@/config/site";
+import { FORM_ANCHOR } from "@/config/navigation";
+import { ROOMS } from "@/config/rooms";
 import { getDictionary, getLocale, type Dictionary } from "@/i18n/getDictionary";
 import { emphasis } from "@/lib/emphasis";
 import styles from "./page.module.scss";
@@ -30,12 +32,12 @@ export default async function ReservasPage() {
   const r = t.reservas;
 
   return (
-    <ThemeV2>
+    <PageTransition>
       <Navbar lang={lang} t={t.nav} />
       <main>
         <section className={styles.essentials} data-nav-theme="dark" aria-labelledby="esencial-title">
           <p className={styles.kicker}>{r.eyebrow}</p>
-          <h2 id="esencial-title" className={`${styles.essentialsTitle} ${italianaTitleClass}`}>
+          <h2 id="esencial-title" className={styles.essentialsTitle}>
             {emphasis(r.benefitsTitle)}
           </h2>
 
@@ -45,7 +47,7 @@ export default async function ReservasPage() {
                 <span className={styles.benefitNumber} aria-hidden="true">
                   {String(i + 1).padStart(2, "0")}
                 </span>
-                <h3 className={`${styles.benefitTitle} ${italianaTitleClass}`}>{r.benefits[key].title}</h3>
+                <h3 className={styles.benefitTitle}>{r.benefits[key].title}</h3>
                 <p className={styles.benefitText}>{r.benefits[key].text}</p>
               </li>
             ))}
@@ -53,7 +55,7 @@ export default async function ReservasPage() {
 
           <Reveal className={styles.contact} threshold={0.3}>
             <div>
-              <h2 className={`${styles.contactTitle} ${italianaTitleClass}`}>{r.contactTitle}</h2>
+              <h2 className={styles.contactTitle}>{r.contactTitle}</h2>
               <p className={styles.contactText}>{r.contactText}</p>
             </div>
             <div className={styles.contactLinks}>
@@ -82,24 +84,28 @@ export default async function ReservasPage() {
               />
             </div>
             <div className={styles.mediaText}>
-              <h1 className={`${styles.title} ${italianaTitleClass}`}>
+              <h1 className={styles.title}>
                 <span className={styles.line}>{r.titleLine1}</span>{" "}
                 <span className={styles.line}>{emphasis(r.titleLine2)}</span>
               </h1>
             </div>
           </div>
 
-          <section className={styles.formCol} aria-label={r.formTitle}>
-            <p className={`${styles.intro} ${italianaTitleClass}`}>{emphasis(r.intro)}</p>
+          <section id={FORM_ANCHOR} className={styles.formCol} aria-label={r.formTitle}>
+            <p className={styles.intro}>{emphasis(r.intro)}</p>
 
             {/* Suspense: el formulario usa la fecha actual, que se calcula en cada visita */}
             <Suspense fallback={<div className={styles.formFallback} aria-hidden="true" />}>
-              <ReservationForm lang={lang} t={t.form} />
+              <ReservationForm
+                lang={lang}
+                t={t.form}
+                roomNames={Object.fromEntries(ROOMS.map(({ key }) => [key, t.habitaciones.rooms[key].name]))}
+              />
             </Suspense>
           </section>
         </div>
       </main>
       <Footer lang={lang} t={t.footer} nav={t.nav} />
-    </ThemeV2>
+    </PageTransition>
   );
 }

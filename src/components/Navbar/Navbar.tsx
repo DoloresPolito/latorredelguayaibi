@@ -13,6 +13,9 @@ import {
 } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries/es";
 import { CTA_HREF, NAV_LINKS } from "@/config/navigation";
+import { useScrollFrame } from "@/lib/useScrollFrame";
+
+type NavLink = (typeof NAV_LINKS)[number];
 import { SITE, phoneUrl, socialLinks, whatsappUrl } from "@/config/site";
 import styles from "./Navbar.module.scss";
 
@@ -20,12 +23,6 @@ import styles from "./Navbar.module.scss";
 type NavbarProps = {
   lang: Locale;
   t: Dictionary["nav"];
-  /**
-   * "top": fija arriba desde el principio, flotando sobre el contenido (default).
-   * "bottom": va en el DOM justo después del hero. Arranca abajo, sobre el borde
-   *           inferior del hero; al scrollear sube con él y queda fija arriba.
-   */
-  variant?: "top" | "bottom";
 };
 
 /**
@@ -41,85 +38,64 @@ function visibleRect(section: Element) {
   return { top: Math.max(r.top, c.top), bottom: Math.min(r.bottom, c.bottom) };
 }
 
-export default function Navbar({ lang, t, variant = "top" }: NavbarProps) {
+export default function Navbar({ lang, t }: NavbarProps) {
   const ref = useRef<HTMLElement>(null);
   const toggleRef = useRef<HTMLButtonElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
   const wasOpen = useRef(false);
-  const [isStuck, setIsStuck] = useState(false);
   const [isOnDark, setIsOnDark] = useState(false);
   const [isOnSplit, setIsOnSplit] = useState(false);
   const [isOnGlass, setIsOnGlass] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
 
-  // Detecta cuando la barra llegó arriba y quedó fija (sticky)
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
+  // En cada scroll: cuánto se achica el logo y sobre qué fondo está la barra
+  // (oscuro, foto, sección partida)
+  useScrollFrame(ref, (el) => {
+    // Achique del logo: 0 arriba de todo → 1 a los 240px de
+    // scroll, con una curva suave. Lo usa el CSS como --shrink.
+    const t = Math.min(1, window.scrollY / 240);
+    el.style.setProperty("--shrink", (t * t * (3 - 2 * t)).toFixed(4));
 
-    let frame = 0;
-    const update = () => {
-      frame = 0;
-      const top = parseFloat(getComputedStyle(el).top) || 0;
-      setIsStuck(el.getBoundingClientRect().top <= top + 1);
-      // Achique del logo (home nuevo): 0 arriba de todo → 1 a los 240px de
-      // scroll, con una curva suave. Lo usa el CSS como --shrink.
-      const t = Math.min(1, window.scrollY / 240);
-      el.style.setProperty("--shrink", (t * t * (3 - 2 * t)).toFixed(4));
+    // ¿La barra está sobre una sección oscura? (marcadas con data-nav-theme="dark")
+    const rect = el.getBoundingClientRect();
+    const y = rect.top + rect.height / 2;
+    setIsOnDark(
+      Array.from(document.querySelectorAll('[data-nav-theme="dark"]')).some((section) => {
+        const r = visibleRect(section);
+        return r.top <= y && r.bottom >= y;
+      }),
+    );
+    // ¿Sobre una foto oscurecida (data-nav-glass)? Pastilla de vidrio claro
+    // en vez de la verde oscura
+    setIsOnGlass(
+      Array.from(document.querySelectorAll("[data-nav-glass]")).some((section) => {
+        const r = visibleRect(section);
+        return r.top <= y && r.bottom >= y;
+      }),
+    );
 
-      // ¿La barra está sobre una sección oscura? (marcadas con data-nav-theme="dark")
-      const rect = el.getBoundingClientRect();
-      const y = rect.top + rect.height / 2;
-      setIsOnDark(
-        Array.from(document.querySelectorAll('[data-nav-theme="dark"]')).some((section) => {
-          const r = visibleRect(section);
-          return r.top <= y && r.bottom >= y;
-        }),
-      );
-      // ¿Sobre una foto oscurecida (data-nav-glass)? Pastilla de vidrio claro
-      // en vez de la verde oscura
-      setIsOnGlass(
-        Array.from(document.querySelectorAll("[data-nav-glass]")).some((section) => {
-          const r = visibleRect(section);
-          return r.top <= y && r.bottom >= y;
-        }),
-      );
-
-      // ¿Está sobre una sección partida en oscuro | claro? (data-nav-split =
-      // dónde cae el corte, de 0 a 1 del ancho; solo desde lg, en mobile el
-      // corte es horizontal). La pastilla pasa a vidrio transparente y cada
-      // link / el isotipo toma el color según el lado del corte en que queda.
-      const split = Array.from(document.querySelectorAll<HTMLElement>("[data-nav-split]")).find(
-        (section) => {
-          const r = visibleRect(section);
-          return r.top <= y && r.bottom >= y;
-        },
-      );
-      let splitX = -1;
-      if (split && window.matchMedia("(min-width: 1024px)").matches) {
-        const r = split.getBoundingClientRect();
-        splitX = r.left + r.width * Number(split.dataset.navSplit);
-      }
-      setIsOnSplit(splitX >= 0);
-      el.querySelectorAll<HTMLElement>("[data-split-target]").forEach((node) => {
-        const b = node.getBoundingClientRect();
-        node.toggleAttribute("data-over-dark", splitX >= 0 && b.left + b.width / 2 < splitX);
-      });
-    };
-    const onScroll = () => {
-      if (!frame) frame = requestAnimationFrame(update);
-    };
-
-    update();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
-    return () => {
-      cancelAnimationFrame(frame);
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
-    };
-  }, []);
+    // ¿Está sobre una sección partida en oscuro | claro? (data-nav-split =
+    // dónde cae el corte, de 0 a 1 del ancho; solo desde lg, en mobile el
+    // corte es horizontal). La pastilla pasa a vidrio transparente y cada
+    // link / el isotipo toma el color según el lado del corte en que queda.
+    const split = Array.from(document.querySelectorAll<HTMLElement>("[data-nav-split]")).find(
+      (section) => {
+        const r = visibleRect(section);
+        return r.top <= y && r.bottom >= y;
+      },
+    );
+    let splitX = -1;
+    if (split && window.matchMedia("(min-width: 1024px)").matches) {
+      const r = split.getBoundingClientRect();
+      splitX = r.left + r.width * Number(split.dataset.navSplit);
+    }
+    setIsOnSplit(splitX >= 0);
+    el.querySelectorAll<HTMLElement>("[data-split-target]").forEach((node) => {
+      const b = node.getBoundingClientRect();
+      node.toggleAttribute("data-over-dark", splitX >= 0 && b.left + b.width / 2 < splitX);
+    });
+  });
 
   // Con el menú abierto se frena el scroll. Se bloquea en <html> y no en
   // <body>: si el body pasa a tener su propio scroll, la barra sticky se va.
@@ -173,22 +149,24 @@ export default function Navbar({ lang, t, variant = "top" }: NavbarProps) {
   const href = (path: string) => localizePath(lang, path);
   // Sección actual (también sus subpáginas), para marcarla en la barra.
   // El home ("/") solo cuenta como actual en sí mismo, no en sus subpáginas.
-  const isCurrent = (path: string) =>
-    pathname === href(path) || (path !== "/" && pathname.startsWith(`${href(path)}/`));
+  // Los links con markCurrent: false (Contacto) nunca se marcan.
+  const isCurrent = (link: NavLink) =>
+    !("markCurrent" in link && !link.markCurrent) &&
+    (pathname === href(link.href) || (link.href !== "/" && pathname.startsWith(`${href(link.href)}/`)));
 
   return (
     <header
       ref={ref}
-      className={[styles.header, styles[variant], isStuck && styles.stuck, isOnDark && styles.onDark, isOnSplit && styles.onSplit, isOnGlass && styles.onGlass]
+      className={[styles.header, isOnDark && styles.onDark, isOnSplit && styles.onSplit, isOnGlass && styles.onGlass]
         .filter(Boolean)
         .join(" ")}
+      // Queda quieta durante la transición entre páginas (_page-transitions.scss)
+      style={{ viewTransitionName: "site-header" }}
     >
       <nav className={styles.bar} aria-label={t.ariaLabel}>
         <Link href={href("/")} className={styles.brand} aria-label={t.home} onClick={close} data-split-target>
-          <Logo nameClassName={styles.logoName} markClassName={styles.logoMark} />
+          <Logo className={styles.logoMark} />
         </Link>
-
-        <span className={styles.separator} aria-hidden="true" />
 
         <ul className={styles.links}>
           {NAV_LINKS.map((link) => (
@@ -196,7 +174,7 @@ export default function Navbar({ lang, t, variant = "top" }: NavbarProps) {
               <Link
                 href={href(link.href)}
                 className={styles.link}
-                aria-current={isCurrent(link.href) ? "page" : undefined}
+                aria-current={isCurrent(link) ? "page" : undefined}
                 data-split-target
               >
                 {t.links[link.key]}
@@ -262,7 +240,7 @@ export default function Navbar({ lang, t, variant = "top" }: NavbarProps) {
               <Link
                 href={href(link.href)}
                 onClick={close}
-                aria-current={isCurrent(link.href) ? "page" : undefined}
+                aria-current={isCurrent(link) ? "page" : undefined}
               >
                 {t.links[link.key]}
               </Link>

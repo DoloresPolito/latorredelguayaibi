@@ -1,26 +1,9 @@
 import type { Metadata } from "next";
-import { EB_Garamond, Playfair_Display } from "next/font/google";
 import SmoothScroll from "@/components/SmoothScroll/SmoothScroll";
 import { locales } from "@/i18n/config";
 import { getDictionary, getLocale } from "@/i18n/getDictionary";
+import { interTight, italiana } from "@/styles/fonts";
 import "@/styles/globals.scss";
-
-// Tipografía de títulos. (Antes: Instrument Serif, alternativa gratuita a
-// Canela Light.) Si se consigue la licencia de Canela, reemplazar por
-// next/font/local apuntando a los archivos .woff2.
-const heading = Playfair_Display({
-  variable: "--font-heading",
-  subsets: ["latin"],
-  weight: ["400", "500"],
-  style: ["normal", "italic"],
-});
-
-const editorial = EB_Garamond({
-  variable: "--font-editorial",
-  subsets: ["latin"],
-  weight: ["400", "500"],
-  style: ["normal", "italic"],
-});
 
 // Genera /es y /en de forma estática
 export function generateStaticParams() {
@@ -50,7 +33,8 @@ export default async function RootLayout({ children }: LayoutProps<"/[lang]">) {
   return (
     <html
       lang={lang}
-      className={`${heading.variable} ${editorial.variable}`}
+      // Tipografías de la web como variables CSS (--font-sans, --font-italiana)
+      className={`${interTight.variable} ${italiana.variable}`}
       // Que Next saque el scroll suave al cambiar de página (si no, el salto
       // arriba de todo se anima y termina en cualquier lado)
       data-scroll-behavior="smooth"

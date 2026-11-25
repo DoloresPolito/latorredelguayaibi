@@ -10,11 +10,7 @@ import styles from "./EventsShowcase.module.scss";
 type EventsShowcaseProps = {
   lang: Locale;
   t: Dictionary["eventsShowcase"];
-  /** Alt de la foto (la picada, compartida con la versión anterior del bloque) */
-  images: Pick<Dictionary["eventsTeaser"], "imageAlt1">;
   id?: string;
-  /** Clase extra para los títulos (p. ej. Italiana) */
-  titleClassName?: string;
 };
 
 /**
@@ -26,16 +22,14 @@ type EventsShowcaseProps = {
 export default function EventsShowcase({
   lang,
   t,
-  images,
   id = "eventos-home",
-  titleClassName,
 }: EventsShowcaseProps) {
   return (
     <section id={id} className={styles.section} aria-labelledby={`${id}-title`}>
       <Reveal className={styles.inner} threshold={0.15}>
         <div className={styles.copy}>
           <p className={styles.eyebrow}>{t.eyebrow}</p>
-          <h2 id={`${id}-title`} className={[styles.title, titleClassName].filter(Boolean).join(" ")}>
+          <h2 id={`${id}-title`} className={styles.title}>
             {t.title}
           </h2>
           <p className={styles.text}>{t.text}</p>
@@ -49,7 +43,7 @@ export default function EventsShowcase({
           <div className={styles.layer}>
             <Image
               src="/images/eventoshome1.png"
-              alt={images.imageAlt1}
+              alt={t.imageAlt}
               fill
               sizes="(min-width: 1024px) 50vw, 100vw"
               className={styles.image}

@@ -153,7 +153,7 @@ $media-width: 42%; // ancho de la foto fija (desktop); igual que data-nav-split
   gap: $space-3;
 
   a {
-    @include btn-v2($butter, $forest, $butter-hover);
+    @include btn-solid($butter, $forest, $butter-hover);
 
     &:focus-visible {
       outline: $border-width solid $butter;
@@ -245,6 +245,13 @@ $media-width: 42%; // ancho de la foto fija (desktop); igual que data-nav-split
 
 .formCol {
   padding: $space-12 $space-5 $space-16;
+  // Al llegar con #consulta (desde una habitación), que la barra no lo tape.
+  // En desktop va al lado de la foto y arranca arriba de la pantalla.
+  scroll-margin-top: 72px;
+
+  @include mq(lg) {
+    scroll-margin-top: 0;
+  }
 
   @include mq(md) {
     padding: $space-16 $space-12 $space-20;
@@ -285,3 +292,13 @@ $media-width: 42%; // ancho de la foto fija (desktop); igual que data-nav-split
 // Animaciones de entrada (mismo lenguaje que el resto del sitio)
 // ─────────────────────────────────────────────
 @include enter-keyframes;
+
+// Títulos en Italiana, la tipografía de títulos de la web. Va al final para
+// ganarle a la tipografía, el peso y el espaciado definidos arriba.
+.essentialsTitle,
+.benefitTitle,
+.contactTitle,
+.title,
+.intro {
+  @include title-italiana;
+}

@@ -49,7 +49,7 @@
 
   // Mes en la tipografía de los títulos del sitio
   :global(.rdp-caption_label) {
-    @include display-lay;
+    @include display-sans;
     font-size: 24px;
     line-height: 1;
     color: $color-heading;

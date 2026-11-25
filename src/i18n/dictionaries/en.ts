@@ -3,6 +3,7 @@ import type { Dictionary } from "./es";
 export const en: Dictionary = {
   meta: {
     title: "La Torre del Guayaibí",
+    notFoundTitle: "Page not found — La Torre del Guayaibí",
     description: "A boutique hotel in the heart of the Corrientes countryside, surrounded by nature.",
     reservasTitle: "Bookings — La Torre del Guayaibí",
     reservasDescription:
@@ -27,6 +28,7 @@ export const en: Dictionary = {
       eventos: "Events",
       entorno: "Surroundings",
       historia: "Our story",
+      contacto: "Contact",
     },
     cta: "Check availability",
     language: "Language",
@@ -48,32 +50,13 @@ export const en: Dictionary = {
   },
 
   hero: {
-    kicker: "La Torre del Guayaibí",
-    titleLine1: "A world",
-    titleLine2: "apart.",
+    location: "Mercedes, Corrientes · Argentina",
     tagline: "A singular retreat in the heart of the Corrientes countryside.",
     cta: "Discover the tower",
     scroll: "Scroll",
     next: "Go to the next section",
     imageAlt:
       "La Torre del Guayaibí at sunset, with the stone house and eucalyptus trees reflected in the pool",
-  },
-
-  intro: {
-    titleLine1: "A place with",
-    titleLine2: "a story of its own.",
-    text: "In the heart of Corrientes, La Torre del Guayaibí brings together nature, tradition and a unique family history you can feel in every corner.",
-    cta: "Discover the tower",
-    images: {
-      libros: "Library with wooden shelves filled with books",
-      piedra: "Detail of the tower's stone walls against the sky",
-      hotel: "Veranda of the stone house at sunset, facing the grounds",
-    },
-  },
-
-  manifesto: {
-    text: "There are places that invite you to slow down, to *savor* the little things, and to discover that sometimes all we need is to stay a little longer.",
-    imageAlt: "Golden sunset over the pool, with sun loungers and eucalyptus trees silhouetted against the sky",
   },
 
   welcomePanel: {
@@ -94,9 +77,7 @@ export const en: Dictionary = {
     },
     list: {
       title: "Rooms",
-      countLabel: "Suites",
       cardCta: "Enquire",
-      roomCta: "Enquire about this suite",
       beds: {
         twoDoubles: "2 double beds",
         threeSingles: "3 single beds",
@@ -105,22 +86,16 @@ export const en: Dictionary = {
       extraBed: "Optional extra bed",
     },
     rooms: {
-      piedra: { name: "Stone Suite", imageAlt: "Stone Suite", description: "" },
-      espejos: { name: "Mirror Suite", imageAlt: "Mirror Suite", description: "" },
-      triple: { name: "Triple Suite", imageAlt: "Triple Suite", description: "" },
-      azul: { name: "Petrol Blue Suite", imageAlt: "Petrol Blue Suite", description: "" },
-      verde: { name: "Green Suite", imageAlt: "Green Suite", description: "" },
-    },
-    closing: {
-      title: "Breakfast, included in every suite.",
-      text: "Lunch and dinner with advance notice. Tell us when you'd like to come and we'll help you plan your stay.",
-      cta: "Check availability",
+      piedra: { name: "Stone Suite", imageAlt: "Stone Suite" },
+      espejos: { name: "Mirror Suite", imageAlt: "Mirror Suite" },
+      triple: { name: "Triple Suite", imageAlt: "Triple Suite" },
+      azul: { name: "Petrol Blue Suite", imageAlt: "Petrol Blue Suite" },
+      verde: { name: "Green Suite", imageAlt: "Green Suite" },
     },
   },
 
   eventos: {
     hero: {
-      kicker: "Events at La Torre",
       titleLine1: "Gatherings",
       titleLine2: "under open skies.",
       tagline: "Celebrations, meetings and tailor-made experiences in the heart of the Corrientes countryside.",
@@ -205,16 +180,6 @@ export const en: Dictionary = {
     backToTop: "Back to top",
   },
 
-  roomsTeaser: {
-    title: "Spaces to stay.",
-    text: "Each room has a personality of its own. Spaces where the warmth of a country house meets the calm of nature.",
-    cta: "Explore the rooms",
-    quoteLines: ["Rooms", "where", "true luxury", "is tranquility."],
-    quoteCta: "More about the rooms",
-    imageAlt:
-      "Bedroom with canopy beds and white curtains, stone walls and a tall window onto the grounds",
-  },
-
   roomsShowcase: {
     eyebrow: "Rooms",
     title: "Where true luxury is tranquility.",
@@ -244,28 +209,19 @@ export const en: Dictionary = {
     ],
   },
 
-  expandImage: {
-    title: "A place with a story of its own",
-    cta: "Discover the tower",
-    text: "In the heart of Corrientes, La Torre del Guayaibí brings together nature, tradition and a unique family history you can feel in every corner.",
-    imageAlt:
-      "La Torre's stone veranda at sunset, with tables, potted plants and a large tree on the grounds",
-  },
-
-  eventsTeaser: {
-    titleLine1: "Events",
-    titleLine2: "at La Torre.",
-    text: "Intimate celebrations, gatherings and experiences that find a unique setting at La Torre.",
-    cta: "Discover events",
-    imageAlt1: "Banquet table with lit candelabras, flowers, fruit, cheeses and cured meats",
-    imageAlt2: "Pier over the lagoon at sunset with white linen curtains blowing in the wind",
-  },
-
   eventsShowcase: {
     eyebrow: "Events",
     title: "Gatherings under open skies.",
     text: "Intimate celebrations, work meetings and gatherings that find a unique setting at La Torre, far from the everyday pace.",
     cta: "Discover events",
+    imageAlt: "Banquet table with lit candelabras, flowers, fruit, cheeses and cured meats",
+  },
+
+  environmentInvite: {
+    eyebrow: "Surroundings",
+    title: "Where the countryside becomes horizon.",
+    text: "Vast skies, still water and the stone house among eucalyptus trees. Explore in pictures the landscape around La Torre.",
+    cta: "See the surroundings",
   },
 
   reviews: {
@@ -414,6 +370,8 @@ export const en: Dictionary = {
     message: "Anything you'd like to tell us?",
     optional: "(optional)",
     messagePlaceholder: "An anniversary, a special diet, your arrival time…",
+    selectedRoom: "Enquiring about",
+    removeRoom: "Remove the selected room",
     submit: "Check availability",
     note: "Your enquiry is sent via WhatsApp directly to our team.",
     sent: "Thank you! WhatsApp has opened with your enquiry ready to send. If it didn't open,",
@@ -427,6 +385,7 @@ export const en: Dictionary = {
     },
     whatsapp: {
       intro: "Hello! I'd like to check availability at La Torre del Guayaibí.",
+      room: "Room",
       checkIn: "Check-in",
       checkOut: "Check-out",
       night: "night",
@@ -439,5 +398,13 @@ export const en: Dictionary = {
       phone: "Phone",
       comments: "Comments",
     },
+  },
+
+  notFound: {
+    eyebrow: "Error 404",
+    title: "This path doesn't lead anywhere.",
+    text: "The page you're looking for doesn't exist or has moved. Head back home or keep exploring La Torre.",
+    home: "Back to home",
+    rooms: "See the rooms",
   },
 };

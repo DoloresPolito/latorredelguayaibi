@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useRef, type CSSProperties, type ReactNode } from "react";
+import { useRef, type CSSProperties, type ReactNode } from "react";
+import { prefersReducedMotion, supportsScrollTimeline, useScrollFrame } from "@/lib/useScrollFrame";
 import styles from "./Curtain.module.scss";
 
 type CurtainProps = {
@@ -31,44 +32,23 @@ export default function Curtain({ children, lag = 0.5, shade = 0.4 }: CurtainPro
   const innerRef = useRef<HTMLDivElement>(null);
   const veilRef = useRef<HTMLSpanElement>(null);
 
-  useEffect(() => {
-    const el = ref.current;
-    const inner = innerRef.current;
-    const veil = veilRef.current;
-    if (!el || !inner || !veil) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    if (CSS.supports("animation-timeline: view()")) return; // lo hace el CSS
-
-    let frame = 0;
-    let active = false;
-
-    const update = () => {
-      frame = 0;
+  useScrollFrame(
+    ref,
+    (el) => {
+      const inner = innerRef.current;
+      const veil = veilRef.current;
+      if (!inner || !veil) return;
       const rect = el.getBoundingClientRect();
       // 0 con el borde de arriba en el tope de la pantalla → 1 cuando ya salió entera
       const p = Math.max(0, Math.min(1, -rect.top / Math.max(1, rect.height)));
       inner.style.transform = p > 0 ? `translate3d(0, ${(p * rect.height * lag).toFixed(1)}px, 0)` : "";
       veil.style.opacity = (p * shade).toFixed(3);
-    };
-    const request = () => {
-      if (active && !frame) frame = requestAnimationFrame(update);
-    };
-
-    const observer = new IntersectionObserver(([entry]) => {
-      active = entry.isIntersecting;
-      request();
-    });
-    observer.observe(el);
-    window.addEventListener("scroll", request, { passive: true });
-    window.addEventListener("resize", request);
-
-    return () => {
-      observer.disconnect();
-      window.removeEventListener("scroll", request);
-      window.removeEventListener("resize", request);
-      cancelAnimationFrame(frame);
-    };
-  }, [lag, shade]);
+    },
+    {
+      whileVisible: true,
+      skip: () => prefersReducedMotion() || supportsScrollTimeline(), // con animation-timeline lo hace el CSS
+    },
+  );
 
   return (
     <div

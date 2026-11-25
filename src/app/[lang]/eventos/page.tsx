@@ -5,7 +5,7 @@ import EventServices from "@/components/EventServices/EventServices";
 import EventsCta from "@/components/EventsCta/EventsCta";
 import Navbar from "@/components/Navbar/Navbar";
 import Footer from "@/components/Footer/Footer";
-import ThemeV2, { italianaTitleClass } from "@/components/ThemeV2/ThemeV2";
+import PageTransition from "@/components/PageTransition/PageTransition";
 import { whatsappUrl } from "@/config/site";
 import { getDictionary, getLocale } from "@/i18n/getDictionary";
 
@@ -24,25 +24,21 @@ export default async function EventosPage() {
   const hero = t.eventos.hero;
 
   return (
-    <ThemeV2>
+    <PageTransition>
       <Navbar lang={lang} t={t.nav} />
       <main id="top">
         <Hero
-          lang={lang}
           t={hero}
           image={{ src: "/images/eventos/noche.png", width: 1536, height: 1024, alt: hero.imageAlt }}
-          nextSectionId="eventos-texto"
-          variant="name"
           name={{ line1: hero.titleLine1, line2: hero.titleLine2 }}
-          titleClassName={italianaTitleClass}
+          nextSectionId="eventos-texto"
           ctaHref={whatsappUrl(hero.whatsapp)}
-          layout="centered"
         />
-        <QuietText id="eventos-texto" t={t.eventos.quietText} textClassName={italianaTitleClass} compact />
-        <EventServices t={t.eventos.services} titleClassName={italianaTitleClass} />
-        <EventsCta t={t.eventos.cta} titleClassName={italianaTitleClass} />
+        <QuietText id="eventos-texto" t={t.eventos.quietText} compact />
+        <EventServices t={t.eventos.services} />
+        <EventsCta t={t.eventos.cta} />
       </main>
       <Footer lang={lang} t={t.footer} nav={t.nav} />
-    </ThemeV2>
+    </PageTransition>
   );
 }

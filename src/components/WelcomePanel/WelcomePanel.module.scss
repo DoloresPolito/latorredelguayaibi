@@ -74,7 +74,7 @@ $panel-fg: $forest;
 }
 
 .cta {
-  @include btn-v2;
+  @include btn-solid;
 }
 
 
@@ -125,21 +125,10 @@ $panel-fg: $forest;
 .title,
 .aside,
 .cta {
-  opacity: 0;
-  translate: 0 28px;
-  transition:
-    opacity 1200ms ease,
-    translate 1400ms $ease-out;
+  @include reveal-rise(28px);
 
   [data-visible="true"] & {
-    opacity: 1;
-    translate: none;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    opacity: 1;
-    translate: none;
-    transition: none;
+    @include reveal-shown;
   }
 }
 
@@ -147,3 +136,8 @@ $panel-fg: $forest;
 .aside { transition-delay: 550ms; }
 .cta { transition-delay: 800ms; }
 
+// Títulos en Italiana, la tipografía de títulos de la web. Va al final para
+// ganarle a la tipografía, el peso y el espaciado definidos arriba.
+.title {
+  @include title-italiana;
+}

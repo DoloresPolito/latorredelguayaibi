@@ -4,6 +4,7 @@
 export const es = {
   meta: {
     title: "La Torre del Guayaibí",
+    notFoundTitle: "Página no encontrada — La Torre del Guayaibí",
     description: "Hotel boutique en el corazón del campo correntino, rodeado de naturaleza.",
     reservasTitle: "Reservas — La Torre del Guayaibí",
     reservasDescription:
@@ -28,6 +29,7 @@ export const es = {
       eventos: "Eventos",
       entorno: "Entorno",
       historia: "Nuestra historia",
+      contacto: "Contacto",
     },
     cta: "Consultar disponibilidad",
     language: "Idioma",
@@ -50,34 +52,14 @@ export const es = {
   },
 
   hero: {
-    kicker: "La Torre del Guayaibí",
-    titleLine1: "Un mundo",
-    titleLine2: "aparte.",
+    // Ubicación, chica arriba del nombre en el hero del home
+    location: "Mercedes, Corrientes",
     tagline: "Un refugio singular en el corazón del campo correntino.",
     cta: "Descubrir la torre",
     scroll: "Scroll",
     next: "Ir a la siguiente sección",
     imageAlt:
       "La Torre del Guayaibí al atardecer, con la casa de piedra y los eucaliptos reflejados en la pileta",
-  },
-
-  intro: {
-    titleLine1: "Un lugar con",
-    titleLine2: "historia propia.",
-    text: "En el corazón de Corrientes, La Torre del Guayaibí combina naturaleza, tradición y una historia familiar única que se respira en cada rincón.",
-    cta: "Conocer la torre",
-    images: {
-      libros: "Biblioteca con estanterías de madera repletas de libros",
-      piedra: "Detalle de los muros de piedra de la torre contra el cielo",
-      hotel: "Galería de la casa de piedra al atardecer, frente al parque",
-    },
-  },
-
-  // Sección oscura con el texto que se "enciende" al scrollear.
-  // Entre *asteriscos*: palabras en itálica.
-  manifesto: {
-    text: "Hay lugares que invitan a bajar el ritmo, a *disfrutar* de las pequeñas cosas y a descubrir que, a veces, lo único que necesitamos es quedarnos un poco más.",
-    imageAlt: "Atardecer dorado sobre la pileta, con reposeras y eucaliptos recortados contra el cielo",
   },
 
   // Home "telón": panel de color que sube sobre el hero y foto a todo el ancho
@@ -99,9 +81,7 @@ export const es = {
     },
     list: {
       title: "Habitaciones",
-      countLabel: "Suites",
       cardCta: "Consultar",
-      roomCta: "Consultar esta suite",
       beds: {
         twoDoubles: "2 camas dobles",
         threeSingles: "3 camas simples",
@@ -109,26 +89,17 @@ export const es = {
       guests: "Hasta {n} huéspedes",
       extraBed: "Cama extra opcional",
     },
-    // description: una frase sobre cada suite (vacía = no se muestra).
-    // TODO: completar con lo que hace especial a cada una.
     rooms: {
-      piedra: { name: "Suite de piedra", imageAlt: "Suite de piedra", description: "" },
-      espejos: { name: "Suite de los espejos", imageAlt: "Suite de los espejos", description: "" },
-      triple: { name: "Suite triple", imageAlt: "Suite triple", description: "" },
-      azul: { name: "Suite azul petróleo", imageAlt: "Suite azul petróleo", description: "" },
-      verde: { name: "Suite verde", imageAlt: "Suite verde", description: "" },
-    },
-    // Cierre de la página, antes del footer
-    closing: {
-      title: "El desayuno, incluido en todas las suites.",
-      text: "Almuerzos y cenas, con aviso previo. Contanos cuándo querés venir y te ayudamos a organizar tu estadía.",
-      cta: "Consultar disponibilidad",
+      piedra: { name: "Suite de piedra", imageAlt: "Suite de piedra" },
+      espejos: { name: "Suite de los espejos", imageAlt: "Suite de los espejos" },
+      triple: { name: "Suite triple", imageAlt: "Suite triple" },
+      azul: { name: "Suite azul petróleo", imageAlt: "Suite azul petróleo" },
+      verde: { name: "Suite verde", imageAlt: "Suite verde" },
     },
   },
 
   eventos: {
     hero: {
-      kicker: "Eventos en La Torre",
       titleLine1: "Encuentros",
       titleLine2: "a cielo abierto.",
       tagline: "Celebraciones, reuniones y experiencias a medida en el corazón del campo correntino.",
@@ -215,17 +186,6 @@ export const es = {
     backToTop: "Volver arriba",
   },
 
-  roomsTeaser: {
-    title: "Espacios para quedarse.",
-    text: "Cada habitación tiene su propia personalidad. Espacios donde la calidez de una casa de campo se encuentra con la tranquilidad de la naturaleza.",
-    cta: "Explorar habitaciones",
-    // Home nuevo: una frase centrada, sin párrafo (una línea por renglón)
-    quoteLines: ["Habitaciones", "donde", "el verdadero lujo", "es la tranquilidad."],
-    quoteCta: "Ver más sobre las habitaciones",
-    imageAlt:
-      "Habitación con camas con dosel y cortinas blancas, paredes de piedra y un ventanal hacia el parque",
-  },
-
   // Home: resumen de habitaciones (RoomsShowcase)
   roomsShowcase: {
     eyebrow: "Habitaciones",
@@ -258,30 +218,21 @@ export const es = {
     ],
   },
 
-  expandImage: {
-    title: "Un lugar con historia propia",
-    cta: "Conocer la torre",
-    text: "En el corazón de Corrientes, La Torre del Guayaibí combina naturaleza, tradición y una historia familiar única que se respira en cada rincón.",
-    imageAlt:
-      "Galería de piedra de La Torre al atardecer, con mesas, macetas y un gran árbol sobre el parque",
-  },
-
-  eventsTeaser: {
-    titleLine1: "Eventos",
-    titleLine2: "en La Torre.",
-    text: "Celebraciones íntimas, encuentros y experiencias que encuentran en La Torre un escenario único.",
-    cta: "Descubrir eventos",
-    imageAlt1: "Mesa de banquete con candelabros encendidos, flores, frutas, quesos y fiambres",
-    imageAlt2: "Muelle sobre la laguna al atardecer con cortinas de lino blanco movidas por el viento",
-  },
-
-  // Home: eventos con el estilo nuevo (EventsShowcase). Las propuestas de
-  // la lista salen de eventos.services; las fotos, de eventsTeaser.
+  // Home: resumen de eventos (EventsShowcase), sobre fondo verde.
   eventsShowcase: {
     eyebrow: "Eventos",
     title: "Encuentros a cielo abierto.",
     text: "Celebraciones íntimas, reuniones de trabajo y encuentros que encuentran en La Torre un escenario único, lejos del ritmo de todos los días.",
     cta: "Descubrir eventos",
+    imageAlt: "Mesa de banquete con candelabros encendidos, flores, frutas, quesos y fiambres",
+  },
+
+  // Home: invitación al entorno (EnvironmentInvite), entre eventos y reseñas.
+  environmentInvite: {
+    eyebrow: "Entorno",
+    title: "Donde el campo se vuelve horizonte.",
+    text: "Cielos enormes, agua quieta y la casa de piedra entre eucaliptos. Recorré en fotos el paisaje que rodea La Torre.",
+    cta: "Ver el entorno",
   },
 
   // Home: reseñas del libro de visitas (Reviews), debajo de eventos.
@@ -437,6 +388,9 @@ export const es = {
     message: "¿Algo que quieras contarnos?",
     optional: "(opcional)",
     messagePlaceholder: "Un aniversario, una dieta especial, la hora de llegada…",
+    // Suite elegida al llegar desde una habitación (?habitacion=…)
+    selectedRoom: "Consultando por",
+    removeRoom: "Quitar la habitación elegida",
     submit: "Consultar disponibilidad",
     note: "Tu consulta se envía por WhatsApp directamente a nuestro equipo.",
     sent: "¡Gracias! Se abrió WhatsApp con tu consulta lista para enviar. Si no se abrió,",
@@ -451,6 +405,7 @@ export const es = {
     // Mensaje que se arma para WhatsApp (en el idioma del huésped)
     whatsapp: {
       intro: "Hola! Quisiera consultar disponibilidad en La Torre del Guayaibí.",
+      room: "Habitación",
       checkIn: "Llegada",
       checkOut: "Salida",
       night: "noche",
@@ -463,6 +418,15 @@ export const es = {
       phone: "Teléfono",
       comments: "Comentarios",
     },
+  },
+
+  // Página de error 404 (src/app/[lang]/not-found.tsx)
+  notFound: {
+    eyebrow: "Error 404",
+    title: "Este camino no lleva a ningún lado.",
+    text: "La página que buscás no existe o cambió de lugar. Volvé al inicio o seguí recorriendo La Torre.",
+    home: "Volver al inicio",
+    rooms: "Ver habitaciones",
   },
 };
 

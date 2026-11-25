@@ -1,94 +1,70 @@
 @use "abstracts" as *;
 
 // ─────────────────────────────────────────────
-// Posicionamiento (sticky)
-// "top": arriba desde el principio; el margen negativo hace que el contenido
-//        siguiente pase por debajo.
-// "bottom": va después del hero; se superpone a su borde inferior, sube al
-//           scrollear y queda fija arriba.
+// Posicionamiento: fija arriba desde el principio (sticky); el margen
+// negativo hace que el contenido siguiente (p. ej. el hero) pase por debajo.
 // ─────────────────────────────────────────────
 .header {
   position: sticky;
   top: $navbar-sticky-top-mobile;
   z-index: $z-navbar;
   height: $navbar-height-mobile;
+  margin-top: $navbar-sticky-top-mobile;
+  margin-bottom: -($navbar-height-mobile + $navbar-sticky-top-mobile);
   padding-inline: $navbar-inset-mobile;
 
   @include mq(md) {
     padding-inline: $space-6;
   }
 
+  // Desktop: mismo margen lateral que los textos de las secciones
+  // ($navbar-inset + $space-10 = 80px en pantallas grandes)
   @include mq(nav) {
     top: $navbar-sticky-top;
     height: $navbar-height;
-    padding-inline: clamp(#{$space-6}, 2.6vw, #{$navbar-inset});
-  }
-}
-
-.bottom {
-  margin-top: -($navbar-height-mobile + $navbar-offset-mobile);
-  margin-bottom: $navbar-offset-mobile;
-
-  @include mq(nav) {
-    margin-top: -($navbar-height + $navbar-offset);
-    margin-bottom: $navbar-offset;
-  }
-}
-
-// Arranca fija arriba y el contenido (hero) pasa por debajo
-.top {
-  margin-top: $navbar-sticky-top-mobile;
-  margin-bottom: -($navbar-height-mobile + $navbar-sticky-top-mobile);
-
-  @include mq(nav) {
     margin-top: $navbar-sticky-top;
     margin-bottom: -($navbar-height + $navbar-sticky-top);
+    padding-inline: clamp(#{$space-6}, 5.5vw, #{$navbar-inset + $space-10});
   }
 }
 
 // ─────────────────────────────────────────────
 // Barra
 // ─────────────────────────────────────────────
+// Mobile: barra de vidrio (casi sin color, con desenfoque del fondo).
+// Desktop: sin fondo de barra; a la izquierda solo el isotipo y a la derecha
+// los links en una pastilla de vidrio, el idioma y el botón.
 .bar {
   display: flex;
   align-items: center;
   height: 100%;
   padding-inline: $space-4 $space-2;
   border-radius: $radius-navbar;
-  background-color: rgba($color-background, 0.9);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  background-color: rgba($color-background, 0.18);
+  backdrop-filter: blur(20px) saturate(140%);
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
   color: $color-heading;
   transition: background-color $transition-default;
 
   @include mq(nav) {
-    padding-inline: $space-10 $space-4;
-  }
-
-  .stuck & {
-    background-color: rgba($color-background, 0.97);
+    gap: $space-2;
+    padding-inline: 0;
+    background-color: transparent;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
   }
 }
 
-// Mobile: barra de vidrio (casi sin color, con desenfoque del fondo)
-@include mq-down(nav) {
-  .bar,
-  .stuck .bar {
-    background-color: rgba($color-background, 0.18);
-    backdrop-filter: blur(20px) saturate(140%);
-    -webkit-backdrop-filter: blur(20px) saturate(140%);
-  }
+// Sobre secciones oscuras (data-nav-theme="dark", lo detecta Navbar.tsx),
+// isotipo y menú en crema para que se lean
+.brand > *,
+.toggle {
+  transition: color 500ms ease;
+}
 
-  // Sobre secciones oscuras, logo y menú en crema para que se lean
-  .brand > *,
-  .toggle {
-    transition: color 500ms ease;
-  }
-
-  .onDark .brand > *,
-  .onDark .toggle {
-    color: $butter;
-  }
+.onDark .brand > *,
+.onDark .toggle {
+  color: $butter;
 }
 
 .brand {
@@ -99,45 +75,66 @@
   &:focus-visible {
     @include focus-ring;
   }
+
+  // Desktop: el isotipo arranca grande arriba de todo y se achica al
+  // scrollear (--shrink de 0 a 1, lo escribe Navbar.tsx). Se dibuja al
+  // tamaño grande y se reduce con transform: queda nítido y fluido.
+  @include mq(nav) {
+    transform: scale(calc(1 - var(--shrink, 0) * 0.4)); // 68px → ~41px
+    transform-origin: left center;
+    will-change: transform;
+  }
 }
 
-.separator {
-  display: none;
-  width: 1px;
-  height: 40px;
-  margin-inline: $space-8 clamp(#{$space-6}, 2.5vw, #{$space-12});
-  background-color: $color-border-strong;
-
+.brand .logoMark {
   @include mq(nav) {
-    display: block;
+    height: 68px;
   }
 }
 
 // ─────────────────────────────────────────────
 // Links desktop
 // ─────────────────────────────────────────────
+// Pastilla de vidrio con los links
 .links {
   display: none;
-  gap: clamp(#{$space-5}, 2.6vw, #{$space-12});
 
   @include mq(nav) {
     display: flex;
+    align-items: center;
+    height: 44px;
+    margin-left: auto;
+    padding-inline: $space-2;
+    border-radius: 6px;
+    background-color: rgba($color-background, 0.6);
+    backdrop-filter: blur(24px) saturate(140%);
+    transition:
+      background-color 500ms ease,
+      color 500ms ease;
   }
 }
 
+// Links en la sans, en minúscula, como los botones
 .link {
-  @include nav-link;
   position: relative;
-  padding-block: $space-2;
+  padding: $space-2 14px;
+  font-family: $font-ui;
+  font-weight: $weight-regular;
+  font-size: 15px;
+  letter-spacing: -0.005em;
   white-space: nowrap;
+  color: $color-heading;
+  transition:
+    background-color 500ms ease,
+    color 500ms ease;
 
-  // Subrayado fino al hacer hover
+  // Subrayado fino al hacer hover, solo bajo el texto
   &::after {
     content: "";
     position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 2px;
+    left: 14px;
+    right: 14px;
+    bottom: 6px;
     height: 1px;
     background-color: currentColor;
     transform: scaleX(0);
@@ -169,13 +166,32 @@
   color: $color-muted;
 }
 
+// Idioma, sutil: "ES / EN" chico y apagado entre los links y el botón; el
+// idioma actual queda un poco más marcado
 .langDesktop {
   display: none;
-  margin-left: auto;
-  margin-right: $space-8;
 
   @include mq(nav) {
     display: flex;
+    order: 1; // después de la pastilla de links
+    margin: 0 $space-3 0 $space-4;
+    font-weight: $weight-regular;
+    font-size: 13px;
+    letter-spacing: 0.02em;
+    color: rgba($color-heading, 0.45);
+    transition: color 500ms ease;
+
+    .langButton {
+      color: inherit;
+
+      &[aria-current="true"] {
+        color: $color-heading;
+      }
+
+      @include hover {
+        color: $color-heading;
+      }
+    }
   }
 }
 
@@ -215,16 +231,22 @@
 // ─────────────────────────────────────────────
 // CTA
 // ─────────────────────────────────────────────
+// Botón de disponibilidad. En mobile se oculta (está en el menú). Mismo
+// tamaño de letra que los links (15px); en desktop, mismo alto que la pastilla.
 .cta {
-  @include btn-primary;
-  color: $butter;
+  @include btn-base;
+  @include btn-solid($fg: $butter);
   display: none;
   flex-shrink: 0;
-  padding-inline: $btn-nav-padding-x $space-6;
-  gap: $space-4;
+  height: 38px;
+  padding-inline: 14px 12px;
+  gap: 8px;
+  font-size: 15px;
 
   @include mq(nav) {
     display: inline-flex;
+    order: 2;
+    height: 44px;
   }
 }
 
@@ -427,13 +449,6 @@ $drawer-duration: 650ms;
   }
 }
 
-// En mobile la barra muestra solo el isotipo, sin el nombre
-.logoName {
-  @include mq-down(nav) {
-    display: none;
-  }
-}
-
 .drawerFooter {
   display: flex;
   flex-direction: column;
@@ -489,10 +504,11 @@ $drawer-duration: 650ms;
 }
 
 .drawerCta {
-  @include btn-primary;
-  color: $butter;
+  @include btn-base;
+  @include btn-solid($fg: $butter);
+  justify-content: center;
   width: 100%;
-  gap: $space-4;
+  height: 48px;
 }
 
 // Al abrir: los links entran escalonados después del panel
@@ -520,83 +536,12 @@ $drawer-duration: 650ms;
   }
 }
 
-// Home de prueba (.theme-v2)
-:global(.theme-v2) .cta,
-:global(.theme-v2) .drawerCta {
-  @include btn-v2($fg: $butter);
-}
-
-// En mobile el botón de la barra se oculta (está en el menú).
-// Mismo tamaño de letra que los links (15px), botón más bajo.
-:global(.theme-v2) .cta {
-  display: none;
-  height: 38px;
-  padding-inline: 14px 12px;
-  gap: 8px;
-  font-size: 15px;
-
-  @include mq(nav) {
-    display: inline-flex;
-  }
-}
-
-:global(.theme-v2) .drawerCta {
-  justify-content: center;
-  height: 48px;
-}
-
 // ─────────────────────────────────────────────
-// Home de prueba (.theme-v2), desktop: barra resumida, siempre igual.
-// Izquierda: solo el isotipo (cambia de color según el fondo).
-// Derecha: los links en una pastilla de vidrio y, al lado, el botón de
-// disponibilidad, diferenciado. Sin fondo de barra, sin idioma.
+// Desktop: colores según lo que haya detrás de la barra (Navbar.tsx marca
+// .onDark, .onGlass y .onSplit)
 // ─────────────────────────────────────────────
 @include mq(nav) {
-  // Mismo margen lateral que los textos del hero ($navbar-inset + $space-10
-  // = 80px en pantallas grandes), así el logo arranca alineado con ellos
-  :global(.theme-v2) .header {
-    padding-inline: clamp(#{$space-6}, 5.5vw, #{$navbar-inset + $space-10});
-  }
-
-  :global(.theme-v2) .bar,
-  :global(.theme-v2) .stuck .bar {
-    gap: $space-2;
-    padding-inline: 0;
-    background-color: transparent;
-    box-shadow: none;
-    backdrop-filter: none;
-  }
-
-  :global(.theme-v2) .separator,
-  :global(.theme-v2) .logoName {
-    display: none;
-  }
-
-  // Idioma, sutil: "ES / EN" chico y apagado entre los links y el botón;
-  // el idioma actual queda un poco más marcado
-  :global(.theme-v2) .langDesktop {
-    order: 1; // después de la pastilla de links
-    margin: 0 $space-3 0 $space-4;
-    font-weight: $weight-regular;
-    font-size: 13px;
-    letter-spacing: 0.02em;
-    color: rgba($color-heading, 0.45);
-    transition: color 500ms ease;
-
-    .langButton {
-      color: inherit;
-
-      &[aria-current="true"] {
-        color: $color-heading;
-      }
-
-      @include hover {
-        color: $color-heading;
-      }
-    }
-  }
-
-  :global(.theme-v2) .onDark .langDesktop {
+  .onDark .langDesktop {
     color: rgba($butter, 0.55);
 
     .langButton[aria-current="true"],
@@ -605,101 +550,38 @@ $drawer-duration: 650ms;
     }
   }
 
-  :global(.theme-v2) .cta {
-    order: 2;
-  }
-
-  // Isotipo: grande arriba de todo y se achica al scrollear (--shrink de 0
-  // a 1, lo escribe Navbar.tsx). Se dibuja al tamaño grande y se reduce con
-  // transform, así queda nítido y el movimiento es fluido.
-  :global(.theme-v2) .logoMark {
-    height: 68px;
-  }
-
-  :global(.theme-v2) .brand {
-    transform: scale(calc(1 - var(--shrink, 0) * 0.4)); // 68px → ~41px
-    transform-origin: left center;
-    will-change: transform;
-  }
-
-  // Isotipo: marrón sobre fondos claros, crema sobre secciones oscuras
-  // (data-nav-theme="dark", lo detecta Navbar.tsx)
-  :global(.theme-v2) .brand > * {
-    transition: color 500ms ease;
-  }
-
-  :global(.theme-v2) .onDark .brand > * {
-    color: $butter;
-  }
-
-  // Pastilla de vidrio con los links
-  :global(.theme-v2) .links {
-    align-items: center;
-    gap: 0;
-    height: 44px;
-    margin-left: auto;
-    padding-inline: $space-2;
-    border-radius: 6px;
-    background-color: rgba($color-background, 0.6);
-    backdrop-filter: blur(24px) saturate(140%);
-  }
-
-  :global(.theme-v2) .link {
-    padding-inline: 14px;
-
-    // el subrayado del hover, solo bajo el texto
-    &::after {
-      left: 14px;
-      right: 14px;
-      bottom: 6px;
-    }
-  }
-
-  // Botón de disponibilidad: mismo alto que la pastilla, sólido
-  :global(.theme-v2) .cta {
-    height: 44px;
-  }
-
-  :global(.theme-v2) .links,
-  :global(.theme-v2) .link {
-    transition:
-      background-color 500ms ease,
-      color 500ms ease;
-  }
-
-  // Sobre fondo oscuro (como la referencia): pastilla oscura translúcida con
-  // texto crema, y el botón en crema para seguir destacándose
-  // Con cuerpo suficiente para leerse también cuando pasa sobre una foto clara
-  :global(.theme-v2) .onDark .links {
+  // Sobre fondo oscuro: pastilla oscura translúcida con texto crema, con
+  // cuerpo suficiente para leerse también cuando pasa sobre una foto clara
+  .onDark .links {
     background-color: rgba($forest, 0.7);
   }
 
-  :global(.theme-v2) .onDark .link {
+  .onDark .link {
     color: $butter;
   }
 
-  // Sobre una foto oscurecida (data-nav-glass, p. ej. el hero centrado del
-  // home): vidrio claro y desenfocado en vez de la pastilla verde oscura
-  :global(.theme-v2) .onGlass .links {
+  // Sobre una foto oscurecida (data-nav-glass, p. ej. el hero): vidrio claro
+  // y desenfocado en vez de la pastilla verde oscura
+  .onGlass .links {
     background-color: rgba($butter, 0.26);
     backdrop-filter: blur(24px) saturate(140%);
   }
 
-  // Sobre una sección partida en oscuro | claro (data-nav-split, p. ej. la
-  // de eventos del home): vidrio casi transparente para que se vea el fondo
-  // desenfocado, y cada link en crema o marrón según el lado del corte
-  :global(.theme-v2) .onSplit .links {
+  // Sobre una sección partida en oscuro | claro (data-nav-split, p. ej.
+  // reservas): vidrio casi transparente para que se vea el fondo desenfocado,
+  // y cada link en crema o marrón según el lado del corte
+  .onSplit .links {
     background-color: rgba($color-background, 0.14);
     backdrop-filter: blur(32px) saturate(150%);
   }
 
-  :global(.theme-v2) .onSplit .link[data-over-dark],
-  :global(.theme-v2) .onSplit .brand[data-over-dark] > * {
+  .onSplit .link[data-over-dark],
+  .onSplit .brand[data-over-dark] > * {
     color: $butter;
   }
 
   // Sobre fondo oscuro, el botón pasa a crema para seguir destacándose
-  :global(.theme-v2) .onDark .cta {
+  .onDark .cta {
     background-color: $butter;
     color: $color-heading;
 
@@ -708,14 +590,4 @@ $drawer-duration: 650ms;
       color: $color-heading;
     }
   }
-}
-
-// Home de prueba (.theme-v2): links en la sans, en minúscula, como los botones
-:global(.theme-v2) .link {
-  font-family: $font-ui;
-  font-weight: $weight-regular;
-  font-size: 15px;
-  letter-spacing: -0.005em;
-  text-transform: none;
-  color: $color-heading;
 }

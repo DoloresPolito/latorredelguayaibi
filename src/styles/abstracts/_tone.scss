@@ -1,0 +1,32 @@
+@use "colors" as *;
+
+// ─────────────────────────────────────────────
+// Colores del cambio verde ↔ crema (<ToneShift>). ToneShift anima
+// --tone-bg / --tone-fg en las secciones que envuelve; estas funciones los
+// leen, con el color de partida de la sección como respaldo (sin ToneShift).
+// $start: light (fondo crema, textos verdes) o dark (fondo verde, textos crema).
+//
+// Uso:
+//   $bg: tone-bg(dark);
+//   $fg: tone-fg(dark);
+//   color: fade($fg, 0.75);
+// ─────────────────────────────────────────────
+@function tone-bg($start: light) {
+  @if $start == dark {
+    @return var(--tone-bg, #{$forest});
+  }
+  @return var(--tone-bg, #{$cream});
+}
+
+@function tone-fg($start: light) {
+  @if $start == dark {
+    @return var(--tone-fg, #{$butter});
+  }
+  @return var(--tone-fg, #{$forest});
+}
+
+// Un color con transparencia (sirve también para colores que son variables
+// CSS, donde rgba() de Sass no funciona)
+@function fade($color, $alpha) {
+  @return color-mix(in srgb, #{$color} #{$alpha * 100%}, transparent);
+}

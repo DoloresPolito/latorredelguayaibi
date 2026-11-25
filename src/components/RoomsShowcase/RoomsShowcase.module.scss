@@ -73,7 +73,7 @@
 }
 
 .layer {
-  @include drift-layer(6%, 0px);
+  @include drift-layer(6%);
   inset: -8% 0;
 }
 
@@ -120,33 +120,19 @@
 }
 
 .cta {
-  @include btn-v2;
+  @include btn-solid;
   margin-top: $space-8;
 }
 
 // ─────────────────────────────────────────────
 // Entrada de los textos en cascada (<Reveal>)
 // ─────────────────────────────────────────────
-.copy > * {
-  opacity: 0;
-  translate: 0 20px;
-  transition:
-    opacity 1200ms ease,
-    translate 1400ms $ease-out;
-
-  [data-visible="true"] & {
-    opacity: 1;
-    translate: none;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    opacity: 1;
-    translate: none;
-    transition: none;
-  }
+.copy {
+  @include reveal-cascade((150ms, 300ms, 450ms, 650ms));
 }
 
-.copy > :nth-child(1) { transition-delay: 150ms; }
-.copy > :nth-child(2) { transition-delay: 300ms; }
-.copy > :nth-child(3) { transition-delay: 450ms; }
-.copy > :nth-child(4) { transition-delay: 650ms; }
+// Títulos en Italiana, la tipografía de títulos de la web. Va al final para
+// ganarle a la tipografía, el peso y el espaciado definidos arriba.
+.title {
+  @include title-italiana;
+}

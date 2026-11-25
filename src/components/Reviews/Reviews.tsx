@@ -8,8 +8,6 @@ import styles from "./Reviews.module.scss";
 type ReviewsProps = {
   t: Dictionary["reviews"];
   id?: string;
-  /** Clase extra para la cita (p. ej. Italiana) */
-  quoteClassName?: string;
 };
 
 const INTERVAL = 8000; // ms entre reseña y reseña
@@ -22,7 +20,7 @@ const INTERVAL = 8000; // ms entre reseña y reseña
  * así la sección no cambia de alto entre una y otra.
  * Toma los colores de <ToneShift> (--tone-fg), o verde sobre crema.
  */
-export default function Reviews({ t, id = "resenas", quoteClassName }: ReviewsProps) {
+export default function Reviews({ t, id = "resenas" }: ReviewsProps) {
   const total = t.items.length;
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
@@ -68,7 +66,7 @@ export default function Reviews({ t, id = "resenas", quoteClassName }: ReviewsPr
               aria-roledescription="slide"
               aria-label={t.slideLabel.replace("{n}", String(i + 1)).replace("{total}", String(total))}
             >
-              <blockquote className={[styles.quote, quoteClassName].filter(Boolean).join(" ")}>
+              <blockquote className={styles.quote}>
                 <p>“{item.quote}”</p>
               </blockquote>
               <figcaption className={styles.author}>

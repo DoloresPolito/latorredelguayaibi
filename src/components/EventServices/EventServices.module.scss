@@ -62,7 +62,7 @@
 
 .layer {
   // Mismo movimiento que las fotos del home
-  @include drift-layer(6%, 0px);
+  @include drift-layer(6%);
   inset: -8% 0;
 }
 
@@ -134,28 +134,12 @@
 }
 
 // Entrada de los textos en cascada (<Reveal>)
-.copy > * {
-  opacity: 0;
-  translate: 0 20px;
-  transition:
-    opacity 1200ms ease,
-    translate 1400ms $ease-out;
-
-  @media (prefers-reduced-motion: reduce) {
-    opacity: 1;
-    translate: none;
-    transition: none;
-  }
+.copy {
+  @include reveal-cascade((150ms, 250ms, 400ms, 550ms, 700ms));
 }
 
-// .copy es el propio <Reveal>
-.copy[data-visible="true"] > * {
-  opacity: 1;
-  translate: none;
+// Títulos en Italiana, la tipografía de títulos de la web. Va al final para
+// ganarle a la tipografía, el peso y el espaciado definidos arriba.
+.title {
+  @include title-italiana;
 }
-
-.copy > :nth-child(1) { transition-delay: 150ms; }
-.copy > :nth-child(2) { transition-delay: 250ms; }
-.copy > :nth-child(3) { transition-delay: 400ms; }
-.copy > :nth-child(4) { transition-delay: 550ms; }
-.copy > :nth-child(5) { transition-delay: 700ms; }

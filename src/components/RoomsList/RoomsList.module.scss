@@ -69,11 +69,13 @@ $bg: $forest; // el verde oscuro del manifiesto
   }
 }
 
+// Mobile: las columnas no arman caja propia y todas las tarjetas quedan en
+// la misma grilla, así se pueden reordenar (--mobile-order, ver RoomsList).
 .column {
-  display: grid;
-  gap: $space-12;
+  display: contents;
 
   @include mq(lg) {
+    display: grid;
     gap: $space-24;
   }
 }
@@ -96,6 +98,7 @@ $bg: $forest; // el verde oscuro del manifiesto
 // Tarjeta
 // ─────────────────────────────────────────────
 .card {
+  order: var(--mobile-order, 0);
   opacity: 0;
   transform: translateY(32px);
   transition:
@@ -111,6 +114,10 @@ $bg: $forest; // el verde oscuro del manifiesto
     opacity: 1;
     transform: none;
     transition: none;
+  }
+
+  @include mq(lg) {
+    order: 0;
   }
 }
 
@@ -236,4 +243,11 @@ $bg: $forest; // el verde oscuro del manifiesto
     font-size: 13px;
     color: rgba($butter, 0.8);
   }
+}
+
+// Títulos en Italiana, la tipografía de títulos de la web. Va al final para
+// ganarle a la tipografía, el peso y el espaciado definidos arriba.
+.name,
+.introText {
+  @include title-italiana;
 }

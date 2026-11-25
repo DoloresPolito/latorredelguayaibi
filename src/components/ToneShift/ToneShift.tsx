@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useRef, type ReactNode } from "react";
+import { useRef, type ReactNode } from "react";
+import { useScrollFrame } from "@/lib/useScrollFrame";
 import styles from "./ToneShift.module.scss";
 
 type ToneShiftProps = {
@@ -16,45 +17,27 @@ type ToneShiftProps = {
 /**
  * Envuelve varias secciones que comparten el fondo. Cuando el borde de
  * arriba de `targetId` sube más allá de `threshold` de la pantalla, pasa a
- * data-tone="dark": el fondo va de crema a verde y los textos de verde a
- * crema, con una transición (ver --tone-bg / --tone-fg en el SCSS). Si se
- * pasa `untilId`, cuando esa sección llega al mismo punto vuelve a claro.
- * Así no hay una línea de corte entre secciones. En oscuro también avisa a
- * la navbar (data-nav-theme="dark").
+ * data-tone="dark": --tone-p va de 0 a 1 con una transición larga y el fondo
+ * se funde de crema a verde (y los textos de verde a crema). Si se pasa
+ * `untilId`, cuando esa sección llega al mismo punto vuelve a claro. Así no
+ * hay una línea de corte entre secciones. En oscuro también avisa a la
+ * navbar (data-nav-theme="dark").
  */
-export default function ToneShift({ children, targetId, untilId, threshold = 0.55 }: ToneShiftProps) {
+export default function ToneShift({ children, targetId, untilId, threshold = 0.6 }: ToneShiftProps) {
   const ref = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const el = ref.current;
+  useScrollFrame(ref, (el) => {
     const target = document.getElementById(targetId);
     const until = untilId ? document.getElementById(untilId) : null;
-    if (!el || !target) return;
-
-    let frame = 0;
-    const update = () => {
-      frame = 0;
-      const line = window.innerHeight * threshold;
-      const dark =
-        target.getBoundingClientRect().top < line && (!until || until.getBoundingClientRect().top >= line);
-      if ((el.dataset.tone === "dark") === dark) return;
-      el.dataset.tone = dark ? "dark" : "light";
-      if (dark) el.setAttribute("data-nav-theme", "dark");
-      else el.removeAttribute("data-nav-theme");
-    };
-    const request = () => {
-      if (!frame) frame = requestAnimationFrame(update);
-    };
-
-    update();
-    window.addEventListener("scroll", request, { passive: true });
-    window.addEventListener("resize", request);
-    return () => {
-      window.removeEventListener("scroll", request);
-      window.removeEventListener("resize", request);
-      cancelAnimationFrame(frame);
-    };
-  }, [targetId, untilId, threshold]);
+    if (!target) return;
+    const line = window.innerHeight * threshold;
+    const dark =
+      target.getBoundingClientRect().top < line && (!until || until.getBoundingClientRect().top >= line);
+    if ((el.dataset.tone === "dark") === dark) return;
+    el.dataset.tone = dark ? "dark" : "light";
+    if (dark) el.setAttribute("data-nav-theme", "dark");
+    else el.removeAttribute("data-nav-theme");
+  });
 
   return (
     <div ref={ref} className={styles.shift} data-tone="light">

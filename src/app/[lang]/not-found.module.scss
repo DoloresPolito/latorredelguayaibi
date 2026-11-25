@@ -1,0 +1,104 @@
+@use "abstracts" as *;
+
+// Una pantalla de alto sobre el crema del sitio, con el mensaje centrado
+.section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100svh;
+  padding: calc(#{$navbar-height-mobile} + #{$space-16}) $space-6 $space-20;
+  background-color: $color-background;
+  color: $color-heading;
+  text-align: center;
+
+  @include mq(lg) {
+    padding: calc(#{$navbar-height} + #{$space-16}) $space-12 $space-24;
+  }
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 40rem;
+}
+
+.eyebrow {
+  font-family: $font-ui;
+  font-weight: $weight-medium;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: $terracotta;
+
+  @include mq(lg) {
+    font-size: 12px;
+  }
+}
+
+.title {
+  margin-top: $space-6;
+  font-family: $font-heading;
+  font-weight: $weight-regular;
+  font-size: clamp(38px, 10vw, 56px);
+  line-height: 1.08;
+  color: $forest;
+
+  @include mq(lg) {
+    font-size: clamp(52px, 4.6vw, 80px);
+  }
+}
+
+.text {
+  max-width: 30em;
+  margin-top: $space-6;
+  font-family: $font-ui;
+  font-size: 16px;
+  line-height: 1.7;
+  color: $color-body;
+
+  @include mq(lg) {
+    font-size: 17px;
+  }
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: $space-4 $space-8;
+  margin-top: $space-10;
+}
+
+// Botón sólido oscuro, como los del resto del sitio sobre crema
+.primary {
+  @include btn-solid;
+}
+
+// Link subrayado, más discreto
+.secondary {
+  font-family: $font-ui;
+  font-weight: $weight-medium;
+  font-size: 15px;
+  color: $color-heading;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 6px;
+  transition: text-underline-offset $transition-default;
+
+  @include hover {
+    text-underline-offset: 3px;
+  }
+
+  &:focus-visible {
+    outline: $border-width solid $color-heading;
+    outline-offset: 4px;
+  }
+}
+
+// Títulos en Italiana, la tipografía de títulos de la web. Va al final para
+// ganarle a la tipografía, el peso y el espaciado definidos arriba.
+.title {
+  @include title-italiana;
+}

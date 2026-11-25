@@ -10,8 +10,6 @@ type WelcomePanelProps = {
   lang: Locale;
   t: Dictionary["welcomePanel"];
   id?: string;
-  /** Clase extra para el título (p. ej. Italiana) */
-  titleClassName?: string;
 };
 
 /**
@@ -21,12 +19,12 @@ type WelcomePanelProps = {
  * (--parallax de <Parallax>, o CSS ligado al scroll), como en vesuvio.it. Al entrar en pantalla
  * aparecen en cascada (<Reveal>).
  */
-export default function WelcomePanel({ lang, t, id = "bienvenida", titleClassName }: WelcomePanelProps) {
+export default function WelcomePanel({ lang, t, id = "bienvenida" }: WelcomePanelProps) {
   return (
     <section id={id} className={styles.section} aria-labelledby={`${id}-title`}>
       <Parallax cssFallback>
         <Reveal className={styles.inner} threshold={0.2}>
-          <h2 id={`${id}-title`} className={[styles.title, titleClassName].filter(Boolean).join(" ")}>
+          <h2 id={`${id}-title`} className={styles.title}>
             {t.title}
           </h2>
           <div className={styles.aside}>

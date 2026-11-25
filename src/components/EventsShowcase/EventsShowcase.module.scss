@@ -2,12 +2,8 @@
 
 // Colores a través de --tone-bg / --tone-fg (de <ToneShift>, que los anima
 // al pasar de claro a oscuro). Sin <ToneShift>, quedan los de siempre.
-$bg: var(--tone-bg, #{$forest});
-$fg: var(--tone-fg, #{$butter});
-
-@function ink($alpha) {
-  @return color-mix(in srgb, #{$fg} #{$alpha * 100%}, transparent);
-}
+$bg: tone-bg(dark);
+$fg: tone-fg(dark);
 
 // Verde oscuro con textos crema: contraste después de las secciones claras.
 // Dentro de <ToneShift> el fondo llega con una transición desde el crema.
@@ -60,7 +56,7 @@ $fg: var(--tone-fg, #{$butter});
   margin-top: $space-12;
   aspect-ratio: 4 / 5;
   border-radius: 3px;
-  background-color: ink(0.06);
+  background-color: fade($fg, 0.06);
   clip-path: inset(100% 0 0 0);
   transition: clip-path 1600ms $ease-out;
 
@@ -82,7 +78,7 @@ $fg: var(--tone-fg, #{$butter});
 }
 
 .layer {
-  @include drift-layer(6%, 0px);
+  @include drift-layer(6%);
   inset: -8% 0;
 }
 
@@ -98,7 +94,7 @@ $fg: var(--tone-fg, #{$butter});
   display: flex;
   align-items: center;
   gap: $space-4;
-  color: ink(0.75);
+  color: fade($fg, 0.75);
 }
 
 .title {
@@ -120,7 +116,7 @@ $fg: var(--tone-fg, #{$butter});
   font-family: $font-ui;
   font-size: 16px;
   line-height: 1.7;
-  color: ink(0.8);
+  color: fade($fg, 0.8);
 
   @include mq(lg) {
     font-size: 17px;
@@ -129,33 +125,19 @@ $fg: var(--tone-fg, #{$butter});
 
 .cta {
   // Sólido del color del texto, con el fondo como letra: se invierte solo
-  @include btn-v2($fg, $bg, color-mix(in srgb, #{$fg} 88%, #{$bg}));
+  @include btn-solid($fg, $bg, color-mix(in srgb, #{$fg} 88%, #{$bg}));
   margin-top: $space-8;
 }
 
 // ─────────────────────────────────────────────
 // Entrada de los textos en cascada (<Reveal>)
 // ─────────────────────────────────────────────
-.copy > * {
-  opacity: 0;
-  translate: 0 20px;
-  transition:
-    opacity 1200ms ease,
-    translate 1400ms $ease-out;
-
-  [data-visible="true"] & {
-    opacity: 1;
-    translate: none;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    opacity: 1;
-    translate: none;
-    transition: none;
-  }
+.copy {
+  @include reveal-cascade((150ms, 300ms, 450ms, 650ms));
 }
 
-.copy > :nth-child(1) { transition-delay: 150ms; }
-.copy > :nth-child(2) { transition-delay: 300ms; }
-.copy > :nth-child(3) { transition-delay: 450ms; }
-.copy > :nth-child(4) { transition-delay: 650ms; }
+// Títulos en Italiana, la tipografía de títulos de la web. Va al final para
+// ganarle a la tipografía, el peso y el espaciado definidos arriba.
+.title {
+  @include title-italiana;
+}

@@ -3,15 +3,13 @@ import type { CSSProperties } from "react";
 import type { Dictionary } from "@/i18n/dictionaries/es";
 import { ENTORNO_IMAGES, type EntornoImageKey } from "@/config/entorno";
 import { emphasis } from "@/lib/emphasis";
-import ScrollStage from "@/components/ExpandImage/ScrollStage";
+import ScrollStage from "@/components/ScrollStage/ScrollStage";
 import styles from "./EnvironmentDepth.module.scss";
 
 type EnvironmentDepthProps = {
   t: Dictionary["entorno"]["depth"];
   images: Dictionary["entorno"]["images"];
   id?: string;
-  /** Clase extra para los títulos (p. ej. Italiana) */
-  titleClassName?: string;
 };
 
 /**
@@ -20,6 +18,14 @@ type EnvironmentDepthProps = {
  * (más negativo = más lejos); ratio: proporción del recorte.
  * Ordenadas de la más cercana a la más lejana.
  */
+/**
+ * Ancho con el que se pide cada foto: el doble de su ancho en pantalla
+ * (--w vw en desktop, 2.1× en mobile, ver el SCSS), porque al acercarse a la
+ * "cámara" llega a verse unas dos veces más grande antes de desvanecerse.
+ */
+const photoSizes = (w: number) =>
+  `(max-width: 768px) ${Math.min(100, Math.round(w * 2.1 * 2))}vw, ${Math.round(w * 2)}vw`;
+
 const PHOTOS: { key: EntornoImageKey; x: number; y: number; w: number; z: number; ratio: string }[] = [
   { key: "atardecer", x: -36, y: -22, w: 14, z: -150, ratio: "1" },
   { key: "piedra", x: 34, y: -26, w: 15, z: -400, ratio: "4 / 3" },
@@ -47,9 +53,8 @@ const FOCUS: EntornoImageKey = "laguna";
  * foto se abre desde el centro hasta cubrir la pantalla, con una frase.
  * Todo atado al scroll (--t de ScrollStage, de 0 a 1).
  */
-export default function EnvironmentDepth({ t, images, id = "entorno", titleClassName }: EnvironmentDepthProps) {
+export default function EnvironmentDepth({ t, images, id = "entorno" }: EnvironmentDepthProps) {
   const focus = ENTORNO_IMAGES[FOCUS];
-  const title = [styles.title, titleClassName].filter(Boolean).join(" ");
 
   return (
     <section id={id} className={styles.section} aria-labelledby={`${id}-title`}>
@@ -79,7 +84,7 @@ export default function EnvironmentDepth({ t, images, id = "entorno", titleClass
                     width={image.width}
                     height={image.height}
                     alt={images[key]}
-                    sizes="(max-width: 768px) 60vw, 32vw"
+                    sizes={photoSizes(w)}
                     priority={i < 4}
                     className={styles.photoImage}
                   />
@@ -96,7 +101,7 @@ export default function EnvironmentDepth({ t, images, id = "entorno", titleClass
                 <span className={styles.rule} aria-hidden="true" />
                 {t.focusEyebrow}
               </p>
-              <h2 className={[styles.focusTitle, titleClassName].filter(Boolean).join(" ")}>
+              <h2 className={styles.focusTitle}>
                 {emphasis(t.focusTitle)}
               </h2>
             </div>
@@ -104,7 +109,7 @@ export default function EnvironmentDepth({ t, images, id = "entorno", titleClass
 
           <div className={styles.intro}>
             <p className={styles.eyebrow}>{t.eyebrow}</p>
-            <h1 id={`${id}-title`} className={title}>
+            <h1 id={`${id}-title`} className={styles.title}>
               <span className={styles.line}>{t.titleLine1}</span>
               <span className={styles.line}>{t.titleLine2}</span>
             </h1>

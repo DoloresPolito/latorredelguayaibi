@@ -7,8 +7,6 @@ import styles from "./EventServices.module.scss";
 type EventServicesProps = {
   t: Dictionary["eventos"]["services"];
   id?: string;
-  /** Clase extra para los títulos (p. ej. Italiana) */
-  titleClassName?: string;
 };
 
 // Fotos apaisadas (774 × 338)
@@ -28,7 +26,7 @@ const ITEMS = [
  * - Parallax: la imagen se mueve apenas dentro de su marco (como en el home).
  * - Los textos llegan en cascada.
  */
-export default function EventServices({ t, id = "propuestas", titleClassName }: EventServicesProps) {
+export default function EventServices({ t, id = "propuestas" }: EventServicesProps) {
   return (
     <section id={id} className={styles.section} aria-label={t.ariaLabel}>
       <ol className={styles.list}>
@@ -56,7 +54,7 @@ export default function EventServices({ t, id = "propuestas", titleClassName }: 
                   <p className={styles.number} aria-hidden="true">
                     {number}
                   </p>
-                  <h2 className={[styles.title, titleClassName].filter(Boolean).join(" ")}>
+                  <h2 className={styles.title}>
                     {copy.titleLine1} {copy.titleLine2}
                   </h2>
                   <p className={styles.subtitle}>{copy.subtitle}</p>

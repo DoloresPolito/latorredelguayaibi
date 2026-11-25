@@ -1,13 +1,15 @@
 // ─────────────────────────────────────────────
 // Familias tipográficas
-// (las variables --font-* las define next/font en layout.tsx)
+// (las variables --font-* las carga next/font en layout.tsx; ver styles/fonts.ts)
 // ─────────────────────────────────────────────
-$font-heading: var(--font-heading), "Canela", Georgia, serif;
-$font-editorial: var(--font-editorial), Garamond, Georgia, serif;
-$font-ui: var(--font-ui, "Helvetica Neue"), Helvetica, Arial, sans-serif; // --font-ui solo existe en el home de prueba
+$font-sans: var(--font-sans), Helvetica, Arial, sans-serif; // Inter Tight
+$font-title: var(--font-italiana), Georgia, serif; // Italiana, para títulos (mixin title-italiana)
+$font-ui: $font-sans; // textos, botones, menú
+$font-heading: $font-sans; // títulos en sans
 
 $weight-light: 300;
 $weight-regular: 400;
+$weight-medium: 500;
 $weight-semibold: 600;
 
 // ─────────────────────────────────────────────
@@ -16,13 +18,11 @@ $weight-semibold: 600;
 $radius-small: 4px; // inputs, textarea
 $radius-medium: 5px; // botones, calendarios
 $radius-navbar: 10px;
-$radius-large: 12px; // contenedor principal
 $radius-full: 999px;
 
 $border-width: 1px;
 $transition-default: 200ms ease;
 $ease-out: cubic-bezier(0.22, 1, 0.36, 1);
-$ease-in-out-expo: cubic-bezier(0.76, 0, 0.24, 1); // aperturas tipo "ventana"
 
 // ─────────────────────────────────────────────
 // Espaciados (escala base 4px)
@@ -46,35 +46,14 @@ $space-32: 128px;
 // ─────────────────────────────────────────────
 $navbar-height: 80px;
 $navbar-height-mobile: 64px;
-$navbar-offset: 24px; // separación de la barra con el borde inferior del hero
-$navbar-offset-mobile: 12px;
 $navbar-sticky-top: 24px; // separación con el borde superior al quedar fija
 $navbar-sticky-top-mobile: 12px;
 $navbar-inset: 40px; // separación lateral (desktop)
 $navbar-inset-mobile: 12px;
-$navbar-link-gap: 30px;
-$logo-width: 190px;
 $container-max: 1320px;
 
 $z-navbar: 50;
 $z-overlay: 100;
-
-// ─────────────────────────────────────────────
-// Componentes
-// ─────────────────────────────────────────────
-$btn-height: 46px;
-$btn-padding-x: 24px;
-$btn-nav-padding-x: 32px;
-$btn-secondary-height: 44px;
-$btn-secondary-padding-x: 16px;
-
-$input-height: 38px;
-$input-padding-x: 12px;
-$textarea-min-height: 56px;
-
-$icon-stroke: 1.5;
-$icon-size-sm: 24px;
-$icon-size-lg: 36px;
 
 // ─────────────────────────────────────────────
 // Breakpoints (mobile-first: min-width)

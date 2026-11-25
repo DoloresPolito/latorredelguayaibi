@@ -14,9 +14,67 @@
   border: 0;
   border-top: $border-width solid $color-border;
 
-  &:first-child {
+  // first-of-type (no first-child): arriba puede ir la suite elegida
+  &:first-of-type {
     padding-top: 0;
     border-top: 0;
+  }
+}
+
+// ─────────────────────────────────────────────
+// Suite elegida (al llegar desde una habitación)
+// ─────────────────────────────────────────────
+.room {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $space-4;
+  margin-bottom: $space-10;
+  padding: $space-4 $space-4 $space-4 $space-5;
+  border: $border-width solid $color-border;
+  border-radius: 3px;
+}
+
+.roomText {
+  display: flex;
+  flex-direction: column;
+  gap: $space-1;
+}
+
+.roomLabel {
+  font-family: $font-ui;
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: $color-heading;
+}
+
+.roomName {
+  font-family: $font-heading;
+  font-size: 22px;
+  line-height: 1.2;
+  color: $forest;
+}
+
+.roomRemove {
+  @include flex-center;
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border: 0;
+  border-radius: $radius-full;
+  background: none;
+  color: $forest;
+  cursor: pointer;
+  transition: background-color $transition-default;
+
+  @include hover {
+    background-color: rgba($forest, 0.08);
+  }
+
+  &:focus-visible {
+    outline: $border-width solid $forest;
+    outline-offset: 2px;
   }
 }
 
@@ -40,12 +98,13 @@
   color: $color-heading;
 }
 
+// Número del paso en Italiana y verde
 .stepNumber {
-  font-family: $font-editorial;
-  font-style: italic;
-  font-size: 22px;
+  font-family: $font-title;
+  font-style: normal;
+  font-size: 24px;
   letter-spacing: 0;
-  color: $terracotta;
+  color: $forest;
 }
 
 .stepTitle + * {
@@ -101,7 +160,7 @@
 
   dd {
     margin-top: $space-2;
-    font-family: $font-editorial;
+    font-family: $font-ui;
     font-size: 18px;
     color: $color-heading;
   }
@@ -171,7 +230,7 @@
 
 .counterValue {
   min-width: 1.5ch;
-  font-family: $font-editorial;
+  font-family: $font-ui;
   font-size: 20px;
   text-align: center;
   color: $color-heading;
@@ -236,11 +295,34 @@
   &[aria-invalid="true"] {
     border-color: $color-error;
   }
+
+  // Autocompletado: el navegador pinta el fondo de celeste y el texto de
+  // negro con !important. No se puede pisar directo, pero sí "congelar" el
+  // cambio de fondo con una transición eterna (así queda el transparente) y
+  // volver a poner el color del texto. Sirve también para los <select> sin
+  // tapar la flecha (el truco del box-shadow la escondería).
+  &:autofill,
+  &:-webkit-autofill,
+  &:-webkit-autofill:hover,
+  &:-webkit-autofill:focus {
+    -webkit-text-fill-color: $color-heading;
+    caret-color: $color-heading;
+    transition:
+      border-color $transition-default,
+      background-color 0s 600000s,
+      color 0s 600000s;
+  }
 }
 
 .input {
   @include underline-field;
   height: 44px;
+
+  // Refuerzo para el autocompletado: tapa el celeste con el crema del fondo
+  &:autofill,
+  &:-webkit-autofill {
+    box-shadow: inset 0 0 0 100px $color-background;
+  }
 }
 
 .textarea {
@@ -285,18 +367,12 @@
   padding-top: $space-4;
 }
 
+// Mismo botón sólido que el resto de la web, a lo ancho
 .submit {
-  @include btn-primary;
+  @include btn-base;
+  @include btn-solid;
   width: 100%;
-  gap: $space-4;
-
-  svg {
-    transition: transform $transition-default;
-  }
-
-  @include hover {
-    svg { transform: translateX(3px); }
-  }
+  height: 52px;
 }
 
 .note {
@@ -320,18 +396,3 @@
   }
 }
 
-// Diseño nuevo (.theme-v2): mismo botón que el home, a lo ancho
-:global(.theme-v2) .submit {
-  @include btn-v2;
-  justify-content: center;
-  width: 100%;
-  height: 52px;
-}
-
-// Estilo nuevo (home): número del paso en Italiana y verde, sin itálica
-:global(.theme-v2) .stepNumber {
-  font-family: var(--font-italiana), Georgia, serif;
-  font-style: normal;
-  font-size: 24px;
-  color: $forest;
-}

@@ -11,8 +11,6 @@ type EnvironmentColumnsProps = {
   t: Dictionary["entorno"]["columns"];
   images: Dictionary["entorno"]["images"];
   id?: string;
-  /** Clase extra para el título (p. ej. Italiana) */
-  titleClassName?: string;
 };
 
 /**
@@ -65,7 +63,7 @@ const COLUMNS: { shift: number; items: { key: EntornoImageKey; ratio: string }[]
  * deslizan con el scroll a distintas velocidades (unas suben, otras bajan),
  * con el título fijo arriba mientras pasan.
  */
-export default function EnvironmentColumns({ t, images, id = "paisajes", titleClassName }: EnvironmentColumnsProps) {
+export default function EnvironmentColumns({ t, images, id = "paisajes" }: EnvironmentColumnsProps) {
   return (
     <section id={id} className={styles.section} aria-labelledby={`${id}-title`} data-nav-theme="dark">
       <Reveal className={styles.header} threshold={0.4}>
@@ -73,7 +71,7 @@ export default function EnvironmentColumns({ t, images, id = "paisajes", titleCl
           <span className={styles.rule} aria-hidden="true" />
           {t.eyebrow}
         </p>
-        <h2 id={`${id}-title`} className={[styles.title, titleClassName].filter(Boolean).join(" ")}>
+        <h2 id={`${id}-title`} className={styles.title}>
           {emphasis(t.title)}
         </h2>
       </Reveal>

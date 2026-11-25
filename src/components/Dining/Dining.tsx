@@ -16,8 +16,6 @@ const MOBILE_IMAGES = [1, 2, 3, 4].map((n) => `/images/h${n}.png`);
 type DiningProps = {
   t: Dictionary["dining"];
   id?: string;
-  /** Clase extra para el título (p. ej. Italiana) */
-  titleClassName?: string;
 };
 
 /**
@@ -29,12 +27,12 @@ type DiningProps = {
  * En celulares, cuatro fotos apaisadas apiladas que aparecen una tras
  * otra al entrar (solo la imagen se desliza apenas por dentro).
  */
-export default function Dining({ t, id = "gastronomia", titleClassName }: DiningProps) {
+export default function Dining({ t, id = "gastronomia" }: DiningProps) {
   return (
     <section id={id} className={styles.section} aria-labelledby={`${id}-title`}>
       <Reveal className={styles.intro} threshold={0.2}>
         <p className={styles.eyebrow}>{t.eyebrow}</p>
-        <h2 id={`${id}-title`} className={[styles.title, titleClassName].filter(Boolean).join(" ")}>
+        <h2 id={`${id}-title`} className={styles.title}>
           {t.title}
         </h2>
         <p className={styles.text}>{t.text}</p>

@@ -2,12 +2,8 @@
 
 // Colores a través de --tone-bg / --tone-fg (de <ToneShift>, que al llegar
 // acá vuelve a claro con una transición). Sin <ToneShift>, verde sobre crema.
-$bg: var(--tone-bg, #{$cream});
-$fg: var(--tone-fg, #{$forest});
-
-@function ink($alpha) {
-  @return color-mix(in srgb, #{$fg} #{$alpha * 100%}, transparent);
-}
+$bg: tone-bg(light);
+$fg: tone-fg(light);
 
 .section {
   background-color: $bg;
@@ -29,7 +25,7 @@ $fg: var(--tone-fg, #{$forest});
 
 .eyebrow {
   @include eyebrow;
-  color: ink(0.7);
+  color: fade($fg, 0.7);
 }
 
 // Todas en la misma celda: el alto es el de la reseña más larga
@@ -116,7 +112,7 @@ $fg: var(--tone-fg, #{$forest});
 .detail {
   font-family: $font-ui;
   font-size: 14px;
-  color: ink(0.6);
+  color: fade($fg, 0.6);
 }
 
 // ─────────────────────────────────────────────
@@ -133,7 +129,7 @@ $fg: var(--tone-fg, #{$forest});
   @include flex-center;
   width: 48px;
   height: 48px;
-  border: $border-width solid ink(0.35);
+  border: $border-width solid fade($fg, 0.35);
   border-radius: $radius-full;
   background: none;
   color: $fg;
@@ -143,7 +139,7 @@ $fg: var(--tone-fg, #{$forest});
     border-color $transition-default;
 
   @include hover {
-    background-color: ink(0.1);
+    background-color: fade($fg, 0.1);
     border-color: $fg;
   }
 
@@ -159,9 +155,15 @@ $fg: var(--tone-fg, #{$forest});
   font-size: 13px;
   letter-spacing: 0.12em;
   font-variant-numeric: tabular-nums;
-  color: ink(0.8);
+  color: fade($fg, 0.8);
 }
 
 .counterSep {
-  color: ink(0.4);
+  color: fade($fg, 0.4);
+}
+
+// Títulos en Italiana, la tipografía de títulos de la web. Va al final para
+// ganarle a la tipografía, el peso y el espaciado definidos arriba.
+.quote {
+  @include title-italiana;
 }
