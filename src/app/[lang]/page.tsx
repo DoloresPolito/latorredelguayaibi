@@ -47,13 +47,18 @@ export default async function Home() {
         <QuietText t={t.quietText} />
         <RoomsShowcase lang={lang} t={t.roomsShowcase} />
         {/* Gastronomía, eventos, entorno y reseñas comparten el fondo: al
-            llegar a eventos pasa de crema a verde, sigue verde en la
-            invitación al entorno y al llegar a las reseñas vuelve a crema,
-            con una transición, sin línea de corte */}
-        <ToneShift targetId="eventos-home" untilId="resenas">
+            llegar a eventos pasa de crema a verde y sigue verde en la
+            invitación al entorno. Después, la foto de la casa sube por
+            encima de la invitación (telón, como la laguna) y, cuando ya tapa
+            casi toda la pantalla, el fondo vuelve a crema detrás de ella:
+            al terminar de pasar, las reseñas aparecen ya en crema */}
+        <ToneShift targetId="eventos-home" untilId="foto-casa" untilThreshold={0.15}>
           <Dining t={t.dining} />
           <EventsShowcase lang={lang} t={t.eventsShowcase} />
-          <EnvironmentInvite lang={lang} t={t.environmentInvite} />
+          <Curtain>
+            <EnvironmentInvite lang={lang} t={t.environmentInvite} />
+          </Curtain>
+          <FullBleedImage id="foto-casa" src="/images/torre2.png" alt={t.environmentInvite.imageAlt} />
           <Reviews t={t.reviews} />
         </ToneShift>
       </main>

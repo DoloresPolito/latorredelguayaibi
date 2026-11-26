@@ -18,6 +18,9 @@ export const es = {
     entornoTitle: "Entorno — La Torre del Guayaibí",
     entornoDescription:
       "Campo abierto, agua quieta y cielos enormes: el paisaje que rodea La Torre, cerca de los Esteros del Iberá.",
+    historiaTitle: "Nuestra historia — La Torre del Guayaibí",
+    historiaDescription:
+      "Una casa de piedra en el campo correntino, levantada por una familia y abierta a quienes buscan el ritmo del campo.",
   },
 
   nav: {
@@ -233,6 +236,8 @@ export const es = {
     title: "Donde el campo se vuelve horizonte.",
     text: "Cielos enormes, agua quieta y la casa de piedra entre eucaliptos. Recorré en fotos el paisaje que rodea La Torre.",
     cta: "Ver el entorno",
+    // Foto a todo el ancho entre esta invitación y las reseñas
+    imageAlt: "La galería de piedra de la casa entre eucaliptos, con el parque verde y el cielo celeste",
   },
 
   // Home: reseñas del libro de visitas (Reviews), debajo de eventos.
@@ -359,6 +364,93 @@ export const es = {
       eucaliptos: "Atardecer dorado sobre la pileta, con reposeras y eucaliptos recortados contra el sol",
       fogon: "Un fogón encendido en un círculo de piedra, con el campo abierto detrás",
       noche: "La torre de piedra iluminada de noche, bajo un cielo estrellado con la Vía Láctea",
+    },
+  },
+
+  // Página Nuestra historia: recorrido horizontal (HistoryScroll).
+  // TEXTOS PROVISORIOS: inventados para armar el diseño, se reemplazan después.
+  historia: {
+    hero: {
+      title: "Nuestra historia",
+      scroll: "Scroll",
+    },
+    intro: {
+      eyebrow: "Todo empezó en",
+      year: "1970",
+      text: "Una casa de piedra levantada a mano en medio del campo correntino, con piedras de la zona y madera de los montes cercanos. Primero fue casa de familia; mucho después, un lugar para recibir a otros.",
+    },
+    timeline: [
+      "Los abuelos llegaron a estas tierras buscando un lugar tranquilo para criar a sus hijos, lejos de la ciudad y cerca del agua.",
+      "La torre se terminó en 1978. Desde arriba se veía todo el campo, y se volvió el lugar de reunión al caer el sol.",
+      "Los fines de semana la casa se llenaba de amigos, guitarras y fogones que duraban hasta la madrugada.",
+      "La cocina siempre fue el corazón de la casa: pan casero, dulces de la quinta y mesas largas para todos.",
+    ],
+    chapter1: {
+      title: "La Torre no nació para ser un hotel.",
+      paragraphs: [
+        "Durante años fue el refugio de la familia: el lugar al que se volvía en vacaciones, donde se festejaban los cumpleaños y se esperaba la lluvia mirando el campo.",
+        "Los amigos que venían de visita empezaron a pedir volver, y después a traer a sus propios amigos. La casa se fue agrandando de a poco, siempre con la misma piedra.",
+        "Sin buscarlo, La Torre se volvió un lugar del que se hablaba en voz baja: un secreto del campo correntino.",
+      ],
+    },
+    aside: {
+      title: "Cada habitación se pensó para mirar hacia afuera: el campo, el agua, el cielo enorme de Corrientes.",
+      caption: "Los muebles, los libros y los objetos de la casa llegaron con la familia y se quedaron.",
+    },
+    quote1: {
+      title: "Entendimos que quienes llegaban querían vivir el campo de cerca.",
+      text: "No buscaban lujo, sino tiempo: caminar sin apuro, comer bien, quedarse en silencio frente al agua al atardecer.",
+    },
+    chapter2: {
+      title: "Abrir las puertas fue la manera de compartirlo.",
+      paragraphs: [
+        "Con los años, la casa se transformó en un pequeño hotel de cinco suites, sin perder lo que la hacía especial: el trato de familia y el ritmo del campo.",
+        "Huéspedes de todo el mundo llegaron atraídos por los Esteros del Iberá, y volvieron por la casa, las comidas y las charlas de sobremesa.",
+      ],
+      note: "Algunos de ellos todavía vuelven cada año.",
+    },
+    quote2: {
+      title: "La música y las tradiciones del litoral son parte de la casa.",
+      paragraphs: [
+        "Chamamé en la galería, asados al fuego lento y noches largas bajo las estrellas: costumbres que se mantienen desde el principio.",
+        "Cada visita es también una forma de conocer la cultura correntina desde adentro.",
+      ],
+    },
+    chapter3: {
+      note: "Hoy la casa sigue en manos de la misma familia.",
+      title: "Cincuenta años después, La Torre sigue siendo, antes que nada, un hogar.",
+      paragraphs: [
+        "Se renovaron las habitaciones, se sumó la pileta y se abrieron nuevos rincones para descansar, pero la piedra, los árboles y la forma de recibir son las mismas.",
+        "Quien llega se encuentra con una casa viva, con historias en cada pared.",
+      ],
+    },
+    closing: {
+      text: "Lo que atrae a la gente es la mezcla justa entre lo simple y lo cuidado: una casa de piedra, buena comida, el silencio del campo y la sensación de estar en un lugar que no se parece a ningún otro.",
+      title: "La Torre del Guayaibí sigue siendo un secreto bien guardado en el corazón de Corrientes.",
+    },
+    next: {
+      eyebrow: "Próxima página",
+      title: "Habitaciones",
+      hint: "Seguí scrolleando",
+    },
+    images: {
+      galeria: "La galería de piedra de la casa al atardecer, con el campo de fondo",
+      piedra: "Muro de piedra de la torre contra el cielo",
+      atardecer: "Eucaliptos a contraluz al atardecer",
+      ovejas: "Un rebaño de ovejas iluminado por el sol",
+      fogon: "La parrilla encendida junto a la pared de piedra",
+      desayuno: "Mesa de desayuno servida en el comedor de piedra",
+      casa: "La casa de piedra y la torre entre eucaliptos, reflejadas en la pileta",
+      laguna: "Atardecer rosado sobre la laguna, con una canoa junto al muelle",
+      libros: "La biblioteca de la casa, con estantes de madera llenos de libros",
+      guitarras: "Músicos tocando chamamé de noche bajo una guirnalda de luces",
+      vacas: "Vacas Hereford pastando en el campo dorado",
+      juncos: "Juncos y camalotes sobre el agua bajo un cielo rosado",
+      musica: "Dos músicos con guitarra y acordeón en el jardín",
+      muelle: "Cortinas blancas al viento en el muelle, frente al agua al atardecer",
+      canoa: "Una canoa sobre el agua quieta al caer el sol",
+      mesa: "Una mesa larga servida con velas, frutas y quesos",
+      suite: "Una suite con cama con dosel, paredes de piedra y piso de madera",
     },
   },
 

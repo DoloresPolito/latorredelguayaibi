@@ -12,6 +12,12 @@ type ToneShiftProps = {
   untilId?: string;
   /** Altura de la pantalla (0 a 1) que tiene que alcanzar su borde de arriba */
   threshold?: number;
+  /**
+   * Lo mismo para `untilId` (por defecto, igual a `threshold`). Bajo, p. ej.
+   * 0.15, si `untilId` es una foto grande: el cambio pasa cuando la foto ya
+   * tapa casi toda la pantalla y el fondo cambia de color detrás.
+   */
+  untilThreshold?: number;
 };
 
 /**
@@ -23,16 +29,23 @@ type ToneShiftProps = {
  * hay una línea de corte entre secciones. En oscuro también avisa a la
  * navbar (data-nav-theme="dark").
  */
-export default function ToneShift({ children, targetId, untilId, threshold = 0.6 }: ToneShiftProps) {
+export default function ToneShift({
+  children,
+  targetId,
+  untilId,
+  threshold = 0.6,
+  untilThreshold = threshold,
+}: ToneShiftProps) {
   const ref = useRef<HTMLDivElement>(null);
 
   useScrollFrame(ref, (el) => {
     const target = document.getElementById(targetId);
     const until = untilId ? document.getElementById(untilId) : null;
     if (!target) return;
-    const line = window.innerHeight * threshold;
+    const vh = window.innerHeight;
     const dark =
-      target.getBoundingClientRect().top < line && (!until || until.getBoundingClientRect().top >= line);
+      target.getBoundingClientRect().top < vh * threshold &&
+      (!until || until.getBoundingClientRect().top >= vh * untilThreshold);
     if ((el.dataset.tone === "dark") === dark) return;
     el.dataset.tone = dark ? "dark" : "light";
     if (dark) el.setAttribute("data-nav-theme", "dark");

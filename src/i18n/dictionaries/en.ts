@@ -17,6 +17,9 @@ export const en: Dictionary = {
     entornoTitle: "Surroundings — La Torre del Guayaibí",
     entornoDescription:
       "Open fields, still water and vast skies: the landscape around La Torre, close to the Iberá Wetlands.",
+    historiaTitle: "Our story — La Torre del Guayaibí",
+    historiaDescription:
+      "A stone house in the Corrientes countryside, built by one family and opened to those who seek the rhythm of the land.",
   },
 
   nav: {
@@ -222,6 +225,7 @@ export const en: Dictionary = {
     title: "Where the countryside becomes horizon.",
     text: "Vast skies, still water and the stone house among eucalyptus trees. Explore in pictures the landscape around La Torre.",
     cta: "See the surroundings",
+    imageAlt: "The house's stone porch among eucalyptus trees, with the green lawn and a blue sky",
   },
 
   reviews: {
@@ -341,6 +345,92 @@ export const en: Dictionary = {
       eucaliptos: "Golden sunset over the pool, with sun loungers and eucalyptus trees silhouetted against the sun",
       fogon: "A fire burning in a stone circle, with open fields behind",
       noche: "The stone tower lit up at night, under a starry sky with the Milky Way",
+    },
+  },
+
+  // PLACEHOLDER COPY: written to lay out the design, to be replaced later.
+  historia: {
+    hero: {
+      title: "Our story",
+      scroll: "Scroll",
+    },
+    intro: {
+      eyebrow: "It all began in the",
+      year: "1970s",
+      text: "A stone house built by hand in the middle of the Corrientes countryside, with local stone and timber from the nearby woods. First it was a family home; much later, a place to welcome others.",
+    },
+    timeline: [
+      "The grandparents came to this land looking for a quiet place to raise their children, far from the city and close to the water.",
+      "The tower was finished in 1978. From the top you could see the whole countryside, and it became the place to gather at sunset.",
+      "On weekends the house filled with friends, guitars and bonfires that lasted until dawn.",
+      "The kitchen was always the heart of the house: homemade bread, preserves from the orchard and long tables for everyone.",
+    ],
+    chapter1: {
+      title: "La Torre was never meant to be a hotel.",
+      paragraphs: [
+        "For years it was the family's refuge: the place to come back to on holidays, where birthdays were celebrated and rain was awaited while looking out over the fields.",
+        "Friends who came to visit began asking to return, and then to bring their own friends. The house slowly grew, always with the same stone.",
+        "Without trying, La Torre became a place people spoke of quietly: a secret of the Corrientes countryside.",
+      ],
+    },
+    aside: {
+      title: "Every room was designed to look outward: the fields, the water, the vast Corrientes sky.",
+      caption: "The furniture, books and objects of the house arrived with the family and stayed.",
+    },
+    quote1: {
+      title: "We understood that our guests wanted to live the countryside up close.",
+      text: "They weren't looking for luxury, but for time: unhurried walks, good food, silence by the water at sunset.",
+    },
+    chapter2: {
+      title: "Opening the doors was the way to share it.",
+      paragraphs: [
+        "Over the years, the house became a small hotel with five suites, without losing what made it special: family hospitality and the rhythm of the countryside.",
+        "Guests from all over the world came for the Iberá Wetlands, and came back for the house, the meals and the long after-dinner conversations.",
+      ],
+      note: "Some of them still come back every year.",
+    },
+    quote2: {
+      title: "The music and traditions of the Litoral are part of the house.",
+      paragraphs: [
+        "Chamamé on the porch, slow-fire asados and long nights under the stars: customs kept alive since the beginning.",
+        "Every stay is also a way to get to know Corrientes culture from the inside.",
+      ],
+    },
+    chapter3: {
+      note: "Today the house is still run by the same family.",
+      title: "Fifty years later, La Torre is still, above all, a home.",
+      paragraphs: [
+        "The rooms were renewed, the pool was added and new corners opened up for resting, but the stone, the trees and the way guests are welcomed remain the same.",
+        "Whoever arrives finds a living house, with stories in every wall.",
+      ],
+    },
+    closing: {
+      text: "What draws people is the right blend of the simple and the cared-for: a stone house, good food, the silence of the countryside and the feeling of being somewhere unlike anywhere else.",
+      title: "La Torre del Guayaibí remains a well-kept secret in the heart of Corrientes.",
+    },
+    next: {
+      eyebrow: "Next page",
+      title: "Rooms",
+      hint: "Keep scrolling",
+    },
+    images: {
+      galeria: "The house's stone porch at sunset, with the countryside behind",
+      piedra: "Stone wall of the tower against the sky",
+      atardecer: "Eucalyptus trees backlit at sunset",
+      ovejas: "A flock of sheep lit by the sun",
+      fogon: "The grill burning next to the stone wall",
+      desayuno: "Breakfast table set in the stone dining room",
+      casa: "The stone house and tower among eucalyptus trees, reflected in the pool",
+      laguna: "Pink sunset over the lagoon, with a canoe by the pier",
+      libros: "The house library, with wooden shelves full of books",
+      guitarras: "Musicians playing chamamé at night under a string of lights",
+      vacas: "Hereford cows grazing in the golden fields",
+      juncos: "Reeds and water hyacinths on the water under a pink sky",
+      musica: "Two musicians with a guitar and an accordion in the garden",
+      muelle: "White curtains blowing on the pier, facing the water at sunset",
+      canoa: "A canoe on still water at dusk",
+      mesa: "A long table set with candles, fruit and cheese",
+      suite: "A suite with a canopy bed, stone walls and wooden floors",
     },
   },
 

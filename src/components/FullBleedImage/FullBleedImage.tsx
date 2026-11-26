@@ -4,6 +4,7 @@ import styles from "./FullBleedImage.module.scss";
 type FullBleedImageProps = {
   src: string;
   alt: string;
+  id?: string;
 };
 
 /**
@@ -11,9 +12,9 @@ type FullBleedImageProps = {
  * hace la sección de arriba (envuelta en <Curtain>): se queda atrás y la
  * foto le pasa por encima, como en vesuvio.it.
  */
-export default function FullBleedImage({ src, alt }: FullBleedImageProps) {
+export default function FullBleedImage({ src, alt, id }: FullBleedImageProps) {
   return (
-    <section className={styles.section} data-nav-theme="dark">
+    <section id={id} className={styles.section} data-nav-theme="dark">
       <div className={styles.frame}>
         <Image src={src} alt={alt} fill sizes="100vw" className={styles.image} />
       </div>

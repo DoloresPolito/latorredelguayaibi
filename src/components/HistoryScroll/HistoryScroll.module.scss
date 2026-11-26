@@ -1,0 +1,659 @@
+@use "abstracts" as *;
+
+@include enter-keyframes;
+
+// Variables (las escribe HistoryScroll.tsx con el scroll):
+// --hero: corrimiento de la portada (px), para que se quede atrás.
+// --rel:  en cada foto / en la próxima página, dónde está su centro respecto
+//         del centro de la pantalla (0 = centrado, 1 = una pantalla a la derecha).
+//
+// Los anchos van en vw porque la tira es horizontal: cada panel ocupa una
+// parte del ancho de la pantalla. En mobile los paneles son más anchos.
+
+$pad-top: $navbar-height + $navbar-sticky-top + $space-8; // debajo de la navbar
+$pad-bottom: $space-12;
+$gap: 3vw;
+
+// ─────────────────────────────────────────────
+// Estructura
+// ─────────────────────────────────────────────
+.section {
+  --hero: 0px;
+
+  position: relative;
+  // Alto provisorio hasta que se mide la tira (lo pisa el JS)
+  height: 1200vh;
+  background-color: $color-background;
+}
+
+.sticky {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  // clip (no hidden): el navegador no puede scrollearlo al enfocar un link
+  overflow: clip;
+}
+
+.track {
+  display: flex;
+  width: max-content;
+  height: 100%;
+  will-change: transform;
+}
+
+// Panel genérico: fondo crema y por encima de la portada
+.panel {
+  position: relative;
+  z-index: 1;
+  flex-shrink: 0;
+  display: flex;
+  height: 100%;
+  padding: $pad-top $gap $pad-bottom;
+  background-color: $color-background;
+
+  @include mq-down(md) {
+    padding: ($navbar-height-mobile + $space-12) 6vw $space-10;
+  }
+}
+
+// ─────────────────────────────────────────────
+// Piezas compartidas
+// ─────────────────────────────────────────────
+.photo {
+  position: relative;
+  margin: 0;
+  overflow: hidden;
+  background-color: $color-border;
+}
+
+// Más ancha que el marco; se corre según --rel (parallax dentro del marco)
+.photoInner {
+  position: absolute;
+  inset: 0 -12%;
+  translate: calc(var(--rel, 0) * -9%) 0;
+  will-change: translate;
+
+  @media (prefers-reduced-motion: reduce) {
+    inset: 0;
+    translate: none;
+  }
+}
+
+.photoImage {
+  object-fit: cover;
+}
+
+// Fotos de los primeros capítulos, con tono de archivo
+.archive .photoImage {
+  filter: sepia(0.55) saturate(0.75) contrast(0.95) brightness(1.02);
+}
+
+.serif {
+  @include title-italiana;
+  margin: 0;
+  font-size: clamp(26px, 2.3vw, 40px);
+  line-height: 1.2;
+  color: $color-heading;
+}
+
+.serifLarge {
+  @include title-italiana;
+  margin: 0;
+  font-size: clamp(26px, 2.6vw, 44px);
+  line-height: 1.22;
+  color: $color-heading;
+}
+
+.small {
+  margin: 0;
+  font-family: $font-sans;
+  font-size: 13px;
+  line-height: 1.65;
+  color: $color-body;
+
+  @include mq(xxl) {
+    font-size: 14px;
+  }
+}
+
+.rule {
+  display: block;
+  width: 100%;
+  max-width: 180px;
+  height: $border-width;
+  background-color: currentColor;
+  opacity: 0.35;
+}
+
+.diamond {
+  display: block;
+  flex-shrink: 0;
+  width: 8px;
+  height: 8px;
+  border: $border-width solid $terracotta;
+  background-color: $color-background;
+  rotate: 45deg;
+
+  &::after {
+    content: "";
+    display: block;
+    width: 2px;
+    height: 2px;
+    margin: 2px;
+    background-color: $terracotta;
+  }
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+  width: 140px;
+  color: $color-muted;
+
+  &::before,
+  &::after {
+    content: "";
+    flex: 1;
+    height: $border-width;
+    background-color: currentColor;
+    opacity: 0.5;
+  }
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: $space-6;
+  width: 22vw;
+  color: $color-muted;
+
+  @include mq-down(md) {
+    width: 78vw;
+  }
+}
+
+// ─────────────────────────────────────────────
+// 1. Portada: se mueve más lento que el resto y la tapan los paneles
+// ─────────────────────────────────────────────
+.hero {
+  position: relative;
+  z-index: 0;
+  flex-shrink: 0;
+  width: 100vw;
+  height: 100%;
+  overflow: hidden;
+  translate: var(--hero) 0;
+}
+
+.heroImage {
+  object-fit: cover;
+  @include enter-image(1.08, 6s);
+}
+
+.heroShade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba($forest, 0.55), rgba($forest, 0) 45%);
+}
+
+.heroTitle {
+  @include title-italiana;
+  position: absolute;
+  bottom: 13svh;
+  left: 50%;
+  margin: 0;
+  translate: -50% 0;
+  white-space: nowrap;
+  font-size: clamp(44px, 6vw, 96px);
+  line-height: 1;
+  color: $butter;
+  @include enter(300ms);
+}
+
+.hint {
+  position: absolute;
+  bottom: $space-8;
+  left: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $space-2;
+  margin: 0;
+  translate: -50% 0;
+  @include nav-link;
+  color: $butter;
+  @include enter(700ms);
+}
+
+.hintLine {
+  width: $border-width;
+  height: 28px;
+  background-color: currentColor;
+  opacity: 0.6;
+}
+
+// ─────────────────────────────────────────────
+// 2. El año
+// ─────────────────────────────────────────────
+.intro {
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: $space-5;
+  width: 44vw;
+  text-align: center;
+
+  .small {
+    max-width: 380px;
+  }
+
+  @include mq-down(md) {
+    width: 92vw;
+  }
+}
+
+.introLogo {
+  margin-bottom: $space-4;
+  color: $color-heading;
+}
+
+.introEyebrow {
+  @include title-italiana;
+  margin: 0;
+  font-size: clamp(18px, 1.5vw, 24px);
+  color: $color-muted;
+}
+
+.year {
+  @include title-italiana;
+  --title-stroke: 0.015em;
+  margin: -0.1em 0 0;
+  font-size: clamp(110px, 13vw, 230px);
+  line-height: 0.9;
+  letter-spacing: -0.02em;
+  color: $color-heading;
+}
+
+// ─────────────────────────────────────────────
+// 3. Foto grande vertical
+// ─────────────────────────────────────────────
+.tall {
+  width: 38vw;
+  padding-inline: 0 $gap;
+
+  @include mq-down(md) {
+    width: 84vw;
+  }
+}
+
+.tallPhoto {
+  width: 100%;
+  height: 100%;
+}
+
+// ─────────────────────────────────────────────
+// 4. Línea de tiempo
+// ─────────────────────────────────────────────
+.timeline {
+  padding-inline: 0 $gap;
+}
+
+.timelineLine {
+  position: absolute;
+  top: calc(#{$pad-top} + (100% - #{$pad-top} - #{$pad-bottom}) / 2);
+  left: 0;
+  right: 0;
+  height: $border-width;
+  background-color: $color-border-strong;
+
+  @include mq-down(md) {
+    top: 50%;
+  }
+}
+
+.timelineList {
+  display: flex;
+  gap: 4vw;
+  margin: 0;
+  padding: 0 0 0 4vw;
+  list-style: none;
+}
+
+// Foto arriba, rombo sobre la línea, texto abajo (y al revés en .timelineFlip)
+.timelineItem {
+  position: relative;
+  display: grid;
+  grid-template-rows: 1fr auto 1fr;
+  row-gap: $space-6;
+  width: 19vw;
+
+  .timelinePhoto {
+    grid-row: 1;
+    align-self: end;
+  }
+
+  .diamond {
+    grid-row: 2;
+  }
+
+  .small {
+    grid-row: 3;
+    align-self: start;
+  }
+
+  @include mq-down(md) {
+    width: 64vw;
+  }
+}
+
+.timelineFlip {
+  .timelinePhoto {
+    grid-row: 3;
+    align-self: start;
+  }
+
+  .small {
+    grid-row: 1;
+    align-self: end;
+  }
+}
+
+.timelinePhoto {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border: 6px solid $color-border;
+}
+
+// ─────────────────────────────────────────────
+// 5. Foto, capítulo y otra foto
+// ─────────────────────────────────────────────
+.feature {
+  gap: $gap;
+  align-items: stretch;
+}
+
+.featurePhoto {
+  width: 34vw;
+
+  @include mq-down(md) {
+    width: 84vw;
+  }
+}
+
+.featurePhotoAlt {
+  align-self: center;
+  width: 28vw;
+  height: 78%;
+
+  @include mq-down(md) {
+    width: 80vw;
+  }
+}
+
+// ─────────────────────────────────────────────
+// 6. Frase grande con foto chica
+// ─────────────────────────────────────────────
+.aside {
+  flex-direction: column;
+  justify-content: space-between;
+  gap: $space-8;
+  width: 32vw;
+
+  .small {
+    max-width: 260px;
+  }
+
+  @include mq-down(md) {
+    width: 84vw;
+  }
+}
+
+.asidePhoto {
+  width: 9vw;
+  aspect-ratio: 4 / 5;
+  margin-top: auto;
+
+  @include mq-down(md) {
+    width: 32vw;
+  }
+}
+
+// ─────────────────────────────────────────────
+// 7 y 9. Foto de alto completo + bloque de color
+// ─────────────────────────────────────────────
+.split {
+  padding: 0;
+}
+
+.splitPhoto {
+  width: 34vw;
+  height: 100%;
+
+  @include mq-down(md) {
+    width: 86vw;
+  }
+}
+
+.colorBlock {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: $space-6;
+  width: 30vw;
+  height: 100%;
+  padding: $pad-top 3.5vw $space-16;
+  color: $butter;
+
+  .serif,
+  .small {
+    color: inherit;
+  }
+
+  .small {
+    opacity: 0.85;
+  }
+
+  @include mq-down(md) {
+    width: 86vw;
+    padding: $space-24 8vw $space-12;
+  }
+}
+
+.clay {
+  background-color: $terracotta;
+}
+
+.forest {
+  background-color: $forest;
+}
+
+// ─────────────────────────────────────────────
+// 8. Dos fotos apiladas, título y texto
+// ─────────────────────────────────────────────
+.stack {
+  gap: $gap;
+}
+
+.stackPhotos {
+  display: flex;
+  flex-direction: column;
+  gap: $space-4;
+  width: 30vw;
+
+  @include mq-down(md) {
+    width: 84vw;
+  }
+}
+
+.stackPhoto {
+  flex: 1;
+}
+
+.stackTitle {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 22vw;
+
+  .small {
+    max-width: 220px;
+  }
+
+  @include mq-down(md) {
+    width: 76vw;
+  }
+}
+
+.stackText {
+  display: flex;
+  flex-direction: column;
+  gap: $space-5;
+  width: 18vw;
+  padding-top: $space-2;
+
+  @include mq-down(md) {
+    width: 70vw;
+  }
+}
+
+// ─────────────────────────────────────────────
+// 10. Capítulo con foto chica y foto vertical
+// ─────────────────────────────────────────────
+.chapter {
+  gap: $gap;
+}
+
+.chapterSide {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: $space-6;
+  width: 14vw;
+
+  @include mq-down(md) {
+    width: 50vw;
+  }
+}
+
+.chapterThumb {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+}
+
+.chapterPhoto {
+  width: 28vw;
+
+  @include mq-down(md) {
+    width: 80vw;
+  }
+}
+
+// ─────────────────────────────────────────────
+// 11. Cierre
+// ─────────────────────────────────────────────
+.closing {
+  gap: $gap;
+  padding-right: 6vw;
+}
+
+.closingPhoto {
+  width: 26vw;
+
+  @include mq-down(md) {
+    width: 80vw;
+  }
+}
+
+.closingText {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: $space-10;
+  width: 26vw;
+
+  .small {
+    max-width: 300px;
+  }
+
+  @include mq-down(md) {
+    width: 80vw;
+  }
+}
+
+// ─────────────────────────────────────────────
+// 12. Próxima página: la foto se abre con el scroll
+// --open: 0 al asomar el panel → 1 cuando queda centrado
+// ─────────────────────────────────────────────
+.next {
+  --open: clamp(0, (1 - var(--rel, 0)) * 1.15, 1);
+
+  position: relative;
+  z-index: 1;
+  flex-shrink: 0;
+  display: block;
+  width: 100vw;
+  height: 100%;
+  background-color: $dark-brown;
+  color: $butter;
+  text-decoration: none;
+
+  &:focus-visible {
+    outline: $border-width solid $butter;
+    outline-offset: -8px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    --open: 1;
+  }
+}
+
+.nextImage {
+  position: absolute;
+  inset: 0;
+  // De una foto chica en el centro (≈ 22vw × 46vh) a la pantalla completa
+  clip-path: inset(calc((1 - var(--open)) * 27svh) calc((1 - var(--open)) * 39vw));
+  filter: grayscale(calc(1 - var(--open)));
+  will-change: clip-path;
+
+  @include mq-down(md) {
+    clip-path: inset(calc((1 - var(--open)) * 24svh) calc((1 - var(--open)) * 22vw));
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-color: rgba($forest, 0.3);
+  }
+}
+
+.nextEyebrow,
+.nextTitle,
+.nextHint {
+  position: absolute;
+  left: 50%;
+  z-index: 1;
+  translate: -50% 0;
+  white-space: nowrap;
+}
+
+.nextEyebrow {
+  top: 18svh;
+  @include nav-link;
+  color: inherit;
+}
+
+.nextTitle {
+  @include title-italiana;
+  bottom: 16svh;
+  font-size: clamp(36px, 3.6vw, 60px);
+}
+
+.nextHint {
+  bottom: $space-8;
+  @include nav-link;
+  color: inherit;
+  opacity: 0.8;
+}
