@@ -32,10 +32,10 @@ const photoSizes = (w: number) =>
 const SLOTS: { x: number; y: number; s: number; z: number }[] = [
   { x: -36, y: -22, s: 12, z: -150 },
   { x: 34, y: -26, s: 12, z: -400 },
-  { x: 38, y: 26, s: 13, z: -650 },
-  { x: -34, y: 44, s: 12, z: -900 },
+  { x: 50, y: 28, s: 15.5, z: -650 },
+  { x: -48, y: 46, s: 14.5, z: -900 },
   { x: 6, y: -46, s: 11, z: -1200 },
-  { x: 12, y: 56, s: 12, z: -1500 }, // abajo al centro: a la izquierda tapaba a la 04
+  { x: 12, y: 58, s: 14.5, z: -1500 }, // abajo al centro: a la izquierda tapaba a la 04
   { x: 30, y: 40, s: 13, z: -1800 },
   { x: -34, y: -40, s: 12, z: -2100 },
   { x: 48, y: -8, s: 12, z: -2400 },
