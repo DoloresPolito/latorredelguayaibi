@@ -1,4 +1,5 @@
 import Image from "next/image";
+import type { CSSProperties } from "react";
 import { ArrowRight, ChevronDown } from "lucide-react";
 import type { Dictionary } from "@/i18n/dictionaries/es";
 import styles from "./Hero.module.scss";
@@ -6,8 +7,11 @@ import styles from "./Hero.module.scss";
 type HeroProps = {
   /** Textos del hero: la frase, el botón y los indicadores de scroll */
   t: Pick<Dictionary["hero"], "tagline" | "cta" | "scroll" | "next">;
-  /** Foto de fondo (horizontal; en mobile se recorta) */
-  image: { src: string; width: number; height: number; alt: string };
+  /**
+   * Foto de fondo (horizontal; en mobile se recorta). focusY: qué parte del
+   * alto queda a la vista cuando se recorta ("100%" = abajo; por defecto, centro).
+   */
+  image: { src: string; width: number; height: number; alt: string; focusY?: string };
   /** Título en dos líneas (el nombre del hotel, o el de la sección) */
   name: { line1: string; line2: string };
   /** Ubicación, chica arriba del título (p. ej. "Mercedes, Corrientes") */
@@ -30,7 +34,15 @@ export default function Hero({ t, image, name, location, nextSectionId, ctaHref 
   return (
     <section className={styles.hero} data-nav-theme="dark" data-nav-glass>
       <div className={styles.media}>
-        <Image src={image.src} alt={image.alt} fill priority sizes="100vw" className={styles.image} />
+        <Image
+          src={image.src}
+          alt={image.alt}
+          fill
+          priority
+          sizes="100vw"
+          className={styles.image}
+          style={image.focusY ? ({ "--focus-y": image.focusY } as CSSProperties) : undefined}
+        />
         <div className={styles.overlay} aria-hidden="true" />
       </div>
 

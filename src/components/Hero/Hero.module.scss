@@ -36,10 +36,10 @@
   @include enter-image;
   object-fit: cover;
   // Mobile: corrido a la derecha para que se vea la torre
-  object-position: 66% center;
+  object-position: 66% var(--focus-y, center);
 
   @include mq(lg) {
-    object-position: center center;
+    object-position: center var(--focus-y, center);
   }
 }
 

@@ -1,18 +1,14 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import { useEffect, useRef, type CSSProperties } from "react";
 import type { Dictionary } from "@/i18n/dictionaries/es";
-import type { Locale } from "@/i18n/config";
-import { localizePath } from "@/i18n/config";
 import { HISTORIA_IMAGES, type HistoriaImageKey } from "@/config/historia";
 import { prefersReducedMotion, useScrollFrame } from "@/lib/useScrollFrame";
 import Logo from "@/components/Logo/Logo";
 import styles from "./HistoryScroll.module.scss";
 
 type HistoryScrollProps = {
-  lang: Locale;
   t: Dictionary["historia"];
 };
 
@@ -88,8 +84,10 @@ const Diamond = () => <span className={styles.diamond} aria-hidden="true" />;
  * - en la sección: --hero (corrimiento de la portada, px)
  * - en cada [data-shift]: --rel (posición del centro respecto del centro de
  *   la pantalla, en anchos de pantalla: 0 = centrado, 1 = una pantalla a la derecha)
+ * - en cada [data-shift]: data-seen la primera vez que entra bien en pantalla
+ *   (dispara el zoom suave de la foto, ver .photo en el SCSS)
  */
-export default function HistoryScroll({ lang, t }: HistoryScrollProps) {
+export default function HistoryScroll({ t }: HistoryScrollProps) {
   const sectionRef = useRef<HTMLElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   // Medidas que no cambian con el scroll (se recalculan al cambiar el tamaño)
@@ -144,6 +142,8 @@ export default function HistoryScroll({ lang, t }: HistoryScrollProps) {
         const rel = (center - x - vw / 2) / vw;
         // Fuera de pantalla no hace falta actualizar
         if (rel > -1.5 && rel < 1.5) el.style.setProperty("--rel", rel.toFixed(4));
+        // Ya asomó un cuarto de pantalla: se ve una vez y queda
+        if (rel < 0.75 && !el.hasAttribute("data-seen")) el.setAttribute("data-seen", "");
       }
     },
     { whileVisible: true, immediate: true },
@@ -224,7 +224,7 @@ export default function HistoryScroll({ lang, t }: HistoryScrollProps) {
             <p className={styles.eyebrow}>{t.torre.eyebrow}</p>
             <h2 className={styles.serifLarge}>{t.torre.title}</h2>
             <p className={styles.small}>{t.torre.text}</p>
-            <Photo image="anteojos" alt={img} free={{ height: 40, align: "start" }} sizes="(max-width: 768px) 60vw, 20vw" />
+            <Photo image="anteojos" alt={img} free={{ height: 26, align: "start" }} sizes="(max-width: 768px) 84vw, 32vw" className={styles.wholePhoto} />
           </div>
 
           {/* 10. Foto de la biblioteca, al costado del texto */}
@@ -235,12 +235,12 @@ export default function HistoryScroll({ lang, t }: HistoryScrollProps) {
           {/* 11. De casa a hotel */}
           <div className={`${styles.panel} ${styles.feature}`}>
             <Chapter t={t.hotel} />
-            <Photo image="habitacion" alt={img} free={{ height: 64 }} sizes="(max-width: 768px) 90vw, 60vw" />
+            <Photo image="hotel" alt={img} free={{ height: 64 }} sizes="(max-width: 768px) 90vw, 60vw" />
           </div>
 
           {/* 12. Hoy: foto y bloque de color oscuro */}
           <div className={`${styles.panel} ${styles.split}`}>
-            <Photo image="desayuno" alt={img} sizes="(max-width: 768px) 85vw, 32vw" className={styles.splitPhoto} />
+            <Photo image="ellos" alt={img} sizes="(max-width: 768px) 85vw, 32vw" className={`${styles.splitPhoto} ${styles.ellosPhoto}`} />
             <div className={`${styles.colorBlock} ${styles.forest}`}>
               <p className={styles.eyebrow}>{t.hoy.eyebrow}</p>
               <h2 className={styles.serif}>{t.hoy.title}</h2>
@@ -255,22 +255,18 @@ export default function HistoryScroll({ lang, t }: HistoryScrollProps) {
 
           {/* 13. Cierre: la frase de Cambá */}
           <div className={`${styles.panel} ${styles.closing}`}>
-            <Photo image="cierre" alt={img} free={{ height: 60 }} sizes="(max-width: 768px) 85vw, 40vw" />
             <blockquote className={styles.closingText}>
               <p className={styles.serifLarge}>{t.closing.quote}</p>
               <footer className={styles.small}>— {t.closing.author}</footer>
             </blockquote>
           </div>
 
-          {/* 14. Próxima página: la foto se abre hasta ocupar la pantalla */}
-          <Link href={localizePath(lang, "/habitaciones")} className={styles.next} data-shift>
-            <span className={styles.nextEyebrow}>{t.next.eyebrow}</span>
-            <span className={styles.nextImage} aria-hidden="true">
-              <Image src={HISTORIA_IMAGES.suite.src} alt="" fill sizes="100vw" loading="eager" className={styles.photoImage} />
+          {/* 14. Final: la foto de las almenas se abre hasta ocupar la pantalla */}
+          <div className={styles.next} data-shift>
+            <span className={styles.nextImage}>
+              <Image src={HISTORIA_IMAGES.almenas.src} alt={img.almenas} fill sizes="100vw" loading="eager" className={styles.photoImage} />
             </span>
-            <span className={styles.nextTitle}>{t.next.title}</span>
-            <span className={styles.nextHint}>{t.next.hint}</span>
-          </Link>
+          </div>
         </div>
       </div>
     </section>

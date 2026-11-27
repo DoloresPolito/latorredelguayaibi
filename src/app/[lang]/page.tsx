@@ -46,21 +46,20 @@ export default async function Home() {
         <FullBleedImage src="/images/laguna.jpg" alt={t.welcomePanel.imageAlt} />
         <QuietText t={t.quietText} />
         <RoomsShowcase lang={lang} t={t.roomsShowcase} />
-        {/* Gastronomía, eventos, entorno y reseñas comparten el fondo: al
-            llegar a eventos pasa de crema a verde y sigue verde en la
-            invitación al entorno. Después, la foto de la casa sube por
-            encima de la invitación (telón, como la laguna) y, cuando ya tapa
-            casi toda la pantalla, el fondo vuelve a crema detrás de ella:
-            al terminar de pasar, las reseñas aparecen ya en crema */}
-        <ToneShift targetId="eventos-home" untilId="foto-casa" untilThreshold={0.15}>
+        {/* Gastronomía, eventos y entorno comparten el fondo: al llegar a
+            eventos pasa de crema a verde y sigue verde en la invitación al
+            entorno. Después, la foto de la biblioteca sube por encima de la
+            invitación (telón, como la laguna). Las reseñas quedan afuera, en
+            crema: el corte de verde a crema es el borde de abajo de la foto */}
+        <ToneShift targetId="eventos-home">
           <Dining t={t.dining} />
           <EventsShowcase lang={lang} t={t.eventsShowcase} />
           <Curtain>
             <EnvironmentInvite lang={lang} t={t.environmentInvite} />
           </Curtain>
-          <FullBleedImage id="foto-casa" src="/images/torre2.png" alt={t.environmentInvite.imageAlt} />
-          <Reviews t={t.reviews} />
+          <FullBleedImage id="foto-casa" src="/images/libroshome.png" alt={t.environmentInvite.imageAlt} />
         </ToneShift>
+        <Reviews t={t.reviews} />
       </main>
       <Footer lang={lang} t={t.footer} nav={t.nav} />
     </PageTransition>

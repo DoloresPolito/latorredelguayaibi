@@ -35,7 +35,7 @@ const SLOTS: { x: number; y: number; s: number; z: number }[] = [
   { x: 38, y: 26, s: 13, z: -650 },
   { x: -34, y: 44, s: 12, z: -900 },
   { x: 6, y: -46, s: 11, z: -1200 },
-  { x: -46, y: 38, s: 12, z: -1500 },
+  { x: 12, y: 56, s: 12, z: -1500 }, // abajo al centro: a la izquierda tapaba a la 04
   { x: 30, y: 40, s: 13, z: -1800 },
   { x: -34, y: -40, s: 12, z: -2100 },
   { x: 48, y: -8, s: 12, z: -2400 },
@@ -45,6 +45,9 @@ const SLOTS: { x: number; y: number; s: number; z: number }[] = [
   { x: 20, y: 46, s: 12, z: -3600 },
 ];
 
+/** Agranda todas las fotos flotantes por igual (1 = el tamaño "s" de cada lugar) */
+const PHOTO_SCALE = 2.1;
+
 /**
  * Recorte según la forma de la foto, sin pasar de 3:2 ni de 2:3, y ancho
  * según el tamaño del lugar: así una vertical y una horizontal en el mismo
@@ -52,7 +55,7 @@ const SLOTS: { x: number; y: number; s: number; z: number }[] = [
  */
 function fit(photo: EntornoPhoto, s: number) {
   const r = Math.min(3 / 2, Math.max(2 / 3, photo.width / photo.height));
-  return { ratio: r.toFixed(3), w: Math.round(s * Math.sqrt(r) * 10) / 10 };
+  return { ratio: r.toFixed(3), w: Math.round(s * PHOTO_SCALE * Math.sqrt(r) * 10) / 10 };
 }
 
 /**

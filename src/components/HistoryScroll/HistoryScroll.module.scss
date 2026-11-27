@@ -79,8 +79,22 @@ $gap: 3vw;
   }
 }
 
+// Al aparecer, la foto se acomoda con un zoom muy leve (1.06 → 1): el marco
+// no cambia y termina en su encuadre normal. data-seen lo pone el scroll.
 .photoImage {
   object-fit: cover;
+  transition: scale 1800ms $ease-out;
+}
+
+.photo:not([data-seen]) .photoImage {
+  scale: 1.06;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .photo .photoImage {
+    scale: none;
+    transition: none;
+  }
 }
 
 
@@ -117,12 +131,12 @@ $gap: 3vw;
 .small {
   margin: 0;
   font-family: $font-sans;
-  font-size: 13px;
+  font-size: 15px;
   line-height: 1.65;
   color: $color-body;
 
   @include mq(xxl) {
-    font-size: 14px;
+    font-size: 16px;
   }
 }
 
@@ -340,10 +354,6 @@ $gap: 3vw;
   gap: $space-8;
   width: 32vw;
 
-  .small {
-    max-width: 260px;
-  }
-
   @include mq-down(md) {
     width: 84vw;
   }
@@ -351,6 +361,18 @@ $gap: 3vw;
 
 .aside .free {
   margin-top: auto;
+}
+
+// Foto que se ve entera (libros1): ancho de la columna, alto según su
+// proporción y sin el sobrante del parallax, para que no recorte arriba/abajo
+.aside .wholePhoto {
+  width: 100%;
+  height: auto;
+}
+
+.wholePhoto .photoInner {
+  inset: 0;
+  translate: none;
 }
 
 // ─────────────────────────────────────────────
@@ -367,6 +389,11 @@ $gap: 3vw;
   @include mq-down(md) {
     width: 86vw;
   }
+}
+
+// La foto es apaisada y el marco vertical: centrar en Enrique y Marisa
+.ellosPhoto .photoImage {
+  object-position: 44% center;
 }
 
 .colorBlock {
@@ -419,17 +446,13 @@ $gap: 3vw;
   gap: $space-6;
   width: 26vw;
 
-  .small {
-    max-width: 300px;
-  }
-
   @include mq-down(md) {
     width: 80vw;
   }
 }
 
 // ─────────────────────────────────────────────
-// 14. Próxima página: la foto se abre con el scroll
+// 14. Final: la foto de las almenas se abre con el scroll
 // --open: 0 al asomar el panel → 1 cuando queda centrado
 // ─────────────────────────────────────────────
 .next {
@@ -442,13 +465,6 @@ $gap: 3vw;
   width: 100vw;
   height: 100%;
   background-color: $dark-brown;
-  color: $butter;
-  text-decoration: none;
-
-  &:focus-visible {
-    outline: $border-width solid $butter;
-    outline-offset: -8px;
-  }
 
   @media (prefers-reduced-motion: reduce) {
     --open: 1;
@@ -466,40 +482,4 @@ $gap: 3vw;
   @include mq-down(md) {
     clip-path: inset(calc((1 - var(--open)) * 24svh) calc((1 - var(--open)) * 22vw));
   }
-
-  &::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background-color: rgba($forest, 0.3);
-  }
-}
-
-.nextEyebrow,
-.nextTitle,
-.nextHint {
-  position: absolute;
-  left: 50%;
-  z-index: 1;
-  translate: -50% 0;
-  white-space: nowrap;
-}
-
-.nextEyebrow {
-  top: 18svh;
-  @include nav-link;
-  color: inherit;
-}
-
-.nextTitle {
-  @include title-italiana;
-  bottom: 16svh;
-  font-size: clamp(36px, 3.6vw, 60px);
-}
-
-.nextHint {
-  bottom: $space-8;
-  @include nav-link;
-  color: inherit;
-  opacity: 0.8;
 }

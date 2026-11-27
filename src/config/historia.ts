@@ -5,8 +5,6 @@ export type HistoriaImageKey = keyof Dictionary["historia"]["images"];
 /**
  * Fotos de la página Nuestra historia (public/images/historia/). El texto
  * alternativo está en historia.images del diccionario.
- * Las de provisorias/ son fotos actuales de la casa que ocupan el lugar
- * hasta tener las de cada capítulo (hotel, hoy y cierre).
  */
 export const HISTORIA_IMAGES: Record<HistoriaImageKey, { src: string; width: number; height: number }> = {
   hero: { src: "/images/historia/hero.jpg", width: 1459, height: 1078 },
@@ -18,12 +16,10 @@ export const HISTORIA_IMAGES: Record<HistoriaImageKey, { src: string; width: num
   obraViga: { src: "/images/historia/obra-1-viga.jpg", width: 960, height: 1280 },
   obraGaleria: { src: "/images/historia/obra-2-galeria.jpg", width: 1280, height: 960 },
   obraTorreLejos: { src: "/images/historia/obra-3-torre-lejos.jpg", width: 1280, height: 960 },
-  telescopio: { src: "/images/historia/torre-1-telescopio.jpg", width: 1083, height: 720 },
-  anteojos: { src: "/images/historia/torre-3-anteojos.jpg", width: 1396, height: 1800 },
-  // Provisorias
-  habitacion: { src: "/images/historia/provisorias/habitacion.jpg", width: 2560, height: 1440 },
-  desayuno: { src: "/images/historia/provisorias/desayuno.jpg", width: 1440, height: 1800 },
-  cierre: { src: "/images/historia/provisorias/cierre.jpg", width: 2560, height: 1920 },
-  // Foto de la próxima página (Habitaciones)
-  suite: { src: "/images/habitaciones/1.png", width: 1536, height: 1024 },
+  telescopio: { src: "/images/historia/libros2.png", width: 1046, height: 696 },
+  anteojos: { src: "/images/historia/libros1.png", width: 1208, height: 528 },
+  hotel: { src: "/images/historia/hotel.png", width: 868, height: 606 },
+  ellos: { src: "/images/historia/ellos.png", width: 780, height: 520 },
+  // Foto final, que se abre a pantalla completa
+  almenas: { src: "/images/historia/almenas.png", width: 1591, height: 989 },
 };

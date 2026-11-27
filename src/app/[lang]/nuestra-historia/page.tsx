@@ -13,7 +13,7 @@ export async function generateMetadata(): Promise<Metadata> {
 /**
  * Nuestra historia: un solo recorrido horizontal (HistoryScroll). Se
  * scrollea para abajo y los paneles avanzan hacia la izquierda; termina en
- * la foto de Habitaciones, que se abre hasta ocupar la pantalla.
+ * la foto de las almenas de la torre, que se abre hasta ocupar la pantalla.
  */
 export default async function NuestraHistoriaPage() {
   const [lang, t] = await Promise.all([getLocale(), getDictionary()]);
@@ -22,7 +22,7 @@ export default async function NuestraHistoriaPage() {
     <PageTransition>
       <Navbar lang={lang} t={t.nav} />
       <main id="top">
-        <HistoryScroll lang={lang} t={t.historia} />
+        <HistoryScroll t={t.historia} />
       </main>
       <Footer lang={lang} t={t.footer} nav={t.nav} />
     </PageTransition>

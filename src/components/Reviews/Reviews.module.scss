@@ -1,7 +1,7 @@
 @use "abstracts" as *;
 
-// Colores a través de --tone-bg / --tone-fg (de <ToneShift>, que al llegar
-// acá vuelve a claro con una transición). Sin <ToneShift>, verde sobre crema.
+// Colores a través de --tone-bg / --tone-fg si está dentro de <ToneShift>.
+// En el home va afuera, después de la foto: verde sobre crema.
 $bg: tone-bg(light);
 $fg: tone-fg(light);
 

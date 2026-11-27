@@ -29,7 +29,7 @@ export default async function EventosPage() {
       <main id="top">
         <Hero
           t={hero}
-          image={{ src: "/images/eventos/noche.png", width: 1536, height: 1024, alt: hero.imageAlt }}
+          image={{ src: "/images/eventos/heroeventos.png", width: 1536, height: 1024, alt: hero.imageAlt, focusY: "85%" }}
           name={{ line1: hero.titleLine1, line2: hero.titleLine2 }}
           nextSectionId="eventos-texto"
           ctaHref={whatsappUrl(hero.whatsapp)}
