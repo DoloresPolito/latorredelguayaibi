@@ -1,23 +1,20 @@
 import Image from "next/image";
 import type { CSSProperties } from "react";
 import type { Dictionary } from "@/i18n/dictionaries/es";
-import { ENTORNO_IMAGES, type EntornoImageKey } from "@/config/entorno";
+import { DEPTH_COUNT, photoAlt, type EntornoPhoto } from "@/config/entorno";
 import { emphasis } from "@/lib/emphasis";
 import ScrollStage from "@/components/ScrollStage/ScrollStage";
 import styles from "./EnvironmentDepth.module.scss";
 
 type EnvironmentDepthProps = {
   t: Dictionary["entorno"]["depth"];
-  images: Dictionary["entorno"]["images"];
+  images: Record<string, string>;
+  fallbackAlt: string;
+  /** Las primeras DEPTH_COUNT flotan; la siguiente se abre al final */
+  photos: EntornoPhoto[];
   id?: string;
 };
 
-/**
- * Fotos sueltas a distintas profundidades. x / y: corrimiento desde el
- * centro (en vw / vh); w: ancho (vw, en desktop); z: profundidad inicial
- * (más negativo = más lejos); ratio: proporción del recorte.
- * Ordenadas de la más cercana a la más lejana.
- */
 /**
  * Ancho con el que se pide cada foto: el doble de su ancho en pantalla
  * (--w vw en desktop, 2.1× en mobile, ver el SCSS), porque al acercarse a la
@@ -26,24 +23,37 @@ type EnvironmentDepthProps = {
 const photoSizes = (w: number) =>
   `(max-width: 768px) ${Math.min(100, Math.round(w * 2.1 * 2))}vw, ${Math.round(w * 2)}vw`;
 
-const PHOTOS: { key: EntornoImageKey; x: number; y: number; w: number; z: number; ratio: string }[] = [
-  { key: "atardecer", x: -36, y: -22, w: 14, z: -150, ratio: "1" },
-  { key: "piedra", x: 34, y: -26, w: 15, z: -400, ratio: "4 / 3" },
-  { key: "vacas", x: 38, y: 26, w: 17, z: -650, ratio: "3 / 2" },
-  { key: "nandu", x: -34, y: 44, w: 10, z: -900, ratio: "2 / 3" },
-  { key: "hereford", x: 6, y: -46, w: 9, z: -1200, ratio: "2 / 3" },
-  { key: "esteros", x: -46, y: 38, w: 12, z: -1500, ratio: "3 / 4" },
-  { key: "casaPileta", x: 30, y: 40, w: 16, z: -1800, ratio: "3 / 2" },
-  { key: "arbol", x: -34, y: -40, w: 10, z: -2100, ratio: "2 / 3" },
-  { key: "ovejas", x: 48, y: -8, w: 14, z: -2400, ratio: "4 / 3" },
-  { key: "canoa", x: -16, y: 42, w: 11, z: -2700, ratio: "3 / 4" },
-  { key: "juncos", x: 40, y: -36, w: 13, z: -3000, ratio: "1" },
-  { key: "eucaliptos", x: -46, y: -12, w: 14, z: -3300, ratio: "4 / 3" },
-  { key: "aves", x: 20, y: 46, w: 10, z: -3600, ratio: "2 / 3" },
+/**
+ * Lugares donde flotan las fotos, de la más cercana a la más lejana: la foto
+ * 01 va al primero, la 02 al segundo, etc. x / y: corrimiento desde el
+ * centro (en vw / vh); s: tamaño (vw); z: profundidad inicial (más negativo =
+ * más lejos).
+ */
+const SLOTS: { x: number; y: number; s: number; z: number }[] = [
+  { x: -36, y: -22, s: 12, z: -150 },
+  { x: 34, y: -26, s: 12, z: -400 },
+  { x: 38, y: 26, s: 13, z: -650 },
+  { x: -34, y: 44, s: 12, z: -900 },
+  { x: 6, y: -46, s: 11, z: -1200 },
+  { x: -46, y: 38, s: 12, z: -1500 },
+  { x: 30, y: 40, s: 13, z: -1800 },
+  { x: -34, y: -40, s: 12, z: -2100 },
+  { x: 48, y: -8, s: 12, z: -2400 },
+  { x: -16, y: 42, s: 12, z: -2700 },
+  { x: 40, y: -36, s: 12, z: -3000 },
+  { x: -46, y: -12, s: 12, z: -3300 },
+  { x: 20, y: 46, s: 12, z: -3600 },
 ];
 
-/** Foto del final: se abre desde el centro hasta ocupar toda la pantalla */
-const FOCUS: EntornoImageKey = "laguna";
+/**
+ * Recorte según la forma de la foto, sin pasar de 3:2 ni de 2:3, y ancho
+ * según el tamaño del lugar: así una vertical y una horizontal en el mismo
+ * lugar ocupan más o menos la misma superficie.
+ */
+function fit(photo: EntornoPhoto, s: number) {
+  const r = Math.min(3 / 2, Math.max(2 / 3, photo.width / photo.height));
+  return { ratio: r.toFixed(3), w: Math.round(s * Math.sqrt(r) * 10) / 10 };
+}
 
 /**
  * Apertura de la página Entorno. La pantalla queda fija mientras se
@@ -53,19 +63,21 @@ const FOCUS: EntornoImageKey = "laguna";
  * foto se abre desde el centro hasta cubrir la pantalla, con una frase.
  * Todo atado al scroll (--t de ScrollStage, de 0 a 1).
  */
-export default function EnvironmentDepth({ t, images, id = "entorno" }: EnvironmentDepthProps) {
-  const focus = ENTORNO_IMAGES[FOCUS];
+export default function EnvironmentDepth({ t, images, fallbackAlt, photos, id = "entorno" }: EnvironmentDepthProps) {
+  const floating = photos.slice(0, Math.min(DEPTH_COUNT, SLOTS.length));
+  const focus = photos[DEPTH_COUNT];
 
   return (
     <section id={id} className={styles.section} aria-labelledby={`${id}-title`}>
       <ScrollStage className={styles.track}>
         <div className={styles.sticky}>
           <div className={styles.space}>
-            {PHOTOS.map(({ key, x, y, w, z, ratio }, i) => {
-              const image = ENTORNO_IMAGES[key];
+            {floating.map((image, i) => {
+              const { x, y, s, z } = SLOTS[i];
+              const { w, ratio } = fit(image, s);
               return (
                 <div
-                  key={key}
+                  key={image.src}
                   className={styles.photo}
                   style={
                     {
@@ -75,7 +87,7 @@ export default function EnvironmentDepth({ t, images, id = "entorno" }: Environm
                       "--z": z,
                       "--ratio": ratio,
                       "--i": i,
-                      zIndex: PHOTOS.length - i + 2,
+                      zIndex: floating.length - i + 2,
                     } as CSSProperties
                   }
                 >
@@ -83,7 +95,7 @@ export default function EnvironmentDepth({ t, images, id = "entorno" }: Environm
                     src={image.src}
                     width={image.width}
                     height={image.height}
-                    alt={images[key]}
+                    alt={photoAlt(images, fallbackAlt, image)}
                     sizes={photoSizes(w)}
                     priority={i < 4}
                     className={styles.photoImage}
@@ -94,7 +106,15 @@ export default function EnvironmentDepth({ t, images, id = "entorno" }: Environm
           </div>
 
           <div className={styles.focus}>
-            <Image src={focus.src} alt={images[FOCUS]} fill sizes="100vw" className={styles.focusImage} />
+            {focus && (
+              <Image
+                src={focus.src}
+                alt={photoAlt(images, fallbackAlt, focus)}
+                fill
+                sizes="100vw"
+                className={styles.focusImage}
+              />
+            )}
             <span className={styles.shade} aria-hidden="true" />
             <div className={styles.focusContent}>
               <p className={styles.focusEyebrow}>

@@ -83,9 +83,19 @@ $gap: 3vw;
   object-fit: cover;
 }
 
-// Fotos de los primeros capítulos, con tono de archivo
-.archive .photoImage {
-  filter: sepia(0.55) saturate(0.75) contrast(0.95) brightness(1.02);
+
+// Foto con su forma real: alto en % del panel (--h) y ancho según --ratio
+.free {
+  flex-shrink: 0;
+  height: var(--h);
+  aspect-ratio: var(--ratio);
+}
+
+// Nombre del capítulo, arriba del título
+.eyebrow {
+  @include eyebrow;
+  margin: 0;
+  color: $color-muted;
 }
 
 .serif {
@@ -195,21 +205,42 @@ $gap: 3vw;
 .heroShade {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to top, rgba($forest, 0.55), rgba($forest, 0) 45%);
+  background: linear-gradient(to top, rgba($forest, 0.7), rgba($forest, 0) 60%);
+}
+
+.heroText {
+  position: absolute;
+  bottom: 13svh;
+  left: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $space-5;
+  width: min(90vw, 1000px);
+  translate: -50% 0;
+  text-align: center;
 }
 
 .heroTitle {
   @include title-italiana;
-  position: absolute;
-  bottom: 13svh;
-  left: 50%;
   margin: 0;
-  translate: -50% 0;
   white-space: nowrap;
   font-size: clamp(44px, 6vw, 96px);
   line-height: 1;
   color: $butter;
   @include enter(300ms);
+}
+
+.heroLead {
+  margin: 0;
+  // Unos 60 caracteres por renglón: la frase queda en dos
+  max-width: 31em;
+  font-family: $font-sans;
+  font-size: clamp(17px, 1.55vw, 24px);
+  text-wrap: balance;
+  line-height: 1.6;
+  color: rgba($butter, 0.9);
+  @include enter(500ms);
 }
 
 .hint {
@@ -235,7 +266,7 @@ $gap: 3vw;
 }
 
 // ─────────────────────────────────────────────
-// 2. El año
+// 2. Las raíces
 // ─────────────────────────────────────────────
 .intro {
   flex-direction: column;
@@ -266,108 +297,26 @@ $gap: 3vw;
   color: $color-muted;
 }
 
-.year {
+.introTitle {
   @include title-italiana;
   --title-stroke: 0.015em;
-  margin: -0.1em 0 0;
-  font-size: clamp(110px, 13vw, 230px);
-  line-height: 0.9;
-  letter-spacing: -0.02em;
+  margin: 0;
+  font-size: clamp(48px, 5.4vw, 96px);
+  font-weight: inherit;
+  line-height: 1;
   color: $color-heading;
 }
 
 // ─────────────────────────────────────────────
-// 3. Foto grande vertical
+// 3, 5, 8 y 10. Galería: fotos con su forma real, a distintas alturas
 // ─────────────────────────────────────────────
-.tall {
-  width: 38vw;
-  padding-inline: 0 $gap;
-
-  @include mq-down(md) {
-    width: 84vw;
-  }
-}
-
-.tallPhoto {
-  width: 100%;
-  height: 100%;
+.gallery {
+  gap: $gap;
+  align-items: center;
 }
 
 // ─────────────────────────────────────────────
-// 4. Línea de tiempo
-// ─────────────────────────────────────────────
-.timeline {
-  padding-inline: 0 $gap;
-}
-
-.timelineLine {
-  position: absolute;
-  top: calc(#{$pad-top} + (100% - #{$pad-top} - #{$pad-bottom}) / 2);
-  left: 0;
-  right: 0;
-  height: $border-width;
-  background-color: $color-border-strong;
-
-  @include mq-down(md) {
-    top: 50%;
-  }
-}
-
-.timelineList {
-  display: flex;
-  gap: 4vw;
-  margin: 0;
-  padding: 0 0 0 4vw;
-  list-style: none;
-}
-
-// Foto arriba, rombo sobre la línea, texto abajo (y al revés en .timelineFlip)
-.timelineItem {
-  position: relative;
-  display: grid;
-  grid-template-rows: 1fr auto 1fr;
-  row-gap: $space-6;
-  width: 19vw;
-
-  .timelinePhoto {
-    grid-row: 1;
-    align-self: end;
-  }
-
-  .diamond {
-    grid-row: 2;
-  }
-
-  .small {
-    grid-row: 3;
-    align-self: start;
-  }
-
-  @include mq-down(md) {
-    width: 64vw;
-  }
-}
-
-.timelineFlip {
-  .timelinePhoto {
-    grid-row: 3;
-    align-self: start;
-  }
-
-  .small {
-    grid-row: 1;
-    align-self: end;
-  }
-}
-
-.timelinePhoto {
-  width: 100%;
-  aspect-ratio: 4 / 3;
-  border: 6px solid $color-border;
-}
-
-// ─────────────────────────────────────────────
-// 5. Foto, capítulo y otra foto
+// 4, 7 y 11. Foto, capítulo y otra foto
 // ─────────────────────────────────────────────
 .feature {
   gap: $gap;
@@ -382,18 +331,8 @@ $gap: 3vw;
   }
 }
 
-.featurePhotoAlt {
-  align-self: center;
-  width: 28vw;
-  height: 78%;
-
-  @include mq-down(md) {
-    width: 80vw;
-  }
-}
-
 // ─────────────────────────────────────────────
-// 6. Frase grande con foto chica
+// 9. Título grande, texto y foto
 // ─────────────────────────────────────────────
 .aside {
   flex-direction: column;
@@ -410,18 +349,12 @@ $gap: 3vw;
   }
 }
 
-.asidePhoto {
-  width: 9vw;
-  aspect-ratio: 4 / 5;
+.aside .free {
   margin-top: auto;
-
-  @include mq-down(md) {
-    width: 32vw;
-  }
 }
 
 // ─────────────────────────────────────────────
-// 7 y 9. Foto de alto completo + bloque de color
+// 6 y 12. Foto de alto completo + bloque de color
 // ─────────────────────────────────────────────
 .split {
   padding: 0;
@@ -447,7 +380,8 @@ $gap: 3vw;
   color: $butter;
 
   .serif,
-  .small {
+  .small,
+  .eyebrow {
     color: inherit;
   }
 
@@ -470,107 +404,19 @@ $gap: 3vw;
 }
 
 // ─────────────────────────────────────────────
-// 8. Dos fotos apiladas, título y texto
-// ─────────────────────────────────────────────
-.stack {
-  gap: $gap;
-}
-
-.stackPhotos {
-  display: flex;
-  flex-direction: column;
-  gap: $space-4;
-  width: 30vw;
-
-  @include mq-down(md) {
-    width: 84vw;
-  }
-}
-
-.stackPhoto {
-  flex: 1;
-}
-
-.stackTitle {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  width: 22vw;
-
-  .small {
-    max-width: 220px;
-  }
-
-  @include mq-down(md) {
-    width: 76vw;
-  }
-}
-
-.stackText {
-  display: flex;
-  flex-direction: column;
-  gap: $space-5;
-  width: 18vw;
-  padding-top: $space-2;
-
-  @include mq-down(md) {
-    width: 70vw;
-  }
-}
-
-// ─────────────────────────────────────────────
-// 10. Capítulo con foto chica y foto vertical
-// ─────────────────────────────────────────────
-.chapter {
-  gap: $gap;
-}
-
-.chapterSide {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: $space-6;
-  width: 14vw;
-
-  @include mq-down(md) {
-    width: 50vw;
-  }
-}
-
-.chapterThumb {
-  width: 100%;
-  aspect-ratio: 3 / 4;
-}
-
-.chapterPhoto {
-  width: 28vw;
-
-  @include mq-down(md) {
-    width: 80vw;
-  }
-}
-
-// ─────────────────────────────────────────────
-// 11. Cierre
+// 13. Cierre
 // ─────────────────────────────────────────────
 .closing {
   gap: $gap;
+  align-items: center;
   padding-right: 6vw;
 }
 
-.closingPhoto {
-  width: 26vw;
-
-  @include mq-down(md) {
-    width: 80vw;
-  }
-}
-
 .closingText {
+  margin: 0;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  gap: $space-10;
+  gap: $space-6;
   width: 26vw;
 
   .small {
@@ -583,7 +429,7 @@ $gap: 3vw;
 }
 
 // ─────────────────────────────────────────────
-// 12. Próxima página: la foto se abre con el scroll
+// 14. Próxima página: la foto se abre con el scroll
 // --open: 0 al asomar el panel → 1 cuando queda centrado
 // ─────────────────────────────────────────────
 .next {

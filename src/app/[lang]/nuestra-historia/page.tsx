@@ -11,10 +11,6 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 /**
- * OCULTA POR AHORA: la carpeta empieza con "_" (carpeta privada de Next),
- * así que la ruta no existe y /nuestra-historia muestra el 404. Para
- * publicarla, renombrar la carpeta a "nuestra-historia".
- *
  * Nuestra historia: un solo recorrido horizontal (HistoryScroll). Se
  * scrollea para abajo y los paneles avanzan hacia la izquierda; termina en
  * la foto de Habitaciones, que se abre hasta ocupar la pantalla.

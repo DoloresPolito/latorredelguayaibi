@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import Navbar from "@/components/Navbar/Navbar";
 import Footer from "@/components/Footer/Footer";
 import EnvironmentDepth from "@/components/EnvironmentDepth/EnvironmentDepth";
@@ -7,6 +8,8 @@ import QuietText from "@/components/QuietText/QuietText";
 import EventsCta from "@/components/EventsCta/EventsCta";
 import PageTransition from "@/components/PageTransition/PageTransition";
 import { getDictionary, getLocale } from "@/i18n/getDictionary";
+import type { Dictionary } from "@/i18n/dictionaries/es";
+import { DEPTH_COUNT, getEntornoPhotos } from "@/config/entorno";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getDictionary();
@@ -29,12 +32,40 @@ export default async function EntornoPage() {
     <PageTransition>
       <Navbar lang={lang} t={t.nav} />
       <main id="top">
-        <EnvironmentDepth t={e.depth} images={e.images} />
+        <Suspense>
+          <DepthPhotos e={e} />
+        </Suspense>
         <QuietText t={e.quietText} compact />
-        <EnvironmentColumns t={e.columns} images={e.images} />
+        <Suspense>
+          <ColumnsPhotos e={e} />
+        </Suspense>
         <EventsCta id="consultar" t={e.cta} />
       </main>
       <Footer lang={lang} t={t.footer} nav={t.nav} />
     </PageTransition>
+  );
+}
+
+/*
+ * Las fotos salen de public/images/entorno/, en el orden de su número (ver
+ * config/entorno). En producción quedan dentro de la página publicada; el
+ * Suspense es para desarrollo, donde la carpeta se relee en cada visita.
+ */
+type GalleryProps = { e: Dictionary["entorno"] };
+
+async function DepthPhotos({ e }: GalleryProps) {
+  const photos = await getEntornoPhotos();
+  return <EnvironmentDepth t={e.depth} images={e.images} fallbackAlt={e.imageFallback} photos={photos} />;
+}
+
+async function ColumnsPhotos({ e }: GalleryProps) {
+  const photos = await getEntornoPhotos();
+  return (
+    <EnvironmentColumns
+      t={e.columns}
+      images={e.images}
+      fallbackAlt={e.imageFallback}
+      photos={photos.slice(DEPTH_COUNT + 1)}
+    />
   );
 }

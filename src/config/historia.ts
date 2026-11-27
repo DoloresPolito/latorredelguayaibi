@@ -3,26 +3,27 @@ import type { Dictionary } from "@/i18n/dictionaries/es";
 export type HistoriaImageKey = keyof Dictionary["historia"]["images"];
 
 /**
- * Fotos de la página Nuestra historia (provisorias: se reemplazan por las
- * fotos de archivo cuando estén). El texto alternativo está en
- * historia.images del diccionario.
+ * Fotos de la página Nuestra historia (public/images/historia/). El texto
+ * alternativo está en historia.images del diccionario.
+ * Las de provisorias/ son fotos actuales de la casa que ocupan el lugar
+ * hasta tener las de cada capítulo (hotel, hoy y cierre).
  */
 export const HISTORIA_IMAGES: Record<HistoriaImageKey, { src: string; width: number; height: number }> = {
-  galeria: { src: "/images/hotel.png", width: 1580, height: 996 },
-  piedra: { src: "/images/piedra.png", width: 1591, height: 989 },
-  atardecer: { src: "/images/atardecer.png", width: 1078, height: 1086 },
-  ovejas: { src: "/images/h3.png", width: 2172, height: 724 },
-  fogon: { src: "/images/eventos/exclusiva.png", width: 554, height: 413 },
-  desayuno: { src: "/images/desayuno1.png", width: 1115, height: 1410 },
-  casa: { src: "/images/hero.png", width: 1562, height: 1007 },
-  laguna: { src: "/images/laguna.jpg", width: 4032, height: 3024 },
-  libros: { src: "/images/libros.png", width: 1746, height: 2079 },
-  guitarras: { src: "/images/eventos/tradiciones.png", width: 1672, height: 941 },
-  vacas: { src: "/images/h1.png", width: 2172, height: 724 },
-  juncos: { src: "/images/h2.png", width: 2172, height: 724 },
-  musica: { src: "/images/eventos/musica.png", width: 937, height: 699 },
-  muelle: { src: "/images/eventoshome2.png", width: 949, height: 1275 },
-  canoa: { src: "/images/reservas.jpg", width: 3024, height: 4032 },
-  mesa: { src: "/images/eventoshome1.png", width: 956, height: 1275 },
+  hero: { src: "/images/historia/hero.jpg", width: 1459, height: 1078 },
+  tranquera: { src: "/images/historia/raices-1-tranquera.jpg", width: 1024, height: 682 },
+  lapachos: { src: "/images/historia/raices-3-lapachos.jpg", width: 1024, height: 682 },
+  paisano: { src: "/images/historia/campo-2-paisano.jpg", width: 1198, height: 1800 },
+  pastizal: { src: "/images/historia/campo-3-pastizal.jpg", width: 1024, height: 682 },
+  idea: { src: "/images/historia/idea-salon.jpg", width: 1081, height: 1455 },
+  obraViga: { src: "/images/historia/obra-1-viga.jpg", width: 960, height: 1280 },
+  obraGaleria: { src: "/images/historia/obra-2-galeria.jpg", width: 1280, height: 960 },
+  obraTorreLejos: { src: "/images/historia/obra-3-torre-lejos.jpg", width: 1280, height: 960 },
+  telescopio: { src: "/images/historia/torre-1-telescopio.jpg", width: 1083, height: 720 },
+  anteojos: { src: "/images/historia/torre-3-anteojos.jpg", width: 1396, height: 1800 },
+  // Provisorias
+  habitacion: { src: "/images/historia/provisorias/habitacion.jpg", width: 2560, height: 1440 },
+  desayuno: { src: "/images/historia/provisorias/desayuno.jpg", width: 1440, height: 1800 },
+  cierre: { src: "/images/historia/provisorias/cierre.jpg", width: 2560, height: 1920 },
+  // Foto de la próxima página (Habitaciones)
   suite: { src: "/images/habitaciones/1.png", width: 1536, height: 1024 },
 };
